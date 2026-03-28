@@ -58,3 +58,18 @@
 - OpenAI tts-1-hd, voice: nova, speed: 1.4
 - 음성 파일은 public/audio/에 저장
 - Pretendard 폰트 사용 (CDN)
+
+---
+
+## 레퍼런스 관리
+
+### 규칙
+1. 차장님이 참고 영상, 스타일 샘플, 모션 레퍼런스를 주면:
+   - `references/` 폴더에 저장 (영상 링크는 `references/index.md`에 기록)
+   - `references/index.md`에 뭔지, 어떤 점을 참고할지 한줄 기록
+2. 새 영상 작업 시 `references/index.md`를 먼저 확인
+3. "이 움직임 좋아", "이건 너무 화려해" 피드백 → 이 CLAUDE.md의 해당 섹션에 누적 반영
+4. 대본/교안 원천 데이터는 mybrain 레포에서 가져옴 (~/Desktop/workspace/mybrain/)
+   - `knowledge/` — 월별 회의자료, 상품 지식 (마크다운 정리본)
+   - `knowledge/index.md` — 전체 지식 목차 (여기서 먼저 뭐가 있는지 확인)
+   - `output/` — 과거 교육 결과물 (PPT, 대본) → 톤/스타일/구성 참고용
