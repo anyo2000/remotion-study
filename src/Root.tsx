@@ -6,10 +6,19 @@ import { GiftReject } from "./GiftReject";
 import { ColdWall } from "./ColdWall";
 import { GuardDown } from "./GuardDown";
 import { HookTalk } from "./HookTalk";
+import { LinkTeaser1 } from "./LinkTeaser1";
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="LinkTeaser1"
+        component={LinkTeaser1}
+        durationInFrames={435}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
       <Composition
         id="MyComposition"
         component={MyComposition}
