@@ -7,10 +7,46 @@ import { ColdWall } from "./ColdWall";
 import { GuardDown } from "./GuardDown";
 import { HookTalk } from "./HookTalk";
 import { LinkTeaser1 } from "./LinkTeaser1";
+import { TeaserSampleA } from "./TeaserSampleA";
+import { TeaserSampleB } from "./TeaserSampleB";
+import { LinkTeaser2 } from "./LinkTeaser2";
+import { LinkTeaser3 } from "./LinkTeaser3";
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="LinkTeaser3"
+        component={LinkTeaser3}
+        durationInFrames={555}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="TeaserSampleA"
+        component={TeaserSampleA}
+        durationInFrames={150}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="TeaserSampleB"
+        component={TeaserSampleB}
+        durationInFrames={150}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="LinkTeaser2"
+        component={LinkTeaser2}
+        durationInFrames={515}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
       <Composition
         id="LinkTeaser1"
         component={LinkTeaser1}
