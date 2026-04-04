@@ -6,3 +6,7 @@ dist
 .DS_Store
 frames/
 out/
+
+# 영상 파일은 Google Drive에 보관
+public/output/*.mp4
+archive/**/*.mp4

@@ -1,15 +1,9 @@
 /**
- * LinkTeaser4 — "시대가 바뀌었다" (2안)
- * BEATS 패턴 + remotion-bits + constants/components 활용
- *
- * 구조: 5장면 Sequence
- *   S1: 과거 — 관계의 시대 (흐름도)
- *   S2: 전환 — "2026년" (색상 전환)
- *   S3: 현실 — 안 통하는 이유 (타이핑 → 파쇄)
- *   S4: 해결 — 전문성으로 연결 (LINK 네트워크)
- *   S5: 엔딩 — LINK 컨설팅 (스탬프)
+ * LinkTeaser4 — "숫자 충격형" (v2)
+ * Props 패널에서 팔레트, 텍스트, 속도, BGM 조절 가능
  */
 import React from "react";
+import { z } from "zod";
 import {
   AbsoluteFill,
   useCurrentFrame,
@@ -21,368 +15,302 @@ import {
   staticFile,
   Easing,
 } from "remotion";
-import { TypeWriter, AnimatedText, StaggeredMotion, GradientTransition } from "remotion-bits";
 import {
   PALETTES,
   SPRING,
   FONT_FAMILY,
   SAFE,
+  GAP_FRAMES,
+  type PaletteName,
 } from "./constants";
 import { GradientBackground } from "./components/GradientBackground";
 import { FadeInText } from "./components/FadeInText";
-import { NetworkGraph } from "./components/NetworkGraph";
 
-// ── 장면별 프레임 (TTS 기반 예상치, 음성 도착 후 조정) ──
-const S1_DUR = 255; // 8.5초 — 과거
-const S2_DUR = 75;  // 2.5초 — 전환
-const S3_DUR = 360; // 12초 — 현실 + 파쇄
-const S4_DUR = 345; // 11.5초 — 해결 + 네트워크
-const S5_DUR = 240; // 8초 — 엔딩 + 여운
-const TOTAL = S1_DUR + S2_DUR + S3_DUR + S4_DUR + S5_DUR; // 1275프레임 = 42.5초
+// ── Zod Schema (한글 키) ──
+const paletteEnum = z.enum(["blue", "orange", "gold", "coolBlue", "pink"]);
+
+export const linkTeaser4Schema = z.object({
+  문제팔레트: paletteEnum,
+  솔루션팔레트: paletteEnum,
+
+  질문: z.string(),
+  숫자A: z.string(),
+  숫자B: z.string(),
+  핵심질문: z.string(),
+
+  카드1: z.string(),
+  카드2: z.string(),
+  카드3: z.string(),
+
+  전환문구: z.string(),
+
+  상단문구: z.string(),
+  하단문구: z.string(),
+
+  시기: z.string(),
+  마무리: z.string(),
+
+  장면쉼: z.number().min(0).max(60),
+  속도감: z.number().min(0.5).max(2.0).step(0.1),
+  BGM볼륨: z.number().min(0).max(1).step(0.05),
+});
+
+export type LinkTeaser4Props = z.infer<typeof linkTeaser4Schema>;
+
+// ── 장면 타이밍 (전체 음성 1개 기반, 타임스탬프로 동기화) ──
+// 음성: teaser4-full-leda.wav (27.0초 = 810fr)
+// 장면 전환은 무음 구간 기준
+const S1_START = 0;     // 0.0s
+const S2_START = 273;   // 9.1s — 무음 #3 이후
+const S3_START = 447;   // 14.9s — 무음 #4 이후
+const S4_START = 592;   // 19.7s — 무음 #5 이후
+const S5_START = 737;   // 24.6s — 무음 #6 이후
+const TOTAL_DUR = 885;  // 27.0s + 75fr 여유
+
+const S1_DUR = S2_START - S1_START; // 273fr
+const S2_DUR = S3_START - S2_START; // 174fr
+const S3_DUR = S4_START - S3_START; // 145fr
+const S4_DUR = S5_START - S4_START; // 145fr
+const S5_DUR = TOTAL_DUR - S5_START; // 148fr
+
+const scaleBeat = (beat: number, factor: number) => Math.round(beat / factor);
 
 // ===================================================================
-// 장면 1: 과거 — "관계의 시대"
+// 장면 1: 숫자 충격
 // ===================================================================
-const S1_BEATS = {
-  TITLE_IN: 0,        // 0s
-  STEP1_IN: 50,       // 1.7s — "자주 찾아뵙고"
-  STEP2_IN: 80,       // 2.7s — "밥 한 번 같이 하고"
-  STEP3_IN: 110,      // 3.7s — "관계를 쌓다 보면"
-  STEP4_IN: 145,      // 4.8s — "자연스럽게 따라왔거든요"
-  LINE_DRAW: 55,
-  HOLD: 175,          // 5.8s
-  FADE_OUT: 225,      // 7.5s
-  SCENE_END: 255,     // 8.5s
-} as const;
-
-const PastScene: React.FC = () => {
+const NumberImpactScene: React.FC<{
+  palette: PaletteName;
+  question: string;
+  numberA: string;
+  numberB: string;
+  hook: string;
+  speedFactor: number;
+}> = ({ palette, question, numberA, numberB, hook, speedFactor }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const P = PALETTES.gold;
+  const P = PALETTES[palette];
+  const sb = (b: number) => scaleBeat(b, speedFactor);
 
-  const steps = ["친숙", "방문", "설계", "제안"];
-  const stepDelays = [S1_BEATS.STEP1_IN, S1_BEATS.STEP2_IN, S1_BEATS.STEP3_IN, S1_BEATS.STEP4_IN];
+  // 273fr = 9.1초. 음성: "10명...2건?...1건?...나머지...어디서?"
+  const BEATS = {
+    COUNT_START: sb(5), COUNT_END: sb(30), QUESTION: sb(45),
+    TEN: sb(100), TWENTY: sb(130), REST: sb(170), WHERE: sb(200), FADE_OUT: sb(250),
+  };
 
-  // 전체 페이드아웃
-  const fadeOut = interpolate(frame, [S1_BEATS.FADE_OUT, S1_BEATS.SCENE_END], [1, 0], {
-    extrapolateLeft: "clamp", extrapolateRight: "clamp",
-  });
+  const countProgress = interpolate(frame, [BEATS.COUNT_START, BEATS.COUNT_END], [0, 10], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.quad) });
+  const countNum = Math.round(countProgress);
+  const countScale = spring({ frame: Math.max(0, frame - BEATS.COUNT_START), fps, config: SPRING.dramatic });
+
+  const punchScale = frame >= BEATS.COUNT_END && frame < BEATS.COUNT_END + 8
+    ? interpolate(frame, [BEATS.COUNT_END, BEATS.COUNT_END + 4, BEATS.COUNT_END + 8], [1, 1.15, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })
+    : 1;
+
+  const questionIn = spring({ frame: Math.max(0, frame - BEATS.QUESTION), fps, config: SPRING.heavy });
+  const tenIn = spring({ frame: Math.max(0, frame - BEATS.TEN), fps, config: SPRING.bouncy });
+  const twentyIn = spring({ frame: Math.max(0, frame - BEATS.TWENTY), fps, config: SPRING.bouncy });
+  const restIn = spring({ frame: Math.max(0, frame - BEATS.REST), fps, config: SPRING.heavy });
+  const whereIn = spring({ frame: Math.max(0, frame - BEATS.WHERE), fps, config: SPRING.dramatic });
+  const fadeOut = interpolate(frame, [BEATS.FADE_OUT, S1_DUR], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+
+  // 100 올라갈 때 크기 유지 (축소 없음), 위치만 이동
+  const numberLift = frame >= BEATS.QUESTION
+    ? interpolate(frame, [BEATS.QUESTION, BEATS.QUESTION + 20], [0, -350], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })
+    : 0;
 
   return (
     <AbsoluteFill style={{ opacity: fadeOut }}>
-      <GradientBackground palette="gold" />
+      <GradientBackground palette={palette} />
+      <div style={{ position: "absolute", inset: 0, display: "flex", justifyContent: "center", alignItems: "center", transform: `translateY(${numberLift}px) scale(${punchScale})` }}>
+        <span style={{ color: P.accent, fontSize: 240, fontWeight: 900, fontFamily: FONT_FAMILY, fontVariantNumeric: "tabular-nums", opacity: countScale, transform: `scale(${countScale})` }}>
+          {countNum}<span style={{ fontSize: 96, fontWeight: 500, color: P.sub }}>명</span>
+        </span>
+      </div>
+      <div style={{ position: "absolute", top: "52%", left: SAFE.side, right: SAFE.side, textAlign: "center", opacity: questionIn, transform: `translateY(${interpolate(questionIn, [0, 1], [20, 0])}px)` }}>
+        <p style={{ color: P.sub, fontSize: 60, fontWeight: 400, fontFamily: FONT_FAMILY, margin: 0 }}>{question}</p>
+      </div>
+      <div style={{ position: "absolute", top: "60%", left: 0, right: 0, display: "flex", justifyContent: "center", gap: 60 }}>
+        <span style={{ color: P.text, fontSize: 96, fontWeight: 800, fontFamily: FONT_FAMILY, fontVariantNumeric: "tabular-nums", opacity: tenIn, transform: `scale(${tenIn})` }}>{numberA}</span>
+        <span style={{ color: P.text, fontSize: 96, fontWeight: 800, fontFamily: FONT_FAMILY, fontVariantNumeric: "tabular-nums", opacity: twentyIn, transform: `scale(${twentyIn})` }}>{numberB}</span>
+      </div>
+      <div style={{ position: "absolute", bottom: SAFE.bottom + 160, left: SAFE.side, right: SAFE.side, textAlign: "center", opacity: restIn, transform: `translateY(${interpolate(restIn, [0, 1], [15, 0])}px)` }}>
+        <p style={{ color: P.sub, fontSize: 60, fontWeight: 400, fontFamily: FONT_FAMILY, margin: 0 }}>그럼 나머지 고객은</p>
+      </div>
+      <div style={{ position: "absolute", bottom: SAFE.bottom + 60, left: SAFE.side, right: SAFE.side, textAlign: "center", opacity: whereIn, transform: `scale(${interpolate(whereIn, [0, 1], [0.9, 1])})` }}>
+        <p style={{ color: P.accent, fontSize: 72, fontWeight: 700, fontFamily: FONT_FAMILY, margin: 0 }}>{hook}</p>
+      </div>
+    </AbsoluteFill>
+  );
+};
 
-      {/* 상단 텍스트 */}
-      <FadeInText
-        delay={S1_BEATS.TITLE_IN}
-        fontSize={64}
-        fontWeight={600}
-        color={P.sub}
-        style={{ position: "absolute", top: SAFE.top + 60, left: 0, right: 0, textAlign: "center" }}
-      >
-        관계의 시대
-      </FadeInText>
+// ===================================================================
+// 장면 2: 벽 — 카드
+// ===================================================================
+const WallScene: React.FC<{
+  palette: PaletteName; card1: string; card2: string; card3: string; speedFactor: number;
+}> = ({ palette, card1, card2, card3, speedFactor }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const P = PALETTES[palette];
+  const sb = (b: number) => scaleBeat(b, speedFactor);
 
-      {/* 흐름도 — 4단계 가로가 아닌 세로 (9:16) */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0, left: SAFE.side, right: SAFE.side, bottom: 0,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 24,
-        }}
-      >
-        {steps.map((step, i) => {
-          const prog = spring({
-            frame: Math.max(0, frame - stepDelays[i]),
-            fps,
-            config: SPRING.heavy,
-          });
+  // 174fr = 5.8초
+  const cards = [
+    { emoji: "🚫", text: card1, delay: sb(8) },
+    { emoji: "🔒", text: card2, delay: sb(50) },
+    { emoji: "💬", text: card3, delay: sb(95) },
+  ];
+  const fadeOut = interpolate(frame, [sb(145), S2_DUR], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
 
-          // 연결선 (화살표)
-          const showArrow = i > 0;
-          const arrowProg = spring({
-            frame: Math.max(0, frame - stepDelays[i] + 5),
-            fps,
-            config: SPRING.smooth,
-          });
-
+  return (
+    <AbsoluteFill style={{ opacity: fadeOut }}>
+      <GradientBackground palette={palette} />
+      <div style={{ position: "absolute", top: 0, left: SAFE.side, right: SAFE.side, bottom: 0, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 36 }}>
+        {cards.map((card, i) => {
+          const prog = spring({ frame: Math.max(0, frame - card.delay), fps, config: SPRING.heavy });
           return (
-            <React.Fragment key={i}>
-              {showArrow && (
-                <div
-                  style={{
-                    fontSize: 52,
-                    color: P.accent,
-                    opacity: arrowProg * 0.5,
-                    transform: `scale(${arrowProg})`,
-                  }}
-                >
-                  ↓
-                </div>
-              )}
-              <div
-                style={{
-                  opacity: prog,
-                  transform: `translateY(${interpolate(prog, [0, 1], [20, 0])}px) scale(${interpolate(prog, [0, 1], [0.9, 1])})`,
-                  backgroundColor: `${P.accent}18`,
-                  border: `2px solid ${P.accent}40`,
-                  borderRadius: 20,
-                  padding: "28px 80px",
-                  textAlign: "center",
-                }}
-              >
-                <span
-                  style={{
-                    color: P.accent,
-                    fontSize: 72,
-                    fontWeight: 700,
-                    fontFamily: FONT_FAMILY,
-                  }}
-                >
-                  {step}
-                </span>
-              </div>
-            </React.Fragment>
+            <div key={i} style={{ opacity: prog, transform: `translateX(${interpolate(prog, [0, 1], [-40, 0])}px)`, backgroundColor: P.card, border: `2px solid ${P.cardBorder}`, borderRadius: 24, padding: "40px 56px", width: "85%", display: "flex", alignItems: "center", gap: 28 }}>
+              <span style={{ fontSize: 64 }}>{card.emoji}</span>
+              <span style={{ color: P.text, fontSize: 64, fontWeight: 600, fontFamily: FONT_FAMILY, lineHeight: 1.3, whiteSpace: "pre-line" }}>{card.text}</span>
+            </div>
           );
         })}
       </div>
-
-      {/* 하단 부가설명 */}
-      <FadeInText
-        delay={S1_BEATS.HOLD}
-        fontSize={52}
-        color={P.sub}
-        style={{
-          position: "absolute",
-          bottom: SAFE.bottom + 80,
-          left: 0, right: 0,
-          textAlign: "center",
-        }}
-      >
-        관계를 쌓으면, 보험은 따라왔습니다
-      </FadeInText>
     </AbsoluteFill>
   );
 };
 
 // ===================================================================
-// 장면 2: 전환 — "2026년"
+// 장면 3: 전환 — 벽돌 담벼락 쌓기 → 무너짐
 // ===================================================================
-const S2_BEATS = {
-  YEAR_IN: 12,
-  YEAR_SCALE: 14,
-  SCENE_END: 75,      // 2.5s
-} as const;
 
-const TransitionScene: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+// 벽돌 설정: 고정 크기 벽돌, 5-4 교대, 중앙 정렬
+// 핵심: 모든 벽돌 같은 크기. 5개 줄이 전체 폭을 결정하고, 4개 줄은 반칸 들여쓰기
+const WALL_ROWS = 7;
+const BRICK_GAP = 10;
+const AVAILABLE_W = 1080 - SAFE.side * 2; // 960px
+const BRICK_W = (AVAILABLE_W - 4 * BRICK_GAP) / 5; // 5개 기준 = ~184px
+const BRICK_H = 64;
 
-  const scaleProgress = spring({
-    frame: Math.max(0, frame - S2_BEATS.YEAR_IN),
-    fps,
-    config: SPRING.dramatic,
-  });
-
-  const opacity = interpolate(frame, [S2_BEATS.YEAR_IN, S2_BEATS.YEAR_IN + 15], [0, 1], {
-    extrapolateLeft: "clamp", extrapolateRight: "clamp",
-  });
-
-  return (
-    <AbsoluteFill>
-      {/* 배경 그라디언트 전환: 골드 → 쿨블루 */}
-      <GradientTransition
-        gradient={[
-          `radial-gradient(ellipse 80% 60% at 50% 40%, ${PALETTES.gold.glow}, transparent)`,
-          `radial-gradient(ellipse 80% 60% at 50% 50%, ${PALETTES.coolBlue.glow}, transparent)`,
-        ]}
-        duration={S2_DUR}
-        style={{ backgroundColor: "#0B1120" }}
-      />
-
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 20,
-          opacity,
-        }}
-      >
-        <p
-          style={{
-            color: PALETTES.coolBlue.sub,
-            fontSize: 56,
-            fontWeight: 400,
-            fontFamily: FONT_FAMILY,
-            margin: 0,
-          }}
-        >
-          그런데,
-        </p>
-        <p
-          style={{
-            color: PALETTES.coolBlue.accent,
-            fontSize: 140,
-            fontWeight: 900,
-            fontFamily: FONT_FAMILY,
-            margin: 0,
-            transform: `scale(${Math.max(0.7, scaleProgress)})`,
-            fontVariantNumeric: "tabular-nums",
-          }}
-        >
-          2026
-        </p>
-      </div>
-    </AbsoluteFill>
-  );
+const generateRows = () => {
+  const rows: { cols: number; bricks: { col: number; row: number; fallX: number; fallRot: number }[] }[] = [];
+  for (let row = 0; row < WALL_ROWS; row++) {
+    const cols = row % 2 === 0 ? 5 : 4;
+    const bricks = [];
+    for (let col = 0; col < cols; col++) {
+      const seed = row * 10 + col;
+      bricks.push({
+        col, row,
+        fallX: ((seed * 7 + 3) % 11 - 5) * 40,
+        fallRot: ((seed * 13 + 7) % 9 - 4) * 15,
+      });
+    }
+    rows.push({ cols, bricks });
+  }
+  return rows;
 };
 
-// ===================================================================
-// 장면 3: 현실 — 타이핑 → 파쇄
-// ===================================================================
-const S3_BEATS = {
-  LINE1_TYPE: 10,       // 0.3s
-  LINE2_TYPE: 90,       // 3s
-  LINE3_TYPE: 170,      // 5.7s
-  SHAKE_START: 265,     // 8.8s — 진동
-  BREAK_START: 290,     // 9.7s — 파쇄
-  FLASH: 290,
-  FADE_OUT: 330,        // 11s
-  SCENE_END: 360,       // 12s
-} as const;
+const WALL_ROWS_DATA = generateRows();
 
-// 글자 낙하 방향 (기존 LinkTeaser3에서 가져옴)
-const CHAR_FALLS = [
-  { tx: -180, ty: 400, rot: -40 }, { tx: 100, ty: 500, rot: 30 },
-  { tx: -60, ty: 350, rot: -55 }, { tx: 200, ty: 450, rot: 45 },
-  { tx: -140, ty: 520, rot: -25 }, { tx: 80, ty: 380, rot: 50 },
-  { tx: -220, ty: 460, rot: -35 }, { tx: 160, ty: 420, rot: 60 },
-  { tx: -100, ty: 490, rot: -50 }, { tx: 120, ty: 370, rot: 20 },
-  { tx: -50, ty: 530, rot: -45 }, { tx: 190, ty: 410, rot: 35 },
-  { tx: -170, ty: 480, rot: -30 }, { tx: 70, ty: 440, rot: 55 },
-  { tx: -130, ty: 360, rot: -60 }, { tx: 210, ty: 510, rot: 25 },
-];
-
-const RealityScene: React.FC = () => {
+const BreakthroughScene: React.FC<{
+  palette: PaletteName; method: string; speedFactor: number;
+}> = ({ palette, method, speedFactor }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const P = PALETTES.coolBlue;
+  const P = PALETTES[palette];
+  const sb = (b: number) => scaleBeat(b, speedFactor);
 
-  const lines = [
-    { text: "첫 통화 DB 영업", delay: S3_BEATS.LINE1_TYPE },
-    { text: "메시지로만 소통", delay: S3_BEATS.LINE2_TYPE },
-    { text: "만남을 꺼리는 고객", delay: S3_BEATS.LINE3_TYPE },
-  ];
+  // 타이밍
+  // 145fr = 4.8초
+  const BUILD_START = sb(5);
+  const BUILD_END = sb(35);
+  const SHAKE_START = sb(40);
+  const BREAK_FRAME = sb(60);
+  const METHOD_IN = sb(75);
+  const FADE_OUT = sb(125);
 
-  const breakStart = S3_BEATS.BREAK_START;
-  const isBreaking = frame >= breakStart;
+  // "이 벽을" 텍스트
+  const wallTextIn = spring({ frame: Math.max(0, frame - sb(10)), fps, config: SPRING.dramatic });
 
-  // shake
-  const preShake = frame >= S3_BEATS.SHAKE_START && frame < breakStart;
-  const shakeIntensity = preShake
-    ? interpolate(frame, [S3_BEATS.SHAKE_START, breakStart], [1, 8], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })
+  // 벽돌 쌓기 진행도 (0~1)
+  const buildProgress = interpolate(frame, [BUILD_START, BUILD_END], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+
+  // 진동
+  const isShaking = frame >= SHAKE_START && frame < BREAK_FRAME;
+  const shakeIntensity = isShaking
+    ? interpolate(frame, [SHAKE_START, BREAK_FRAME], [1, 10], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })
     : 0;
-  const breakShake = frame >= breakStart && frame <= breakStart + 8;
-  const shakeX = preShake ? Math.sin(frame * 5) * shakeIntensity : breakShake ? Math.sin(frame * 12) * 18 : 0;
-  const shakeY = breakShake ? Math.cos(frame * 9) * 12 : 0;
+  const shakeX = isShaking ? Math.sin(frame * 8) * shakeIntensity : 0;
+  const shakeY = isShaking ? Math.cos(frame * 11) * shakeIntensity * 0.5 : 0;
 
-  // 플래시
-  const flashOpacity = interpolate(
-    frame,
-    [breakStart, breakStart + 3, breakStart + 8],
-    [0, 0.15, 0],
-    { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
-  );
+  // 무너짐
+  const isBreaking = frame >= BREAK_FRAME;
+  const breakProgress = isBreaking
+    ? interpolate(frame, [BREAK_FRAME, BREAK_FRAME + 20], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.in(Easing.quad) })
+    : 0;
 
-  // 전체 페이드아웃
-  const fadeOut = interpolate(frame, [S3_BEATS.FADE_OUT, S3_BEATS.SCENE_END], [1, 0], {
-    extrapolateLeft: "clamp", extrapolateRight: "clamp",
-  });
+  // 무너질 때 추가 쉐이크
+  const breakShakeX = isBreaking && breakProgress < 0.3 ? Math.sin(frame * 15) * 15 : 0;
 
-  let globalCharIdx = 0;
+  // "단계별로 부수는 방법이 있습니다"
+  const methodIn = spring({ frame: Math.max(0, frame - METHOD_IN), fps, config: SPRING.dramatic });
+  const fadeOut = interpolate(frame, [FADE_OUT, S3_DUR], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
 
   return (
-    <AbsoluteFill style={{ opacity: fadeOut, transform: `translate(${shakeX}px, ${shakeY}px)` }}>
-      <GradientBackground palette="coolBlue" />
+    <AbsoluteFill style={{ opacity: fadeOut, transform: `translate(${shakeX + breakShakeX}px, ${shakeY}px)` }}>
+      <GradientBackground palette={palette} />
 
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          left: SAFE.side,
-          right: SAFE.side,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 50,
-        }}
-      >
-        {lines.map((line, lineIdx) => {
-          // 타이핑 완료 여부 (대략 글자 * 3프레임 속도 기준)
-          const typeEnd = line.delay + line.text.length * 3 + 10;
-          const isTypeDone = frame >= typeEnd;
-          const fontSize = lineIdx === 2 ? 80 : 72;
+      {/* "이 벽을" */}
+      <div style={{ position: "absolute", top: SAFE.top + 60, left: 0, right: 0, textAlign: "center", opacity: wallTextIn }}>
+        <span style={{ color: P.sub, fontSize: 88, fontWeight: 600, fontFamily: FONT_FAMILY }}>이 벽을</span>
+      </div>
 
-          if (!isBreaking) {
-            // 타이핑 중에는 TypeWriter 사용
-            if (frame < line.delay) return null;
-            return (
-              <div key={lineIdx} style={{ textAlign: "center" }}>
-                <TypeWriter
-                  text={line.text}
-                  typeSpeed={3}
-                  cursor={false}
-                  delay={0}
-                  style={{
-                    color: P.text,
-                    fontSize,
-                    fontWeight: 700,
-                    fontFamily: FONT_FAMILY,
-                  }}
-                />
-              </div>
-            );
-          }
-
-          // 파쇄 모드: 각 글자 낙하
-          const chars = line.text.split("");
-          const startIdx = globalCharIdx;
-          globalCharIdx += chars.length;
+      {/* 벽돌 담벼락 — 고정 크기, 중앙 정렬 */}
+      <div style={{
+        position: "absolute",
+        left: 0, right: 0,
+        top: "30%", bottom: "40%",
+        display: "flex",
+        flexDirection: "column-reverse",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        gap: BRICK_GAP,
+      }}>
+        {WALL_ROWS_DATA.map((rowData, rowIdx) => {
+          const rowDelay = rowIdx / WALL_ROWS;
+          const appearFrame = BUILD_START + rowDelay * (BUILD_END - BUILD_START);
 
           return (
-            <div key={lineIdx} style={{ display: "flex", justifyContent: "center" }}>
-              {chars.map((char, ci) => {
-                const fallDir = CHAR_FALLS[(startIdx + ci) % CHAR_FALLS.length];
-                const charBreak = interpolate(
-                  frame,
-                  [breakStart + ci * 0.8, breakStart + ci * 0.8 + 15],
-                  [0, 1],
-                  { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.in(Easing.quad) },
-                );
+            <div key={rowIdx} style={{ display: "flex", gap: BRICK_GAP, justifyContent: "center" }}>
+              {rowData.bricks.map((brick, colIdx) => {
+                const brickSpring = spring({
+                  frame: Math.max(0, frame - appearFrame),
+                  fps,
+                  config: { damping: 20, stiffness: 180 },
+                });
+
+                if (buildProgress <= rowDelay && !isBreaking) return null;
+
+                const fallDelay = (WALL_ROWS - brick.row) * 0.8;
+                const fallProgress = isBreaking
+                  ? interpolate(frame, [BREAK_FRAME + fallDelay, BREAK_FRAME + fallDelay + 18], [0, 1], {
+                      extrapolateLeft: "clamp", extrapolateRight: "clamp",
+                      easing: Easing.in(Easing.quad),
+                    })
+                  : 0;
+
                 return (
-                  <span
-                    key={ci}
+                  <div
+                    key={colIdx}
                     style={{
-                      color: P.text,
-                      fontSize,
-                      fontWeight: 700,
-                      fontFamily: FONT_FAMILY,
-                      display: "inline-block",
-                      transform: `translate(${fallDir.tx * charBreak}px, ${fallDir.ty * charBreak}px) rotate(${fallDir.rot * charBreak}deg)`,
-                      opacity: 1 - charBreak * 0.9,
+                      width: BRICK_W,
+                      height: BRICK_H,
+                      backgroundColor: `${P.accent}30`,
+                      border: `2px solid ${P.accent}55`,
+                      borderRadius: 4,
+                      transform: `translateY(${isBreaking ? fallProgress * (500 + brick.row * 60) : interpolate(brickSpring, [0, 1], [-30, 0])}px) translateX(${fallProgress * brick.fallX}px) rotate(${fallProgress * brick.fallRot}deg)`,
+                      opacity: isBreaking ? Math.max(0, 1 - fallProgress * 1.2) : brickSpring,
                     }}
-                  >
-                    {char}
-                  </span>
+                  />
                 );
               })}
             </div>
@@ -391,270 +319,75 @@ const RealityScene: React.FC = () => {
       </div>
 
       {/* 플래시 */}
-      <AbsoluteFill style={{ backgroundColor: "#FFFFFF", opacity: flashOpacity, pointerEvents: "none" }} />
-    </AbsoluteFill>
-  );
-};
-
-// ===================================================================
-// 장면 4: 해결 — "전문성으로 연결하는 법" + LINK 네트워크
-// ===================================================================
-const S4_BEATS = {
-  TITLE_IN: 20,          // 0.7s
-  TITLE_HOLD: 75,        // 2.5s
-  TITLE_FADE: 90,        // 3s
-  NETWORK_START: 105,    // 3.5s
-  NODE_L: 110,           // L ("연결")
-  NODE_I: 145,           // I ("진단")
-  NODE_N: 180,           // N ("설계")
-  NODE_K: 215,           // K ("해결")
-  GLOW_PULSE: 250,       // 8.3s
-  SUBTITLE_IN: 270,      // 9s
-  SCENE_END: 345,        // 11.5s
-} as const;
-
-const SolutionScene: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const P = PALETTES.orange;
-
-  // 타이틀
-  const titleProgress = spring({
-    frame: Math.max(0, frame - S4_BEATS.TITLE_IN),
-    fps,
-    config: SPRING.dramatic,
-  });
-  const titleOpacity = frame < S4_BEATS.TITLE_FADE
-    ? titleProgress
-    : interpolate(frame, [S4_BEATS.TITLE_FADE, S4_BEATS.NETWORK_START], [1, 0], {
-        extrapolateLeft: "clamp", extrapolateRight: "clamp",
-      });
-  const titleScale = frame < S4_BEATS.TITLE_FADE
-    ? interpolate(titleProgress, [0, 1], [0.85, 1])
-    : interpolate(frame, [S4_BEATS.TITLE_FADE, S4_BEATS.NETWORK_START], [1, 0.9], {
-        extrapolateLeft: "clamp", extrapolateRight: "clamp",
-      });
-
-  // 네트워크 페이드인
-  const networkOpacity = interpolate(
-    frame,
-    [S4_BEATS.NETWORK_START, S4_BEATS.NETWORK_START + 20],
-    [0, 1],
-    { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
-  );
-
-  // 하단 서브타이틀
-  const subIn = spring({
-    frame: Math.max(0, frame - S4_BEATS.SUBTITLE_IN),
-    fps,
-    config: SPRING.heavy,
-  });
-
-  // 글로우 펄스
-  const glowPulse = frame >= S4_BEATS.GLOW_PULSE
-    ? Math.sin((frame - S4_BEATS.GLOW_PULSE) * 0.1) * 0.15 + 0.85
-    : 0;
-
-  return (
-    <AbsoluteFill>
-      <GradientBackground palette="orange" />
-
-      {/* 타이틀 */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          opacity: titleOpacity,
-          transform: `scale(${titleScale})`,
-        }}
-      >
-        <p
-          style={{
-            color: P.text,
-            fontSize: 76,
-            fontWeight: 800,
-            fontFamily: FONT_FAMILY,
-            margin: 0,
-            textAlign: "center",
-            lineHeight: 1.4,
-          }}
-        >
-          전문성으로{"\n"}연결하는 법
-        </p>
-      </div>
-
-      {/* LINK 네트워크 — 다이아몬드 */}
-      <div style={{ opacity: networkOpacity }}>
-        <NetworkGraph
-          nodes={[
-            { x: 540, y: 520, label: "L 연결", delay: S4_BEATS.NODE_L },
-            { x: 280, y: 880, label: "I 진단", delay: S4_BEATS.NODE_I },
-            { x: 800, y: 880, label: "N 설계", delay: S4_BEATS.NODE_N },
-            { x: 540, y: 1240, label: "K 해결", delay: S4_BEATS.NODE_K },
-          ]}
-          edges={[
-            { from: 0, to: 1, delay: S4_BEATS.NODE_I + 5 },
-            { from: 0, to: 2, delay: S4_BEATS.NODE_N + 5 },
-            { from: 1, to: 3, delay: S4_BEATS.NODE_K + 5 },
-            { from: 2, to: 3, delay: S4_BEATS.NODE_K + 10 },
-            { from: 1, to: 2, delay: S4_BEATS.NODE_K + 15 },
-            { from: 0, to: 3, delay: S4_BEATS.NODE_K + 20 },
-          ]}
-          accentColor={P.accent}
-          nodeRadius={14}
-          edgeWidth={3}
-        />
-      </div>
-
-      {/* 글로우 오버레이 */}
-      {glowPulse > 0 && (
-        <AbsoluteFill
-          style={{
-            background: `radial-gradient(circle at 50% 50%, ${P.accent}15, transparent 60%)`,
-            opacity: glowPulse,
-          }}
-        />
+      {isBreaking && breakProgress < 0.3 && (
+        <AbsoluteFill style={{ backgroundColor: "#FFFFFF", opacity: interpolate(breakProgress, [0, 0.05, 0.3], [0, 0.15, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) }} />
       )}
 
-      {/* 하단 서브타이틀 */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: SAFE.bottom + 60,
-          left: 0, right: 0,
-          textAlign: "center",
-          opacity: subIn,
-          transform: `translateY(${interpolate(subIn, [0, 1], [15, 0])}px)`,
-        }}
-      >
-        <p
-          style={{
-            color: P.sub,
-            fontSize: 52,
-            fontWeight: 400,
-            fontFamily: FONT_FAMILY,
-            margin: 0,
-          }}
-        >
-          3초 후킹 · 숫자 진단 · 고객의 말로 클로징
-        </p>
+      {/* "단계별로 부수는 방법이 있습니다" — 벽이 있던 자리(화면 중앙) */}
+      <div style={{ position: "absolute", top: "30%", bottom: "40%", left: SAFE.side, right: SAFE.side, display: "flex", justifyContent: "center", alignItems: "center", textAlign: "center", opacity: methodIn, transform: `scale(${interpolate(methodIn, [0, 1], [0.85, 1])})` }}>
+        <p style={{ color: P.text, fontSize: 80, fontWeight: 800, fontFamily: FONT_FAMILY, margin: 0, lineHeight: 1.4, whiteSpace: "pre-line" }}>{method}</p>
       </div>
     </AbsoluteFill>
   );
 };
 
 // ===================================================================
-// 장면 5: 엔딩 — LINK 스탬프 + "4월 전국 런칭"
+// 장면 4: LINK
 // ===================================================================
-const S5_BEATS = {
-  L_STAMP: 15,
-  I_STAMP: 22,
-  N_STAMP: 29,
-  K_STAMP: 36,
-  LINE_DRAW: 45,
-  CONSULTING_IN: 55,
-  LAUNCH_IN: 72,
-  SCENE_END: 240,  // 8s
-} as const;
-
-const EndingScene: React.FC = () => {
+const LinkRevealScene: React.FC<{
+  palette: PaletteName; topText: string; bottomText: string; speedFactor: number;
+}> = ({ palette, topText, bottomText, speedFactor }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const P = PALETTES.orange;
+  const P = PALETTES[palette];
+  const sb = (b: number) => scaleBeat(b, speedFactor);
 
-  const letters = ["L", "I", "N", "K"];
-  const stampDelays = [S5_BEATS.L_STAMP, S5_BEATS.I_STAMP, S5_BEATS.N_STAMP, S5_BEATS.K_STAMP];
-
-  const letterScales = letters.map((_, i) =>
-    spring({
-      frame: Math.max(0, frame - stampDelays[i]),
-      fps,
-      config: SPRING.letter,
-    }),
-  );
-  const letterOpacities = letters.map((_, i) =>
-    interpolate(frame, [stampDelays[i], stampDelays[i] + 3], [0, 1], {
-      extrapolateLeft: "clamp", extrapolateRight: "clamp",
-    }),
-  );
-
-  const lineWidth = interpolate(frame, [S5_BEATS.LINE_DRAW, S5_BEATS.LINE_DRAW + 18], [0, 300], {
-    extrapolateLeft: "clamp", extrapolateRight: "clamp",
-  });
+  // 145fr = 4.8초
+  const BEATS = { SKILL_IN: sb(10), LINK_IN: sb(45), CONSULTING_IN: sb(65) };
+  const skillIn = spring({ frame: Math.max(0, frame - BEATS.SKILL_IN), fps, config: SPRING.heavy });
+  const consultingIn = spring({ frame: Math.max(0, frame - BEATS.CONSULTING_IN), fps, config: SPRING.heavy });
 
   return (
     <AbsoluteFill>
-      <GradientBackground palette="orange" />
-
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 30,
-        }}
-      >
-        {/* LINK 글자 */}
-        <div style={{ display: "flex", gap: 8 }}>
-          {letters.map((letter, i) => (
-            <span
-              key={i}
-              style={{
-                color: P.accent,
-                fontSize: 160,
-                fontWeight: 900,
-                fontFamily: FONT_FAMILY,
-                letterSpacing: "0.08em",
-                display: "inline-block",
-                transform: `scale(${letterScales[i]})`,
-                opacity: letterOpacities[i],
-              }}
-            >
-              {letter}
-            </span>
-          ))}
+      <GradientBackground palette={palette} />
+      <div style={{ position: "absolute", top: SAFE.top + 120, left: SAFE.side, right: SAFE.side, textAlign: "center", opacity: skillIn, transform: `translateY(${interpolate(skillIn, [0, 1], [20, 0])}px)` }}>
+        <p style={{ color: P.sub, fontSize: 64, fontWeight: 400, fontFamily: FONT_FAMILY, margin: 0 }}>관계가 아니라</p>
+        <p style={{ color: P.text, fontSize: 80, fontWeight: 700, fontFamily: FONT_FAMILY, margin: "12px 0 0 0" }}>{topText}</p>
+      </div>
+      <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 20 }}>
+        <div style={{ display: "flex", gap: 6 }}>
+          {["L", "I", "N", "K"].map((letter, i) => {
+            const letterScale = spring({ frame: Math.max(0, frame - BEATS.LINK_IN - i * 4), fps, config: SPRING.letter });
+            return <span key={i} style={{ color: P.accent, fontSize: 160, fontWeight: 900, fontFamily: FONT_FAMILY, letterSpacing: "0.06em", display: "inline-block", transform: `scale(${letterScale})`, opacity: letterScale }}>{letter}</span>;
+          })}
         </div>
+        <div style={{ width: interpolate(consultingIn, [0, 1], [0, 260]), height: 4, backgroundColor: P.accent, borderRadius: 2, opacity: 0.5 }} />
+        <span style={{ color: P.text, fontSize: 72, fontWeight: 500, fontFamily: FONT_FAMILY, letterSpacing: "0.15em", opacity: consultingIn }}>{bottomText}</span>
+      </div>
+    </AbsoluteFill>
+  );
+};
 
-        {/* 구분선 */}
-        <div
-          style={{
-            width: lineWidth,
-            height: 4,
-            backgroundColor: P.accent,
-            borderRadius: 2,
-            opacity: 0.5,
-          }}
-        />
+// ===================================================================
+// 장면 5: 엔딩
+// ===================================================================
+const EndingScene: React.FC<{
+  palette: PaletteName; month: string; closing: string; speedFactor: number;
+}> = ({ palette, month, closing, speedFactor }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const P = PALETTES[palette];
+  const sb = (b: number) => scaleBeat(b, speedFactor);
 
-        {/* Consulting */}
-        <FadeInText
-          delay={S5_BEATS.CONSULTING_IN}
-          springConfig={SPRING.heavy}
-          fontSize={64}
-          fontWeight={500}
-          color={P.text}
-          style={{ letterSpacing: "0.15em" }}
-        >
-          Consulting
-        </FadeInText>
+  const monthIn = spring({ frame: Math.max(0, frame - sb(12)), fps, config: SPRING.dramatic });
+  const comingIn = spring({ frame: Math.max(0, frame - sb(40)), fps, config: SPRING.heavy });
 
-        {/* 4월 전국 런칭 */}
-        <FadeInText
-          delay={S5_BEATS.LAUNCH_IN}
-          springConfig={SPRING.heavy}
-          fontSize={52}
-          fontWeight={400}
-          color={P.sub}
-          style={{ letterSpacing: "0.08em", marginTop: 10 }}
-        >
-          4월 전국 런칭
-        </FadeInText>
+  return (
+    <AbsoluteFill>
+      <GradientBackground palette={palette} />
+      <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 40 }}>
+        <span style={{ color: P.accent, fontSize: 160, fontWeight: 900, fontFamily: FONT_FAMILY, opacity: monthIn, transform: `scale(${interpolate(monthIn, [0, 1], [0.7, 1])})` }}>{month}</span>
+        <span style={{ color: P.sub, fontSize: 68, fontWeight: 400, fontFamily: FONT_FAMILY, opacity: comingIn, transform: `translateY(${interpolate(comingIn, [0, 1], [12, 0])}px)`, letterSpacing: "0.1em" }}>{closing}</span>
       </div>
     </AbsoluteFill>
   );
@@ -663,29 +396,30 @@ const EndingScene: React.FC = () => {
 // ===================================================================
 // 메인 컴포지션
 // ===================================================================
-export const LinkTeaser4: React.FC = () => {
-  const offsets = [0, S1_DUR, S1_DUR + S2_DUR, S1_DUR + S2_DUR + S3_DUR, S1_DUR + S2_DUR + S3_DUR + S4_DUR];
-
+export const LinkTeaser4: React.FC<LinkTeaser4Props> = (props) => {
   return (
-    <AbsoluteFill style={{ backgroundColor: PALETTES.coolBlue.bg }}>
-      <Sequence from={offsets[0]} durationInFrames={S1_DUR}>
-        <PastScene />
+    <AbsoluteFill style={{ backgroundColor: PALETTES[props.문제팔레트].bg }}>
+      <Sequence from={S1_START} durationInFrames={S1_DUR}>
+        <NumberImpactScene palette={props.문제팔레트} question={props.질문} numberA={props.숫자A} numberB={props.숫자B} hook={props.핵심질문} speedFactor={props.속도감} />
       </Sequence>
-      <Sequence from={offsets[1]} durationInFrames={S2_DUR}>
-        <TransitionScene />
+      <Sequence from={S2_START} durationInFrames={S2_DUR}>
+        <WallScene palette={props.문제팔레트} card1={props.카드1} card2={props.카드2} card3={props.카드3} speedFactor={props.속도감} />
       </Sequence>
-      <Sequence from={offsets[2]} durationInFrames={S3_DUR}>
-        <RealityScene />
+      <Sequence from={S3_START} durationInFrames={S3_DUR}>
+        <BreakthroughScene palette={props.문제팔레트} method={props.전환문구} speedFactor={props.속도감} />
       </Sequence>
-      <Sequence from={offsets[3]} durationInFrames={S4_DUR}>
-        <SolutionScene />
+      <Sequence from={S4_START} durationInFrames={S4_DUR}>
+        <LinkRevealScene palette={props.솔루션팔레트} topText={props.상단문구} bottomText={props.하단문구} speedFactor={props.속도감} />
       </Sequence>
-      <Sequence from={offsets[4]} durationInFrames={S5_DUR}>
-        <EndingScene />
+      <Sequence from={S5_START} durationInFrames={S5_DUR}>
+        <EndingScene palette={props.솔루션팔레트} month={props.시기} closing={props.마무리} speedFactor={props.속도감} />
       </Sequence>
 
-      {/* 오디오 — 단일 파일 통으로 */}
-      <Audio src={staticFile("audio/teaser4-full.wav")} />
+      {/* 음성 — 전체 1개 파일 */}
+      <Audio src={staticFile("audio/teaser4-full-leda.wav")} />
+
+      {/* BGM */}
+      <Audio src={staticFile("audio/bgm-teaser.mp3")} volume={props.BGM볼륨} />
     </AbsoluteFill>
   );
 };
