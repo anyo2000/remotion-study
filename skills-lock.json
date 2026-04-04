@@ -2,9 +2,17 @@
   "version": 1,
   "skills": {
     "remotion-best-practices": {
-      "source": "remotion-dev/skills",
+      "source": "RinDig/Animation-Workflow",
       "sourceType": "github",
-      "computedHash": "2f673b7710813ac07c71c0a54657f740078aec6585f15edf351494499e1f9ac3"
+      "note": "RinDig version with spring config table + anti-patterns. rules/ subfolder retained from remotion-dev/skills"
+    },
+    "spec-writing": {
+      "source": "RinDig/Animation-Workflow",
+      "sourceType": "github"
+    },
+    "component-registry": {
+      "source": "RinDig/Animation-Workflow",
+      "sourceType": "github"
     }
   }
 }

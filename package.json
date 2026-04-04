@@ -17,12 +17,15 @@
     "@remotion/player": "^4.0.438",
     "@remotion/tailwind": "^4.0.438",
     "@remotion/transitions": "^4.0.438",
+    "culori": "^4.0.2",
     "dotenv": "^17.3.1",
+    "elevenlabs": "^1.59.0",
     "lucide-react": "^1.7.0",
     "openai": "^6.32.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "remotion": "^4.0.438"
+    "remotion": "^4.0.438",
+    "remotion-bits": "^0.2.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.14",

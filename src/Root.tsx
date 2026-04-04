@@ -11,10 +11,28 @@ import { TeaserSampleA } from "./TeaserSampleA";
 import { TeaserSampleB } from "./TeaserSampleB";
 import { LinkTeaser2 } from "./LinkTeaser2";
 import { LinkTeaser3 } from "./LinkTeaser3";
+import { LinkTeaser3v2 } from "./LinkTeaser3v2";
+import { LinkTeaser4 } from "./LinkTeaser4";
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="LinkTeaser4"
+        component={LinkTeaser4}
+        durationInFrames={1275}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="LinkTeaser3v2"
+        component={LinkTeaser3v2}
+        durationInFrames={555}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
       <Composition
         id="LinkTeaser3"
         component={LinkTeaser3}

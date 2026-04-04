@@ -1,61 +1,161 @@
 ---
 name: remotion-best-practices
-description: Best practices for Remotion - Video creation in React
+description: Core Remotion patterns for video production — frame-based animation, spring physics, composition structure, sequencing, rendering, and anti-patterns.
 metadata:
-  tags: remotion, video, react, animation, composition
+  tags: remotion, video, react, animation, spring, composition, rendering
 ---
 
 ## When to use
 
-Use this skills whenever you are dealing with Remotion code to obtain the domain-specific knowledge.
+Use this skill whenever you are writing or modifying Remotion code. It covers the fundamental patterns that every Remotion project needs — from animation primitives to render settings.
 
-## Captions
+---
 
-When dealing with captions or subtitles, load the [./rules/subtitles.md](./rules/subtitles.md) file for more information.
+## Critical Rules
 
-## Using FFmpeg
+1. **ALL animations MUST use `useCurrentFrame()`** — CSS transitions, CSS animations, and Tailwind animation classes are FORBIDDEN. They do not render correctly because Remotion renders each frame independently.
+2. **Use `spring()` for organic motion**, not `interpolate()` with easing. Springs feel natural. Linear/eased interpolations feel mechanical.
+3. **Write timing in seconds, convert to frames** — multiply by `fps` from `useVideoConfig()`. Never hardcode frame numbers without commenting the equivalent seconds.
+4. **Always clamp interpolations** — use `extrapolateLeft: 'clamp', extrapolateRight: 'clamp'` to prevent values from going out of range.
+5. **1920x1080 at 30fps** is the standard (or 1080x1920 for vertical 9:16). All size guidelines assume this resolution.
 
-For some video operations, such as trimming videos or detecting silence, FFmpeg should be used. Load the [./rules/ffmpeg.md](./rules/ffmpeg.md) file for more information.
+---
 
-## Audio visualization
+## Animation Fundamentals
 
-When needing to visualize audio (spectrum bars, waveforms, bass-reactive effects), load the [./rules/audio-visualization.md](./rules/audio-visualization.md) file for more information.
+### The Frame Model
 
-## Sound effects
+Remotion renders videos frame-by-frame. Each frame is an independent React render. There is no concept of "time passing" between frames — every frame must be calculable from just the frame number.
 
-When needing to use sound effects, load the [./rules/sound-effects.md](./rules/sound-effects.md) file for more information.
+```tsx
+import { useCurrentFrame, useVideoConfig, interpolate, spring } from 'remotion';
 
-## How to use
+export const MyScene: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps, durationInFrames, width, height } = useVideoConfig();
 
-Read individual rule files for detailed explanations and code examples:
+  const opacity = interpolate(frame, [0, 30], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
 
-- [rules/3d.md](rules/3d.md) - 3D content in Remotion using Three.js and React Three Fiber
-- [rules/animations.md](rules/animations.md) - Fundamental animation skills for Remotion
-- [rules/assets.md](rules/assets.md) - Importing images, videos, audio, and fonts into Remotion
-- [rules/audio.md](rules/audio.md) - Using audio and sound in Remotion - importing, trimming, volume, speed, pitch
-- [rules/calculate-metadata.md](rules/calculate-metadata.md) - Dynamically set composition duration, dimensions, and props
-- [rules/can-decode.md](rules/can-decode.md) - Check if a video can be decoded by the browser using Mediabunny
-- [rules/charts.md](rules/charts.md) - Chart and data visualization patterns for Remotion (bar, pie, line, stock charts)
-- [rules/compositions.md](rules/compositions.md) - Defining compositions, stills, folders, default props and dynamic metadata
-- [rules/extract-frames.md](rules/extract-frames.md) - Extract frames from videos at specific timestamps using Mediabunny
-- [rules/fonts.md](rules/fonts.md) - Loading Google Fonts and local fonts in Remotion
-- [rules/get-audio-duration.md](rules/get-audio-duration.md) - Getting the duration of an audio file in seconds with Mediabunny
-- [rules/get-video-dimensions.md](rules/get-video-dimensions.md) - Getting the width and height of a video file with Mediabunny
-- [rules/get-video-duration.md](rules/get-video-duration.md) - Getting the duration of a video file in seconds with Mediabunny
-- [rules/gifs.md](rules/gifs.md) - Displaying GIFs synchronized with Remotion's timeline
-- [rules/images.md](rules/images.md) - Embedding images in Remotion using the Img component
-- [rules/light-leaks.md](rules/light-leaks.md) - Light leak overlay effects using @remotion/light-leaks
-- [rules/lottie.md](rules/lottie.md) - Embedding Lottie animations in Remotion
-- [rules/measuring-dom-nodes.md](rules/measuring-dom-nodes.md) - Measuring DOM element dimensions in Remotion
-- [rules/measuring-text.md](rules/measuring-text.md) - Measuring text dimensions, fitting text to containers, and checking overflow
-- [rules/sequencing.md](rules/sequencing.md) - Sequencing patterns for Remotion - delay, trim, limit duration of items
-- [rules/tailwind.md](rules/tailwind.md) - Using TailwindCSS in Remotion
-- [rules/text-animations.md](rules/text-animations.md) - Typography and text animation patterns for Remotion
-- [rules/timing.md](rules/timing.md) - Interpolation curves in Remotion - linear, easing, spring animations
-- [rules/transitions.md](rules/transitions.md) - Scene transition patterns for Remotion
-- [rules/transparent-videos.md](rules/transparent-videos.md) - Rendering out a video with transparency
-- [rules/trimming.md](rules/trimming.md) - Trimming patterns for Remotion - cut the beginning or end of animations
-- [rules/videos.md](rules/videos.md) - Embedding videos in Remotion - trimming, volume, speed, looping, pitch
-- [rules/parameters.md](rules/parameters.md) - Make a video parametrizable by adding a Zod schema
-- [rules/maps.md](rules/maps.md) - Add a map using Mapbox and animate it
-- [rules/voiceover.md](rules/voiceover.md) - Adding AI-generated voiceover to Remotion compositions using ElevenLabs TTS
+  return <div style={{ opacity }}>Content</div>;
+};
+```
+
+### Spring Configurations
+
+| Config | Effect | Use For |
+|--------|--------|---------|
+| `{ damping: 200 }` | Smooth, no bounce | Subtle reveals, backgrounds, fade-ins |
+| `{ damping: 200, mass: 1, stiffness: 100 }` | Gentle, elegant | Standard entrances |
+| `{ damping: 20, stiffness: 200, mass: 0.8 }` | Snappy, responsive | UI elements, quick reveals |
+| `{ damping: 12, mass: 0.5, stiffness: 200 }` | Bouncy, playful | Attention-grabbing entrances |
+| `{ damping: 30, mass: 2, stiffness: 80 }` | Heavy, dramatic | Important moments, weighty objects |
+| `{ damping: 8 }` | Very bouncy | Playful, cartoon-like |
+
+### Enter + Exit Animation
+
+```tsx
+const entrance = spring({ frame, fps, config: { damping: 200 } });
+const exit = spring({
+  frame, fps,
+  delay: durationInFrames - 1 * fps,
+  durationInFrames: 1 * fps,
+});
+const opacity = entrance - exit;
+```
+
+---
+
+## Common Patterns
+
+### Staggered List Entrance
+
+```tsx
+const STAGGER_DELAY = 4;
+{items.map((item, index) => {
+  const progress = spring({
+    frame: frame - index * STAGGER_DELAY,
+    fps,
+    config: { damping: 20, stiffness: 200 },
+  });
+  return (
+    <div style={{
+      opacity: progress,
+      transform: `translateY(${interpolate(progress, [0, 1], [20, 0])}px)`,
+    }}>{item}</div>
+  );
+})}
+```
+
+### Counter Animation
+
+```tsx
+const progress = spring({ frame, fps, config: { damping: 200 } });
+const displayNumber = Math.floor(progress * countTo).toLocaleString();
+```
+
+### Pulsing/Breathing Effect
+
+```tsx
+const pulse = Math.sin(frame * 0.08) * 0.15 + 0.85;
+```
+
+---
+
+## Anti-Patterns
+
+| Don't | Do Instead |
+|-------|-----------|
+| CSS transitions/animations | `spring()` or `interpolate()` with `useCurrentFrame()` |
+| `requestAnimationFrame` | `useCurrentFrame()` |
+| `setTimeout`/`setInterval` | Frame math (`frame - delay`) |
+| `useState` for animation state | Derive everything from `frame` |
+| Unclamped interpolation | Always set `extrapolateLeft/Right: 'clamp'` |
+| Hardcoded colors/springs in each file | Import from `constants.ts` |
+
+---
+
+## Rendering
+
+```bash
+# ProRes for editing
+npx remotion render src/index.ts CompositionName out/video.mov \
+  --codec prores --prores-profile 4444 --concurrency 16
+
+# H.264 max quality
+npx remotion render src/index.ts CompositionName out/video.mp4 \
+  --codec h264 --crf 10 --concurrency 16
+
+# Quick preview
+npx remotion render src/index.ts CompositionName out/preview.mp4 \
+  --codec h264 --crf 23 --scale 0.5 --concurrency 16
+```
+
+---
+
+## Detailed API Reference (rules/)
+
+For specific Remotion features, load the corresponding rule file:
+
+- [rules/animations.md](rules/animations.md) — Fundamental animation patterns
+- [rules/timing.md](rules/timing.md) — Interpolation curves, spring, easing
+- [rules/sequencing.md](rules/sequencing.md) — Series, Sequence, delay, trim
+- [rules/transitions.md](rules/transitions.md) — Scene transition patterns
+- [rules/text-animations.md](rules/text-animations.md) — Typography and text animation
+- [rules/compositions.md](rules/compositions.md) — Composition definitions, stills, folders
+- [rules/audio.md](rules/audio.md) — Audio import, trim, volume, speed
+- [rules/videos.md](rules/videos.md) — Video embedding, trim, loop
+- [rules/assets.md](rules/assets.md) — Images, videos, audio, fonts import
+- [rules/fonts.md](rules/fonts.md) — Google Fonts and local fonts
+- [rules/charts.md](rules/charts.md) — Chart and data visualization
+- [rules/3d.md](rules/3d.md) — 3D with Three.js / React Three Fiber
+- [rules/tailwind.md](rules/tailwind.md) — TailwindCSS in Remotion
+- [rules/subtitles.md](rules/subtitles.md) — Captions and subtitles
+- [rules/light-leaks.md](rules/light-leaks.md) — Light leak overlay effects
+- [rules/voiceover.md](rules/voiceover.md) — AI-generated voiceover (TTS)
+- [rules/ffmpeg.md](rules/ffmpeg.md) — FFmpeg operations
+- [rules/calculate-metadata.md](rules/calculate-metadata.md) — Dynamic metadata
+- [rules/parameters.md](rules/parameters.md) — Parametrizable video with Zod
+- [rules/maps.md](rules/maps.md) — Mapbox integration
