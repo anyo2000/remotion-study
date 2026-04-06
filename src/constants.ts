@@ -7,6 +7,7 @@ export const VIDEO_FPS = 30;
 
 // ── Safe Zone ────────────────────────────────────────────────
 export const SAFE = { top: 150, bottom: 170, side: 60 } as const;
+export const SAFE_WIDE = { top: 80, bottom: 80, side: 100 } as const; // 가로(16:9) 영상용
 
 // ── 전환 / 타이밍 ────────────────────────────────────────────
 export const FADE_FRAMES = 15; // 0.5초 — TransitionSeries fade 길이
@@ -80,6 +81,19 @@ export const PALETTES = {
     accentDark: "#c88e9e",
     glow: "rgba(224, 168, 184, 0.06)",
     glowPosition: "50% 40%",
+  },
+  /** 네이비+틸그린 — LinkCounsel (상담 설득 화법) */
+  counsel: {
+    bg: "#1A1F36",
+    card: "#252B48",
+    cardBorder: "rgba(78, 205, 196, 0.15)",
+    text: "#F0F0F0",
+    sub: "#8B93A7",
+    accent: "#4ECDC4",
+    accentLight: "#7EDDD6",
+    accentDark: "#36B5AD",
+    glow: "rgba(78, 205, 196, 0.04)",
+    glowPosition: "50% 50%",
   },
 } as const;
 

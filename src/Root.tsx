@@ -1,5 +1,6 @@
 import { Composition } from "remotion";
 import { LinkTeaser4, linkTeaser4Schema } from "./LinkTeaser4";
+import { LinkCounsel } from "./LinkCounsel";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -31,6 +32,14 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1080}
         height={1920}
+      />
+      <Composition
+        id="LinkCounsel"
+        component={LinkCounsel}
+        durationInFrames={1348}
+        fps={30}
+        width={1920}
+        height={1080}
       />
     </>
   );
