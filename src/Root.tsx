@@ -1,10 +1,19 @@
 import { Composition } from "remotion";
 import { LinkTeaser4, linkTeaser4Schema } from "./LinkTeaser4";
 import { LinkCounsel } from "./LinkCounsel";
+import { AprilGift } from "./AprilGift";
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="AprilGift"
+        component={AprilGift}
+        durationInFrames={5040}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
       <Composition
         id="LinkTeaser4"
         component={LinkTeaser4}

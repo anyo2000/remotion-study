@@ -95,6 +95,19 @@ export const PALETTES = {
     glow: "rgba(78, 205, 196, 0.04)",
     glowPosition: "50% 50%",
   },
+  /** 밝은 크림+코랄 — AprilGift (4월 인수확대 선물 보따리) */
+  aprilGift: {
+    bg: "#FFF8F0",
+    card: "#FFFFFF",
+    cardBorder: "rgba(255, 107, 53, 0.12)",
+    text: "#2D3748",
+    sub: "#718096",
+    accent: "#FF6B35",
+    accentLight: "#FF8F5E",
+    accentDark: "#E55A2B",
+    glow: "rgba(255, 107, 53, 0.06)",
+    glowPosition: "50% 40%",
+  },
 } as const;
 
 /** 팔레트 타입 (컴포넌트 props용) */

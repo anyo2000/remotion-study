@@ -1,0 +1,62 @@
+{
+  "file": "public/audio/april-gift-aoede.wav",
+  "fps": 30,
+  "scenes": [
+    {
+      "scene": 1,
+      "keyword": "화창한 봄",
+      "start_sec": 0.0
+    },
+    {
+      "scene": 2,
+      "keyword": "첫 번째 선물",
+      "start_sec": 20.5
+    },
+    {
+      "scene": 3,
+      "keyword": "두 번째 선물",
+      "start_sec": 39.1
+    },
+    {
+      "scene": 4,
+      "keyword": "암만 늘려주면",
+      "start_sec": 59.7
+    },
+    {
+      "scene": 5,
+      "keyword": "그리고 이건 역대급",
+      "start_sec": 73.0
+    },
+    {
+      "scene": 6,
+      "keyword": "올인원이 이렇게 좋으면",
+      "start_sec": 90.3
+    },
+    {
+      "scene": 7,
+      "keyword": "유병자 고객님들",
+      "start_sec": 106.9
+    },
+    {
+      "scene": 8,
+      "keyword": "어른들만 챙기면",
+      "start_sec": 121.0
+    },
+    {
+      "scene": 9,
+      "keyword": "자, FP님들",
+      "start_sec": 139.1
+    }
+  ],
+  "scene_frames": {
+    "scene1": 0,
+    "scene2": 615,
+    "scene3": 1173,
+    "scene4": 1791,
+    "scene5": 2190,
+    "scene6": 2709,
+    "scene7": 3207,
+    "scene8": 3630,
+    "scene9": 4173
+  }
+}
