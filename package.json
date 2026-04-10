@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "remotion studio",
-    "build": "remotion render src/index.ts MyComposition out/video.mp4",
-    "render": "remotion render"
+    "build": "node scripts/check-fontsize.js && remotion render src/index.ts MyComposition out/video.mp4",
+    "render": "node scripts/check-fontsize.js && remotion render",
+    "check": "node scripts/check-fontsize.js"
   },
   "keywords": [],
   "author": "",
