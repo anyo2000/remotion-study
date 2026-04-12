@@ -108,6 +108,27 @@ export const PALETTES = {
     glow: "rgba(255, 107, 53, 0.06)",
     glowPosition: "50% 40%",
   },
+  /** 라이트 블루 — LINK 교육 시리즈 */
+  linkEdu: {
+    bg: "#F5F7FA",
+    card: "#FFFFFF",
+    cardBorder: "rgba(45, 100, 160, 0.10)",
+    text: "#1A2B3C",
+    sub: "#6B7B8D",
+    accent: "#2D64A0",
+    accentLight: "#4A8AD4",
+    accentDark: "#1E4A7A",
+    glow: "rgba(45, 100, 160, 0.06)",
+    glowPosition: "50% 35%",
+  },
+} as const;
+
+/** LINK 단계별 색상 */
+export const LINK_CATEGORY_COLORS = {
+  L: "#2D64A0",
+  I: "#4ECDC4",
+  N: "#FF8C38",
+  K: "#E05A5A",
 } as const;
 
 /** 팔레트 타입 (컴포넌트 props용) */

@@ -3,10 +3,29 @@ import { LinkTeaser4, linkTeaser4Schema } from "./LinkTeaser4";
 import { LinkCounsel } from "./LinkCounsel";
 import { AprilGift } from "./AprilGift";
 import { AprilGift2 } from "./AprilGift2";
+import { EpisodePlayer } from "./link-edu/EpisodePlayer";
+import { templateTest } from "./link-edu/episodes/template-test";
+import { hookingWhy } from "./link-edu/episodes/hooking-why";
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="LinkEdu-Test"
+        component={() => <EpisodePlayer data={templateTest} />}
+        durationInFrames={templateTest.meta.totalDurationFrames}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="LinkEdu-HookingWhy"
+        component={() => <EpisodePlayer data={hookingWhy} />}
+        durationInFrames={hookingWhy.meta.totalDurationFrames}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
       <Composition
         id="AprilGift"
         component={AprilGift}

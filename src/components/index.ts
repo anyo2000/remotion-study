@@ -6,3 +6,6 @@ export { NetworkGraph } from "./NetworkGraph";
 export { CountUpNumber } from "./CountUpNumber";
 export { GaugeBar } from "./GaugeBar";
 export { ProductBadge } from "./ProductBadge";
+export { SpeechBubble } from "./SpeechBubble";
+export { XOMarker } from "./XOMarker";
+export { CategoryTag } from "./CategoryTag";
