@@ -2,6 +2,7 @@ import { Composition } from "remotion";
 import { LinkTeaser4, linkTeaser4Schema } from "./LinkTeaser4";
 import { LinkCounsel } from "./LinkCounsel";
 import { AprilGift } from "./AprilGift";
+import { AprilGift2 } from "./AprilGift2";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -10,6 +11,14 @@ export const RemotionRoot: React.FC = () => {
         id="AprilGift"
         component={AprilGift}
         durationInFrames={5040}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="AprilGift2"
+        component={AprilGift2}
+        durationInFrames={4641}
         fps={30}
         width={1080}
         height={1920}
