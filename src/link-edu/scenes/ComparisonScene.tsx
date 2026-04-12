@@ -7,26 +7,20 @@ import {
   interpolate,
 } from "remotion";
 import { SPRING, SAFE, FONT_FAMILY } from "../../constants";
-import { XOMarker } from "../../components/XOMarker";
+import { XOMarker, CharacterReveal, GlowOrb } from "../../components";
 import type { Palette } from "../../constants";
 import type { ComparisonSceneProps, AudioSync } from "../types";
 
-type Props = ComparisonSceneProps & AudioSync & { palette: Palette };
-
-/**
- * 폰트 최소 기준 (CLAUDE.md)
- * - 헤드라인: 72px
- * - 라벨: 60px
- * - 카드 본문: 64px
- * Spring: 즉시 등장
- */
+type Props = ComparisonSceneProps &
+  AudioSync & { palette: Palette; durationInFrames?: number };
 
 const ComparisonCard: React.FC<{
   side: ComparisonSceneProps["wrong"];
   type: "wrong" | "right";
   delay: number;
   palette: Palette;
-}> = ({ side, type, delay, palette }) => {
+  dimmed?: boolean;
+}> = ({ side, type, delay, palette, dimmed = false }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -42,16 +36,21 @@ const ComparisonCard: React.FC<{
     ? "rgba(224, 90, 90, 0.06)"
     : "rgba(78, 205, 196, 0.06)";
 
+  // 이모지 → 텍스트 stagger
+  const emojiDelay = delay + 5;
+  const textDelay = delay + (side.emoji ? 12 : 5);
+
   return (
     <div
       style={{
-        opacity: cardIn,
+        opacity: cardIn * (dimmed ? 0.4 : 1),
         transform: `translateY(${interpolate(cardIn, [0, 1], [20, 0])}px)`,
         width: "100%",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         gap: 12,
+        transition: "opacity 0.3s",
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -70,6 +69,7 @@ const ComparisonCard: React.FC<{
 
       <div
         style={{
+          position: "relative",
           width: "100%",
           padding: "32px 32px",
           borderRadius: 24,
@@ -79,19 +79,18 @@ const ComparisonCard: React.FC<{
         }}
       >
         {side.emoji && (
-          <div style={{ fontSize: 64, marginBottom: 12 }}>{side.emoji}</div>
+          <div style={{ fontSize: 64, marginBottom: 12 }}>
+            {side.emoji}
+          </div>
         )}
-        <span
-          style={{
-            fontFamily: FONT_FAMILY,
-            fontSize: 64,
-            fontWeight: 700,
-            color: palette.text,
-            lineHeight: 1.4,
-          }}
-        >
-          {side.text}
-        </span>
+        <CharacterReveal
+          text={side.text}
+          delay={textDelay}
+          stagger={2}
+          fontSize={64}
+          fontWeight={700}
+          color={palette.text}
+        />
       </div>
     </div>
   );
@@ -102,7 +101,20 @@ export const ComparisonScene: React.FC<Props> = ({
   right,
   headline,
   palette,
+  cues,
+  durationInFrames: dur,
 }) => {
+  const frame = useCurrentFrame();
+  const { durationInFrames: configDur } = useVideoConfig();
+  const duration = dur ?? configDur;
+
+  const wrongDelay = cues?.wrong ?? 3;
+  const rightDelay = cues?.right ?? 30;
+
+  // HIGHLIGHT: 60% 지점에서 wrong dim, right 강조
+  const highlightStart = Math.floor(duration * 0.6);
+  const isHighlighted = frame >= highlightStart;
+
   return (
     <AbsoluteFill>
       {headline && (
@@ -115,16 +127,14 @@ export const ComparisonScene: React.FC<Props> = ({
             textAlign: "center",
           }}
         >
-          <span
-            style={{
-              fontFamily: FONT_FAMILY,
-              fontSize: 72,
-              fontWeight: 900,
-              color: palette.text,
-            }}
-          >
-            {headline}
-          </span>
+          <CharacterReveal
+            text={headline}
+            delay={0}
+            stagger={2}
+            fontSize={72}
+            fontWeight={900}
+            color={palette.text}
+          />
         </div>
       )}
 
@@ -141,8 +151,33 @@ export const ComparisonScene: React.FC<Props> = ({
           gap: 36,
         }}
       >
-        <ComparisonCard side={wrong} type="wrong" delay={3} palette={palette} />
-        <ComparisonCard side={right} type="right" delay={30} palette={palette} />
+        <ComparisonCard
+          side={wrong}
+          type="wrong"
+          delay={wrongDelay}
+          palette={palette}
+          dimmed={isHighlighted}
+        />
+
+        {/* right 카드 뒤에 글로우 */}
+        <div style={{ position: "relative" }}>
+          {isHighlighted && (
+            <GlowOrb
+              color="#4ECDC4"
+              opacity={0.06}
+              size={500}
+              x="50%"
+              y="50%"
+              delay={highlightStart}
+            />
+          )}
+          <ComparisonCard
+            side={right}
+            type="right"
+            delay={rightDelay}
+            palette={palette}
+          />
+        </div>
       </div>
     </AbsoluteFill>
   );

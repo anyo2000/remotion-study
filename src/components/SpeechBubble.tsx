@@ -6,6 +6,7 @@ import {
   interpolate,
 } from "remotion";
 import { SPRING, FONT_FAMILY } from "../constants";
+import { Typewriter } from "./Typewriter";
 import type { Palette } from "../constants";
 
 type Props = {
@@ -14,6 +15,8 @@ type Props = {
   emoji?: string;
   delay: number;
   palette: Palette;
+  /** 텍스트를 Typewriter 효과로 표시 */
+  useTypewriter?: boolean;
 };
 
 // 강제 최소 폰트 크기
@@ -29,6 +32,7 @@ export const SpeechBubble: React.FC<Props> = ({
   emoji,
   delay,
   palette,
+  useTypewriter = false,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -91,17 +95,29 @@ export const SpeechBubble: React.FC<Props> = ({
       >
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           {emoji && <span style={{ fontSize: FONT.EMOJI, flexShrink: 0 }}>{emoji}</span>}
-          <span
-            style={{
-              fontFamily: FONT_FAMILY,
-              fontSize: FONT.TEXT,
-              fontWeight: 700,
-              color: textColor,
-              lineHeight: 1.4,
-            }}
-          >
-            {text}
-          </span>
+          {useTypewriter ? (
+            <Typewriter
+              text={text}
+              delay={delay + 12}
+              charsPerSecond={18}
+              showCursor={false}
+              fontSize={FONT.TEXT}
+              fontWeight={700}
+              color={textColor}
+            />
+          ) : (
+            <span
+              style={{
+                fontFamily: FONT_FAMILY,
+                fontSize: FONT.TEXT,
+                fontWeight: 700,
+                color: textColor,
+                lineHeight: 1.4,
+              }}
+            >
+              {text}
+            </span>
+          )}
         </div>
       </div>
     </div>

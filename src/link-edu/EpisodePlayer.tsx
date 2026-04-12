@@ -1,10 +1,18 @@
 import React from "react";
 import { AbsoluteFill, Sequence, Audio, staticFile } from "remotion";
-import { GradientBackground } from "../components";
+import {
+  GradientBackground,
+  ParticleField,
+  GlowOrb,
+  CameraZoom,
+} from "../components";
 import { PALETTES } from "../constants";
 import { EpisodeLayout } from "./EpisodeLayout";
+import { SceneTransition } from "./SceneTransition";
 import { SCENE_MAP } from "./scenes";
 import type { EpisodeData } from "./types";
+
+const OVERLAP = 12; // 장면 간 크로스 디졸브 프레임
 
 export const EpisodePlayer: React.FC<{ data: EpisodeData }> = ({ data }) => {
   const { meta, scenes } = data;
@@ -12,42 +20,77 @@ export const EpisodePlayer: React.FC<{ data: EpisodeData }> = ({ data }) => {
 
   return (
     <AbsoluteFill>
+      {/* 배경 레이어 */}
       <GradientBackground
         bgColor={palette.bg}
         glowColor={palette.glow}
         glowPosition={palette.glowPosition}
       />
+      <ParticleField
+        count={50}
+        color={palette.accent}
+        maxOpacity={0.12}
+        speed={0.015}
+        seed={meta.id}
+      />
+      <GlowOrb
+        color={palette.accent}
+        opacity={0.05}
+        pulse={0.08}
+        size={700}
+      />
 
-      {scenes.map((scene, i) => {
-        const SceneComponent = SCENE_MAP[scene.type];
-        if (!SceneComponent) return null;
+      {/* 장면 콘텐츠 — 카메라 줌 적용 */}
+      <CameraZoom from={1.0} to={1.04}>
+        {scenes.map((scene, i) => {
+          const SceneComponent = SCENE_MAP[scene.type];
+          if (!SceneComponent) return null;
 
-        const from = scene.startFrame;
-        const nextStart = scenes[i + 1]?.startFrame ?? meta.totalDurationFrames;
-        const duration = nextStart - from;
+          const from = scene.startFrame;
+          const nextStart =
+            scenes[i + 1]?.startFrame ?? meta.totalDurationFrames;
+          const baseDuration = nextStart - from;
+          const isLast = i === scenes.length - 1;
+          const duration = isLast ? baseDuration : baseDuration + OVERLAP;
 
-        return (
-          <Sequence
-            key={i}
-            from={from}
-            durationInFrames={duration}
-            name={`${scene.type}-${i}`}
-          >
-            {scene.type === "titlecard" ? (
-              <SceneComponent {...(scene as any)} palette={palette} />
-            ) : (
-              <EpisodeLayout
-                meta={meta}
-                sceneIndex={i}
-                totalScenes={scenes.length}
-                palette={palette}
+          return (
+            <Sequence
+              key={i}
+              from={from}
+              durationInFrames={duration}
+              name={`${scene.type}-${i}`}
+            >
+              <SceneTransition
+                durationInFrames={duration}
+                fadeInFrames={i === 0 ? 0 : 12}
+                fadeOutFrames={isLast ? 0 : 15}
               >
-                <SceneComponent {...(scene as any)} palette={palette} />
-              </EpisodeLayout>
-            )}
-          </Sequence>
-        );
-      })}
+                {scene.type === "titlecard" ? (
+                  <SceneComponent
+                    {...(scene as any)}
+                    palette={palette}
+                    durationInFrames={duration}
+                  />
+                ) : (
+                  <EpisodeLayout
+                    meta={meta}
+                    sceneIndex={i}
+                    totalScenes={scenes.length}
+                    palette={palette}
+                    durationInFrames={duration}
+                  >
+                    <SceneComponent
+                      {...(scene as any)}
+                      palette={palette}
+                      durationInFrames={duration}
+                    />
+                  </EpisodeLayout>
+                )}
+              </SceneTransition>
+            </Sequence>
+          );
+        })}
+      </CameraZoom>
 
       <Audio src={staticFile(meta.audioFile)} />
       {meta.bgmFile && (

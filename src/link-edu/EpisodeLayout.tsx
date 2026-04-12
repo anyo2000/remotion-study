@@ -16,6 +16,7 @@ type Props = {
   sceneIndex: number;
   totalScenes: number;
   palette: Palette;
+  durationInFrames?: number;
   children: React.ReactNode;
 };
 
@@ -24,6 +25,7 @@ export const EpisodeLayout: React.FC<Props> = ({
   sceneIndex,
   totalScenes,
   palette,
+  durationInFrames,
   children,
 }) => {
   const frame = useCurrentFrame();
@@ -31,12 +33,25 @@ export const EpisodeLayout: React.FC<Props> = ({
   const fadeIn = interpolate(frame, [0, 10], [0, 1], {
     extrapolateRight: "clamp",
   });
+
+  // 퇴장 페이드 (durationInFrames가 있을 때만)
+  const fadeOut =
+    durationInFrames && durationInFrames > 30
+      ? interpolate(
+          frame,
+          [durationInFrames - 15, durationInFrames],
+          [1, 0],
+          { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+        )
+      : 1;
+
+  const opacity = fadeIn * fadeOut;
   const progress = (sceneIndex + 1) / totalScenes;
   const categoryColor =
     LINK_CATEGORY_COLORS[meta.category as LinkCategory] ?? palette.accent;
 
   return (
-    <AbsoluteFill style={{ opacity: fadeIn }}>
+    <AbsoluteFill style={{ opacity }}>
       {/* 고정 헤더 — 주황 키컬러 라인 + 큰 글씨 */}
       <div
         style={{

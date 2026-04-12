@@ -101,6 +101,7 @@ export type SectionTransitionProps = {
 
 export type ClosingProps = {
   takeaway: string;
+  accentWords?: string[];
   cta?: string;
   emoji?: string;
 };

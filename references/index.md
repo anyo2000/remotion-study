@@ -2,6 +2,7 @@
 
 ## 디자인/제작 가이드
 - [remotion-design-guide.md](remotion-design-guide.md) — **핵심** Remotion 영상 디자인 가이드. BEATS 패턴, 컴포넌트 카탈로그, 스펙 작성법, 디자인 시스템, 대본 규칙. 6개 레퍼런스 종합 (2026-04-12)
+- [episode-list.md](episode-list.md) — LINK 교육 영상 에피소드 목록 (~21개). 단계별 분류 + 장면 패턴
 - [prompt-quality-standards.md](prompt-quality-standards.md) — 장면 스펙 구체성 기준 (B타입 대화형 / A타입 상세형)
 
 ## 비주얼 스타일

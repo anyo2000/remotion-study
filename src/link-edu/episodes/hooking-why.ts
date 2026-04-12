@@ -155,12 +155,12 @@ export const hookingWhy: EpisodeData = {
 
     // ── 10. 클로징 (72.8s) ──
     {
-      type: "keyword",
+      type: "closing" as any,
       startFrame: T(72.8),
-      headline: "질문을\n던지세요",
+      takeaway: "답을 주지 마세요\n질문을 던지세요",
+      accentWords: ["질문"],
       emoji: "🎯",
-      accentWord: "질문",
-      sub: "다음 편 → 임신 화법 실전",
+      cta: "다음 편 → 임신 화법 실전",
       cues: {},
     },
   ],
