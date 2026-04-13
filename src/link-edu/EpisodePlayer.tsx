@@ -1,5 +1,6 @@
 import React from "react";
-import { AbsoluteFill, Sequence, Audio, staticFile } from "remotion";
+import { AbsoluteFill, Sequence, Audio, staticFile, useCurrentFrame } from "remotion";
+import { FONT_FAMILY } from "../constants";
 import {
   GradientBackground,
   ParticleField,
@@ -17,6 +18,13 @@ const OVERLAP = 12; // 장면 간 크로스 디졸브 프레임
 export const EpisodePlayer: React.FC<{ data: EpisodeData }> = ({ data }) => {
   const { meta, scenes } = data;
   const palette = PALETTES[meta.palette as keyof typeof PALETTES];
+  const frame = useCurrentFrame();
+
+  // 타이틀 카드 이후에만 라벨 표시
+  const titleEnd = scenes[0]?.type === "titlecard"
+    ? (scenes[1]?.startFrame ?? 60)
+    : 0;
+  const showLabel = frame >= titleEnd;
 
   return (
     <AbsoluteFill>
@@ -92,10 +100,39 @@ export const EpisodePlayer: React.FC<{ data: EpisodeData }> = ({ data }) => {
         })}
       </CameraZoom>
 
-      <Audio src={staticFile(meta.audioFile)} />
-      {meta.bgmFile && (
-        <Audio src={staticFile(meta.bgmFile)} volume={meta.bgmVolume ?? 0.1} />
+      {/* 고정 라벨 — CameraZoom 밖, 움직이지 않음 */}
+      {showLabel && (
+        <div
+          style={{
+            position: "absolute",
+            top: 55,
+            left: 0,
+            right: 0,
+            textAlign: "center",
+            pointerEvents: "none",
+          }}
+        >
+          <span
+            style={{
+              fontFamily: FONT_FAMILY,
+              fontSize: 52,
+              fontWeight: 600,
+              color: palette.sub,
+              opacity: 0.4,
+            }}
+          >
+            {meta.category}단계 · {meta.title}
+          </span>
+        </div>
       )}
+
+      {/* 오디오: audioOffset 만큼 늦게 시작 (타이틀 카드 이후) */}
+      <Sequence from={meta.audioOffset ?? 0}>
+        <Audio src={staticFile(meta.audioFile)} />
+        {meta.bgmFile && (
+          <Audio src={staticFile(meta.bgmFile)} volume={meta.bgmVolume ?? 0.1} />
+        )}
+      </Sequence>
     </AbsoluteFill>
   );
 };

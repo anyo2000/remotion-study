@@ -121,7 +121,7 @@ export const ComparisonScene: React.FC<Props> = ({
         <div
           style={{
             position: "absolute",
-            top: SAFE.top + 20,
+            top: SAFE.top + 40,
             left: SAFE.side,
             right: SAFE.side,
             textAlign: "center",
@@ -141,7 +141,7 @@ export const ComparisonScene: React.FC<Props> = ({
       <div
         style={{
           position: "absolute",
-          top: headline ? SAFE.top + 140 : SAFE.top + 40,
+          top: headline ? SAFE.top + 160 : SAFE.top + 40,
           bottom: SAFE.bottom,
           left: SAFE.side + 10,
           right: SAFE.side + 10,

@@ -6,6 +6,8 @@ import { AprilGift2 } from "./AprilGift2";
 import { EpisodePlayer } from "./link-edu/EpisodePlayer";
 import { templateTest } from "./link-edu/episodes/template-test";
 import { hookingWhy } from "./link-edu/episodes/hooking-why";
+import { hookingWhyV1 } from "./link-edu/episodes/hooking-why-v1";
+import { hookingWhyV2 } from "./link-edu/episodes/hooking-why-v2";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -22,6 +24,22 @@ export const RemotionRoot: React.FC = () => {
         id="LinkEdu-HookingWhy"
         component={() => <EpisodePlayer data={hookingWhy} />}
         durationInFrames={hookingWhy.meta.totalDurationFrames}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="HookingWhy-V1"
+        component={() => <EpisodePlayer data={hookingWhyV1} />}
+        durationInFrames={hookingWhyV1.meta.totalDurationFrames}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="HookingWhy-V2"
+        component={() => <EpisodePlayer data={hookingWhyV2} />}
+        durationInFrames={hookingWhyV2.meta.totalDurationFrames}
         fps={30}
         width={1080}
         height={1920}

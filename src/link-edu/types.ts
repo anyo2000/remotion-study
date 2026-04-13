@@ -13,6 +13,8 @@ export type EpisodeMeta = {
   bgmFile?: string;
   bgmVolume?: number;
   totalDurationFrames: number;
+  /** 오디오 시작 오프셋 (프레임). 타이틀 카드 후 재생 시작용 */
+  audioOffset?: number;
 };
 
 // ── 오디오 싱크 ──

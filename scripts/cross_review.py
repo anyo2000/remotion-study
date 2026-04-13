@@ -24,7 +24,7 @@ import requests as req
 load_dotenv(Path(__file__).parent.parent / ".env")
 
 API_KEY = os.getenv("GEMINI_API_KEY")
-MODEL = "gemini-2.5-pro"  # 항상 최고 모델
+MODEL = "gemini-3.1-pro-preview"  # 항상 최고 모델
 
 # 리모션 영상 검수 기준 (remotion-study/CLAUDE.md 기반)
 REVIEW_CRITERIA = """당신은 보험 교육 영상 프레임의 품질 검수 전문가입니다.

@@ -32,7 +32,7 @@ export const DialogueScene: React.FC<Props> = ({
         <div
           style={{
             position: "absolute",
-            top: SAFE.top + 20,
+            top: SAFE.top + 40,
             left: SAFE.side,
             right: SAFE.side,
             textAlign: "center",
@@ -52,7 +52,7 @@ export const DialogueScene: React.FC<Props> = ({
       <div
         style={{
           position: "absolute",
-          top: headline ? SAFE.top + 160 : SAFE.top + 40,
+          top: headline ? SAFE.top + 180 : SAFE.top + 40,
           bottom: SAFE.bottom + 40,
           left: SAFE.side,
           right: SAFE.side,
