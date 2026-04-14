@@ -45,3 +45,5 @@ cp out/{filename}.mp4 ~/Library/CloudStorage/GoogleDrive-anyo2000@gmail.com/내\
 
 [6/6 완료]
 ```
+
+---✅ v6-render 스킬 실행

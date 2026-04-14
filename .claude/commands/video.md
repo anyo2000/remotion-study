@@ -44,3 +44,5 @@ description: "영상 제작 파이프라인. '영상 만들자/만들어줘' 또
 - sonnet 단계는 Agent 서브에이전트를 `model: "sonnet"`으로 호출하여 처리
 
 지금부터 v0-intake를 시작한다.
+
+---✅ video 스킬 실행

@@ -54,3 +54,5 @@ description: "V2 대본 — 풀대본 작성 + TTS 생성 + Whisper 타임스탬
 
 [2/6 대본완료] → 다음: 미니샘플
 ```
+
+---✅ v2-script 스킬 실행
