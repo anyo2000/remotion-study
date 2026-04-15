@@ -8,6 +8,12 @@ import { templateTest } from "./link-edu/episodes/template-test";
 import { hookingWhy } from "./link-edu/episodes/hooking-why";
 import { hookingWhyV1 } from "./link-edu/episodes/hooking-why-v1";
 import { hookingWhyV2 } from "./link-edu/episodes/hooking-why-v2";
+import { VisualCatalog, VISUAL_CATALOG_FRAMES } from "./visual-catalog/VisualCatalog";
+import { VisualCatalogV2, VISUAL_CATALOG_V2_FRAMES } from "./visual-catalog-v2/VisualCatalogV2";
+import { VisualCatalogV3, VISUAL_CATALOG_V3_FRAMES } from "./visual-catalog-v3/VisualCatalogV3";
+import { VisualCatalogV4, VISUAL_CATALOG_V4_FRAMES } from "./visual-catalog-v4/VisualCatalogV4";
+import { VisualCatalogV5, VISUAL_CATALOG_V5_FRAMES } from "./visual-catalog-v5/VisualCatalogV5";
+import { HookingOpeningSample } from "./hooking-opening/HookingOpeningSample";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -92,6 +98,54 @@ export const RemotionRoot: React.FC = () => {
         id="LinkCounsel"
         component={LinkCounsel}
         durationInFrames={1348}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="VisualCatalog"
+        component={VisualCatalog}
+        durationInFrames={VISUAL_CATALOG_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="VisualCatalogV2"
+        component={VisualCatalogV2}
+        durationInFrames={VISUAL_CATALOG_V2_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="VisualCatalogV3"
+        component={VisualCatalogV3}
+        durationInFrames={VISUAL_CATALOG_V3_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="VisualCatalogV4"
+        component={VisualCatalogV4}
+        durationInFrames={VISUAL_CATALOG_V4_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="VisualCatalogV5"
+        component={VisualCatalogV5}
+        durationInFrames={VISUAL_CATALOG_V5_FRAMES}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="HookingOpening-Sample"
+        component={HookingOpeningSample}
+        durationInFrames={300}
         fps={30}
         width={1920}
         height={1080}

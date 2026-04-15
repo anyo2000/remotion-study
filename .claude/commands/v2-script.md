@@ -13,7 +13,24 @@ description: "V2 대본 — 풀대본 작성 + TTS 생성 + Whisper 타임스탬
 - 장면 태그 포함 ([키워드 강조], [비교], [흐름도], [카드 나열], [숫자 임팩트], [대화 UI], [반전])
 - 톤 마커 포함 (정돈/가벼운)
 - 티저면 `reference_teaser_script_guide.md` 6단계 구조 적용
+- **각 장면에 비주얼 레퍼런스 명시** (v1에서 확정된 비주얼 방향 기반)
 - **사용자 대본 승인 대기**
+
+#### 비주얼 레퍼런스 표기법
+각 장면 태그 뒤에 카탈로그 참조를 붙인다:
+```
+장면 3: [숫자 임팩트] → V5-DonutChart + V1-숫자임팩트
+  "보장분석 후 계약 전환율 73%"
+
+장면 5: [비교] → V1-비교 + V5-BeforeAfterGauge
+  "기존 방식 vs 보장분석 방식"
+
+장면 7: [흐름도] → V2-A8(ArrowPath) + V5-ProgressSteps
+  "접수 → 심사 → 승인 → 완료"
+```
+
+v1에서 확정된 **비주얼 방향**(주력 카탈로그 조합)을 따르되, 장면 내용에 따라 유연하게 조합.
+텍스트만으로 충분한 장면까지 억지로 차트를 넣지 않는다.
 
 ### 2-2. TTS 생성 (승인 후)
 - Gemini Pro (`gemini-2.5-pro-preview-tts`) 사용
@@ -41,6 +58,7 @@ description: "V2 대본 — 풀대본 작성 + TTS 생성 + Whisper 타임스탬
 ## 사전 참조
 - spec-writing 스킬
 - `references/gemini-voice-catalog.md`
+- v1 컨셉 확정 결과 (비주얼 방향, 팔레트, 톤)
 
 ## 출력 포맷
 
@@ -51,8 +69,10 @@ description: "V2 대본 — 풀대본 작성 + TTS 생성 + Whisper 타임스탬
 - 총 길이: {duration}
 - 음성: {voice name}
 - 타임스탬프: {json path}
+- 비주얼 구성: {카탈로그 사용 비율, 예: V1 4장면 / V5 3장면 / V2 2장면}
 
 [2/6 대본완료] → 다음: 미니샘플
 ```
 
----✅ v2-script 스킬 실행
+---
+✅ v2-script 스킬 실행
