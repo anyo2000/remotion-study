@@ -58,16 +58,12 @@ export const SampleScene5: React.FC = () => {
 
   return (
     <SceneLayout pageTitle="채널 돌림 vs 손이 멈춤">
-      {/* 콘텐츠 영역 — 중앙 정렬, 카드 크기 제한 */}
       <div
         style={{
-          width: "100%",
-          height: "100%",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           gap: 40,
-          padding: "20px 0",
         }}
       >
         {/* 왼쪽 — 설명형 (실패) */}

@@ -49,7 +49,7 @@ export const SampleScene1: React.FC = () => {
       : 0;
 
   return (
-    <SceneLayout fullContent particles>
+    <SceneLayout pageTitle="파라고? 말라고?" particles>
       <GlowOrb
         color={palette.accent}
         opacity={glowPulse}

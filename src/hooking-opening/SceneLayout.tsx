@@ -12,28 +12,32 @@ import { GradientBackground, ParticleField } from "../components";
 const palette = PALETTES.orange;
 
 /**
- * 공통 장면 레이아웃
+ * 공통 장면 레이아웃 (1920×1080)
  *
- * ┌──────────────────────────────────────────────────────┐ y=0
- * │ LINK Consulting    ·    L단계 — 후킹    ·    왜 후킹인가 │ 상단 바 한 줄 (좌·중·우)
- * │──────────────────────────────────────────────────────│ y=60
- * │                                                      │
- * │               [페이지 제목] ← 중앙 정렬                 │ 본문 영역 시작
- * │                                                      │
- * │          10%│    콘텐츠 (80%)    │10%                  │
- * │                                                      │
- * │──────────────────────────────────────────────────────│ y=940
- * │                   하단 여백                            │
- * └──────────────────────────────────────────────────────┘ y=1080
+ * ┌─────────────────────────────────────────┐ y=0
+ * │ LINK Consulting · L후킹 · 왜 후킹인가    │ 제목줄 (topBar)
+ * │─────────────────────────────────────────│ y=78  구분선
+ * │          [세부 페이지 타이틀]              │ y=105
+ * │─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─│ y=175 최대활용구간(dense) 시작
+ * │                                         │
+ * │     ┌───── 메인 본문구간 ─────┐          │ y=240 기본구간 시작
+ * │     │   내용 적을 때 여기만    │          │
+ * │     └────────────────────────┘          │ y=960 기본구간 끝
+ * │                                         │
+ * │─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─│ y=1020 최대활용구간 끝
+ * │              하단 여백                    │
+ * └─────────────────────────────────────────┘ y=1080
  */
 
 type Props = {
-  /** 페이지 제목 — 본문 영역 첫 줄, 중앙 정렬 (매 장면 다름) */
+  /** 페이지 제목 — 구분선 아래, 콘텐츠 위에 표시 (장면마다 다름) */
   pageTitle?: string;
-  /** 에피소드 소제목 (기본: "왜 후킹인가") */
+  /** 에피소드 소제목 (기본: "왜 후킹인가") — 상단 바에 표시 */
   episodeTitle?: string;
-  /** 반전 등 풀콘텐츠 모드 */
-  fullContent?: boolean;
+  /** 상단 머리말 숨김 (첫 장면 반전 등 특수 경우) */
+  hideHeader?: boolean;
+  /** 내용 많을 때 — 최대 활용구간 사용 (contentMaxTop ~ contentMaxBottom) */
+  dense?: boolean;
   /** 파티클 */
   particles?: boolean;
   children: React.ReactNode;
@@ -45,28 +49,33 @@ export const LAYOUT = {
   topBarY: 28,
   /** 상단 바 폰트 크기 */
   topBarFontSize: 34,
-  /** 구분선 Y — 상단 바 아래 여유 두고 */
-  separatorY: 62,
-  /** 페이지 제목 Y — 구분선 아래 여유 */
-  pageTitleY: 170,
+  /** 구분선 Y — 상단 바 텍스트 아래 + 여백 */
+  separatorY: 95,
+  /** 페이지 타이틀 Y — 본문구간 상단 경계 근처 */
+  pageTitleY: 175,
   /** 페이지 제목 폰트 크기 (고정) */
-  pageTitleFontSize: 60,
+  pageTitleFontSize: 56,
   /** 페이지 제목 폰트 굵기 (고정) */
-  pageTitleFontWeight: 900 as const,
-  /** 콘텐츠 시작 Y — 페이지 제목 아래 큰 여백 */
-  contentTop: 300,
-  /** 콘텐츠 끝 Y — 아래 여백 최소 */
-  contentBottom: 1030,
+  pageTitleFontWeight: 800 as const,
+  /** 본문 최대 활용구간 시작 Y — 내용 많을 때 여기부터 */
+  contentMaxTop: 175,
+  /** 본문 메인 구간 시작 Y — 내용 적을 때 여기부터 (더 여유) */
+  contentTop: 240,
+  /** 본문 메인 구간 끝 Y */
+  contentBottom: 960,
+  /** 본문 최대 활용구간 끝 Y — 내용 많을 때 여기까지 */
+  contentMaxBottom: 1020,
   /** 좌우 바깥 패딩 */
-  outerPad: 110,
-  /** 콘텐츠 좌우 패딩 (10% 여백 = 192px) */
-  contentPad: 192,
+  outerPad: 80,
+  /** 콘텐츠 좌우 패딩 */
+  contentPad: 120,
 } as const;
 
 export const SceneLayout: React.FC<Props> = ({
   pageTitle,
   episodeTitle = "왜 후킹인가",
-  fullContent = false,
+  hideHeader = false,
+  dense = false,
   particles = true,
   children,
 }) => {
@@ -87,6 +96,8 @@ export const SceneLayout: React.FC<Props> = ({
       })
     : 0;
 
+  const showHeader = !hideHeader;
+
   return (
     <AbsoluteFill>
       <GradientBackground palette="orange" />
@@ -101,9 +112,9 @@ export const SceneLayout: React.FC<Props> = ({
         />
       )}
 
-      {!fullContent && (
+      {showHeader && (
         <>
-          {/* ── 상단 바: 한 줄로 좌·중·우 ── */}
+          {/* ── 상단 머리말: 한 줄로 좌·중·우 — 모든 장면 공통 ── */}
           <div
             style={{
               position: "absolute",
@@ -162,7 +173,7 @@ export const SceneLayout: React.FC<Props> = ({
               </span>
             </div>
 
-            {/* 우: 에피소드 소제목 */}
+            {/* 우: 에피소드 제목 (모든 장면 동일) */}
             <span
               style={{
                 fontFamily: FONT_FAMILY,
@@ -175,7 +186,7 @@ export const SceneLayout: React.FC<Props> = ({
             </span>
           </div>
 
-          {/* ── 구분선 — 상단 바와 본문 사이 ── */}
+          {/* ── 구분선 ── */}
           <div
             style={{
               position: "absolute",
@@ -188,7 +199,7 @@ export const SceneLayout: React.FC<Props> = ({
             }}
           />
 
-          {/* ── 페이지 제목 — 중앙 정렬, 통일 양식 ── */}
+          {/* ── 페이지 제목 — 좌측 액센트 바 + 반투명 배경 ── */}
           {pageTitle && (
             <div
               style={{
@@ -196,21 +207,33 @@ export const SceneLayout: React.FC<Props> = ({
                 top: LAYOUT.pageTitleY,
                 left: LAYOUT.contentPad,
                 right: LAYOUT.contentPad,
-                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
                 opacity: titleIn,
                 transform: `translateY(${interpolate(titleIn, [0, 1], [8, 0])}px)`,
               }}
             >
-              <span
+              <div
                 style={{
-                  fontFamily: FONT_FAMILY,
-                  fontSize: LAYOUT.pageTitleFontSize,
-                  fontWeight: LAYOUT.pageTitleFontWeight,
-                  color: palette.text,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "10px 28px 10px 24px",
+                  borderLeft: `3px solid ${palette.accent}`,
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  borderRadius: "0 8px 8px 0",
                 }}
               >
-                {pageTitle}
-              </span>
+                <span
+                  style={{
+                    fontFamily: FONT_FAMILY,
+                    fontSize: LAYOUT.pageTitleFontSize,
+                    fontWeight: LAYOUT.pageTitleFontWeight,
+                    color: palette.text,
+                  }}
+                >
+                  {pageTitle}
+                </span>
+              </div>
             </div>
           )}
         </>
@@ -220,10 +243,14 @@ export const SceneLayout: React.FC<Props> = ({
       <div
         style={{
           position: "absolute",
-          top: fullContent ? 0 : LAYOUT.contentTop,
-          bottom: fullContent ? 0 : 1080 - LAYOUT.contentBottom,
-          left: fullContent ? 0 : LAYOUT.contentPad,
-          right: fullContent ? 0 : LAYOUT.contentPad,
+          top: hideHeader ? 0 : dense ? LAYOUT.contentMaxTop : LAYOUT.contentTop,
+          bottom: hideHeader ? 0 : 1080 - (dense ? LAYOUT.contentMaxBottom : LAYOUT.contentBottom),
+          left: hideHeader ? 0 : LAYOUT.contentPad,
+          right: hideHeader ? 0 : LAYOUT.contentPad,
+          display: hideHeader ? undefined : "flex",
+          flexDirection: hideHeader ? undefined : "column",
+          justifyContent: hideHeader ? undefined : "center",
+          alignItems: hideHeader ? undefined : "center",
         }}
       >
         {children}
