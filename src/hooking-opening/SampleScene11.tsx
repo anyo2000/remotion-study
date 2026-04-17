@@ -124,7 +124,7 @@ export const SampleScene11: React.FC = () => {
               textAlign: "center",
             }}
           >
-            다음 편 → 임신 화법 실전
+            다음 시간 → 후킹 화법 실전
           </div>
         </div>
       </AbsoluteFill>

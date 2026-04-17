@@ -14,6 +14,7 @@ import { VisualCatalogV3, VISUAL_CATALOG_V3_FRAMES } from "./visual-catalog-v3/V
 import { VisualCatalogV4, VISUAL_CATALOG_V4_FRAMES } from "./visual-catalog-v4/VisualCatalogV4";
 import { VisualCatalogV5, VISUAL_CATALOG_V5_FRAMES } from "./visual-catalog-v5/VisualCatalogV5";
 import { HookingOpeningSample } from "./hooking-opening/HookingOpeningSample";
+import { HookingWhyFull, HOOKING_WHY_FULL_FRAMES } from "./hooking-opening/HookingWhyFull";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -146,6 +147,14 @@ export const RemotionRoot: React.FC = () => {
         id="HookingOpening-Sample"
         component={HookingOpeningSample}
         durationInFrames={750}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="HookingWhy-Full"
+        component={HookingWhyFull}
+        durationInFrames={HOOKING_WHY_FULL_FRAMES}
         fps={30}
         width={1920}
         height={1080}

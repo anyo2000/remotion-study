@@ -41,6 +41,7 @@
 - 숫자 카운트업에 fontVariantNumeric: "tabular-nums"
 - 장면 사이 0.7초 쉼, 전환은 TransitionSeries fade
 - 마지막 장면 +2~3초(60~90프레임) 여유
+- **지연 등장 요소는 조건부 렌더링 금지** — `{frame >= X && <div>}` 쓰면 flex 레이아웃이 밀림. 대신 처음부터 렌더하고 opacity로 숨길 것
 
 ## 장면 유형 (대본에 태그로 표시)
 - [키워드 강조] — 핵심 단어 크게 (카탈로그: V1-키워드)
