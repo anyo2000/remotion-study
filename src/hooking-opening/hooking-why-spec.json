@@ -1,0 +1,126 @@
+[
+  {
+    "name": "OPENING",
+    "scene_keyword": "의사가 귓구멍을 파라고 할까요",
+    "label": "반전 — 오프닝 질문 (파라고? 말라고?)",
+    "beats": {
+      "EMOJI_IN":   { "type": "fixed", "frame": 3 },
+      "LEFT_TEXT":  { "type": "word", "match": "파라고", "after_sec": 1.0 },
+      "RIGHT_TEXT": { "type": "word", "match": "파지" },
+      "GLOW_PULSE": { "type": "fixed", "frame": 10 }
+    }
+  },
+  {
+    "name": "HOOK_RESULT",
+    "scene_keyword": "지금 무슨소리인가 싶으시죠",
+    "label": "궁금하죠? 이게 후킹입니다",
+    "beats": {
+      "EMOJI_IN":   { "type": "fixed", "frame": 5 },
+      "KEYWORD_IN": { "type": "word", "match": "싶으시죠" },
+      "SUB_IN":     { "type": "word", "match": "후킹의" }
+    }
+  },
+  {
+    "name": "SUBWAY",
+    "scene_keyword": "서울 지하철에서",
+    "label": "지하철 📱",
+    "beats": {
+      "FIRST_PHONES": { "type": "word", "match": "지하철에서", "after_sec": 11.0 },
+      "MORE_PHONES":  { "type": "word", "match": "파는" },
+      "ALL_DIM":      { "type": "word", "match": "아무도", "after_sec": 15.0 },
+      "CENTER_PHONE": { "type": "word", "match": "휴대폰만" }
+    }
+  },
+  {
+    "name": "VOICE",
+    "scene_keyword": "근데 한 아저씨가",
+    "label": "아저씨 질문 🗣️",
+    "beats": {
+      "EMOJI_IN": { "type": "word", "match": "근데", "after_sec": 18.0 },
+      "WAVE_1":   { "type": "word", "match": "이렇게", "after_sec": 19.0 },
+      "WAVE_2":   { "type": "word", "match": "말한" },
+      "WAVE_3":   { "type": "word", "match": "거예요", "after_sec": 20.0 },
+      "TEXT_IN":  { "type": "word", "match": "귓구멍을", "after_sec": 22.0 }
+    }
+  },
+  {
+    "name": "EYE_FOCUS",
+    "scene_keyword": "아무도 대답은 안 했어요",
+    "label": "다들 쳐다봄 👁️",
+    "beats": {
+      "EYES_START":    { "type": "word", "match": "아무도", "after_sec": 26.0 },
+      "EYES_STAGGER":  { "type": "fixed", "frame": 5 },
+      "LINES_CONVERGE": { "type": "word", "match": "다들" },
+      "TEXT_IN":        { "type": "word", "match": "쳐다보게" }
+    }
+  },
+  {
+    "name": "IMPACT",
+    "scene_keyword": "왜 쳐다봤을까요",
+    "label": "왜 — 답답함 ❗",
+    "beats": {
+      "DROP_START":  { "type": "word", "match": "왜", "after_sec": 31.0 },
+      "SHAKE_START": { "type": "word", "match": "쳐다봤을까요" },
+      "TEXT_IN":     { "type": "word", "match": "답을", "after_sec": 33.0 },
+      "SUB_IN":      { "type": "word", "match": "답답함을" }
+    }
+  },
+  {
+    "name": "DRAMA",
+    "scene_keyword": "드라마 애매한 데서",
+    "label": "드라마 비유 📺",
+    "beats": {
+      "PHASE_TV":    { "type": "word", "match": "드라마" },
+      "PHASE_CUT":   { "type": "word", "match": "끊기면" },
+      "PHASE_THINK": { "type": "word", "match": "다음", "after_sec": 42.0 },
+      "PHASE_PLAY":  { "type": "word", "match": "보게" }
+    }
+  },
+  {
+    "name": "COMPARISON",
+    "scene_keyword": "홈쇼핑도 마찬가지예요",
+    "label": "홈쇼핑 비교 BEFORE/AFTER",
+    "beats": {
+      "CARDS_IN":      { "type": "word", "match": "홈쇼핑도" },
+      "BEFORE_TEXT":   { "type": "word", "match": "오늘" },
+      "BEFORE_RESULT": { "type": "word", "match": "채널", "after_sec": 51.0 },
+      "AFTER_TEXT":    { "type": "word", "match": "참기름은" },
+      "AFTER_RESULT":  { "type": "word", "match": "채널", "after_sec": 59.0 },
+      "HIGHLIGHT":     { "type": "word", "match": "그래서", "after_sec": 61.0 }
+    }
+  },
+  {
+    "name": "TIMER",
+    "scene_keyword": "우리가 하는 상담도",
+    "label": "3초 타이머 ⏱️",
+    "beats": {
+      "RING_IN":   { "type": "word", "match": "우리가", "after_sec": 65.0 },
+      "NUMBER_IN": { "type": "word", "match": "고객이", "after_sec": 67.0 },
+      "LABEL_IN":  { "type": "word", "match": "3초", "after_sec": 69.0 },
+      "SUB_IN":    { "type": "word", "match": "그", "after_sec": 70.5 }
+    }
+  },
+  {
+    "name": "DIALOGUE",
+    "scene_keyword": "똑같은 FP",
+    "label": "대화 비교 BEFORE/AFTER",
+    "beats": {
+      "LABEL_IN":        { "type": "word", "match": "똑같은", "after_sec": 73.0 },
+      "BEFORE_FP":       { "type": "word", "match": "보장" },
+      "BEFORE_CUSTOMER": { "type": "word", "match": "고객은" },
+      "AFTER_FP":        { "type": "word", "match": "고객님", "after_sec": 82.0 },
+      "AFTER_CUSTOMER":  { "type": "word", "match": "그게", "after_sec": 88.0 },
+      "HEADLINE":        { "type": "word", "match": "첫마디" }
+    }
+  },
+  {
+    "name": "CLOSING",
+    "scene_keyword": "그러니까 우리 FP님들은",
+    "label": "클로징",
+    "beats": {
+      "TOP_TEXT":    { "type": "word", "match": "답을", "after_sec": 96.0 },
+      "ACCENT_TEXT": { "type": "word", "match": "질문을", "after_sec": 97.0 },
+      "CTA":         { "type": "word", "match": "다음", "after_sec": 99.0 }
+    }
+  }
+]
