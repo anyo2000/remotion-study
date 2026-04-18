@@ -44,16 +44,28 @@ v1에서 확정된 **비주얼 방향**(주력 카탈로그 조합)을 따르되
 - 저장: `public/audio/`
 - 다중 화자 시 화자별 별도 TTS
 
-### 2-3. 타임스탬프 추출
+### 2-3. 타임스탬프 추출 (2단계)
+
+**Step A: 문장 단위 타임스탬프**
 - `scripts/extract-timestamps.py` 또는 `scripts/extract-timestamps-gemini.py` 실행
 - **전 장면 키워드별 타임스탬프를 한번에 추출** (장면별 개별 추출 금지)
-- JSON으로 저장
-- 키워드 시작 시간 → 프레임 번호 변환 (시간 x fps)
+- 저장: `public/audio/{에피소드}.timestamps.json`
+
+**Step B: 단어별(word-level) 타임스탬프** ⭐ 필수
+- faster-whisper (medium 모델) 로 word_timestamps=True 추출
+- 저장: `public/audio/{에피소드}.words.json`
+- 이 파일이 V4 BEATS 시스템의 원천 데이터
+- 형식: `[{ start, end, text, words: [{ word, start, end, probability }] }]`
+
+### 2-4. TTS 재생성 (대본 수정 시)
+- 한 줄이라도 바뀌면 **전체 재생성** (부분 스플라이스 금지 — 톤 일관성)
+- 재생성 후 Step A, B 모두 다시 실행
 
 ## 핵심 규칙
 - **무음 구간 감지로 장면 분할하지 말 것** — 숨쉬기/쉼표도 무음으로 잡혀서 싱크 어긋남
 - 타임스탬프는 Whisper 단어별 시작/끝 시간 기반
 - 대본 승인 전에 TTS 생성하지 말 것
+- word-level 타임스탬프 없이 V4로 넘어가지 말 것
 
 ## 사전 참조
 - spec-writing 스킬
@@ -68,7 +80,8 @@ v1에서 확정된 **비주얼 방향**(주력 카탈로그 조합)을 따르되
 - 장면 수: {N}
 - 총 길이: {duration}
 - 음성: {voice name}
-- 타임스탬프: {json path}
+- 타임스탬프(문장): {timestamps.json path}
+- 타임스탬프(단어): {words.json path} — {N}단어
 - 비주얼 구성: {카탈로그 사용 비율, 예: V1 4장면 / V5 3장면 / V2 2장면}
 
 [2/6 대본완료] → 다음: 미니샘플

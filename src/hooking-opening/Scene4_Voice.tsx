@@ -9,34 +9,36 @@ import {
 import { SPRING, FONT_FAMILY, PALETTES } from "../constants";
 import { GlowOrb } from "../components";
 import { SceneLayout } from "./SceneLayout";
+import { BEATS_VOICE } from "./hooking-why-beats";
 
 const palette = PALETTES.orange;
+const B = BEATS_VOICE;
 
 /**
- * 장면 4: 한 아저씨 질문 (T(20.6)~T(28.1), 7.5초)
- * 🗣️ + 음파 + "귓구멍을 파라고 해요?" 텍스트
+ * 장면 4: 한 아저씨 질문
+ * 오디오: "근데 한 아저씨가 이렇게 말한 거예요"
+ *       → "자 여러분 의사가 귓구멍을 파라고 해요?"
  */
 export const Scene4_Voice: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
   const emojiIn = spring({
-    frame: Math.max(0, frame - 5),
+    frame: Math.max(0, frame - B.EMOJI_IN),
     fps,
     config: SPRING.bouncy,
   });
 
   const textIn = spring({
-    frame: Math.max(0, frame - 20),
+    frame: Math.max(0, frame - B.TEXT_IN),
     fps,
     config: SPRING.smooth,
   });
 
-  // 음파 애니메이션 (3개 동심원)
   const waveCount = 3;
 
   return (
-    <SceneLayout pageTitle="귓구멍을 파라고 해요?">
+    <SceneLayout pageTitle="지하철 안, 그 한마디">
       <div
         style={{
           display: "flex",
@@ -49,7 +51,8 @@ export const Scene4_Voice: React.FC = () => {
         <div style={{ position: "relative" }}>
           {/* 음파 링 */}
           {Array.from({ length: waveCount }).map((_, i) => {
-            const waveDelay = 15 + i * 10;
+            const waveDelays = [B.WAVE_1, B.WAVE_2, B.WAVE_3];
+            const waveDelay = waveDelays[i];
             const waveProgress = spring({
               frame: Math.max(0, frame - waveDelay),
               fps,

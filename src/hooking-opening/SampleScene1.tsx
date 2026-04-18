@@ -9,43 +9,41 @@ import {
 import { SPRING, FONT_FAMILY, PALETTES } from "../constants";
 import { GlowOrb } from "../components";
 import { SceneLayout } from "./SceneLayout";
+import { BEATS_OPENING } from "./hooking-why-beats";
 
 const palette = PALETTES.orange;
+const B = BEATS_OPENING;
 
 /**
  * 장면 1: [반전] — 귓구멍 질문
- * fullContent 모드 — 상단 바 없이 질문 자체가 화면 전부
+ * 무음 2초(호기심) → 오디오 시작 후 계속 표시
  * (반전 태그: 헤드라인 생략)
  */
 export const SampleScene1: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const EMOJI_IN = 5;
-  const TEXT_IN = 30;
-  const GLOW_PULSE_START = 15;
-
   const emojiProgress = spring({
-    frame: Math.max(0, frame - EMOJI_IN),
+    frame: Math.max(0, frame - B.EMOJI_IN),
     fps,
     config: SPRING.bouncy,
   });
 
   const leftProgress = spring({
-    frame: Math.max(0, frame - TEXT_IN),
+    frame: Math.max(0, frame - B.LEFT_TEXT),
     fps,
     config: SPRING.smooth,
   });
 
   const rightProgress = spring({
-    frame: Math.max(0, frame - TEXT_IN - 5),
+    frame: Math.max(0, frame - B.RIGHT_TEXT),
     fps,
     config: SPRING.smooth,
   });
 
   const glowPulse =
-    frame >= GLOW_PULSE_START
-      ? 0.06 + Math.sin((frame - GLOW_PULSE_START) * 0.06) * 0.02
+    frame >= B.GLOW_PULSE
+      ? 0.06 + Math.sin((frame - B.GLOW_PULSE) * 0.06) * 0.02
       : 0;
 
   return (
@@ -56,7 +54,7 @@ export const SampleScene1: React.FC = () => {
         size={700}
         x="50%"
         y="48%"
-        delay={EMOJI_IN}
+        delay={B.EMOJI_IN}
       />
 
       <AbsoluteFill

@@ -9,37 +9,39 @@ import {
 import { SPRING, FONT_FAMILY, PALETTES } from "../constants";
 import { GlowOrb } from "../components";
 import { SceneLayout } from "./SceneLayout";
+import { BEATS_CLOSING } from "./hooking-why-beats";
 
 const palette = PALETTES.orange;
+const B = BEATS_CLOSING;
 
 /**
  * 장면 11: [클로징] — 핵심 메시지 + CTA
- * 여운 있는 마무리: 키메시지 강조 + 다음 편 안내
+ * 오디오: "답을 주지 마세요" → "질문을 던지세요" → "다음 시간엔..."
  */
 export const SampleScene11: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
   const lineIn = spring({
-    frame: Math.max(0, frame - 10),
+    frame: Math.max(0, frame - B.TOP_TEXT - 5),
     fps,
     config: SPRING.heavy,
   });
 
   const topTextIn = spring({
-    frame: Math.max(0, frame - 18),
+    frame: Math.max(0, frame - B.TOP_TEXT),
     fps,
     config: SPRING.smooth,
   });
 
   const accentIn = spring({
-    frame: Math.max(0, frame - 35),
+    frame: Math.max(0, frame - B.ACCENT_TEXT),
     fps,
     config: SPRING.smooth,
   });
 
   const ctaIn = spring({
-    frame: Math.max(0, frame - 60),
+    frame: Math.max(0, frame - B.CTA),
     fps,
     config: SPRING.smooth,
   });

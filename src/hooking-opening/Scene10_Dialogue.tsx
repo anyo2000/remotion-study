@@ -8,23 +8,15 @@ import {
 import { SPRING, FONT_FAMILY, PALETTES } from "../constants";
 import { GlowOrb } from "../components";
 import { SceneLayout } from "./SceneLayout";
+import { BEATS_DIALOGUE } from "./hooking-why-beats";
 
 const palette = PALETTES.orange;
+const B = BEATS_DIALOGUE;
 
 /**
- * 장면 10: 대화 비교 Before/After (T(54.4)~T(72.8), 18.4초 = 552fr)
- *
- * 좌: BEFORE — 설명형 오프닝 → 거절
- * 우: AFTER  — 후킹 질문 → 관심
- * 마지막: "첫마디만 바꿨을 뿐" 헤드라인
+ * 장면 10: 대화 비교 Before/After
+ * 오디오: "똑같은 FP, 똑같은 고객" → BEFORE/AFTER 순차 → "첫마디 하나 바꿨을 뿐"
  */
-
-// 프레임 타이밍 (scene 내 상대값, T(84.7)-T(75.5)=276 등)
-const BEFORE_FP = 10;       // FP: "보장 분석 해드리려고요"
-const BEFORE_CUST = 80;     // 고객: "경계합니다"
-const AFTER_FP = 276;       // FP: "임신해도 돈 받고..." (T(84.7)-T(75.5))
-const AFTER_CUST = 370;     // 고객: "그게 뭐예요?"
-const HEADLINE = 507;       // "첫마디만 바꿨을 뿐" (T(92.4)-T(75.5))
 
 type BubbleProps = {
   text: string;
@@ -95,34 +87,34 @@ export const Scene10_Dialogue: React.FC = () => {
   const { fps } = useVideoConfig();
 
   const beforeLabelIn = spring({
-    frame: Math.max(0, frame - 3),
+    frame: Math.max(0, frame - B.LABEL_IN),
     fps,
     config: SPRING.smooth,
   });
 
   const afterLabelIn = spring({
-    frame: Math.max(0, frame - AFTER_FP - 5),
+    frame: Math.max(0, frame - B.AFTER_FP - 5),
     fps,
     config: SPRING.smooth,
   });
 
   // Before 영역 dim (After 등장 시)
   const beforeDim =
-    frame >= AFTER_FP
-      ? interpolate(frame, [AFTER_FP, AFTER_FP + 20], [1, 0.35], {
+    frame >= B.AFTER_FP
+      ? interpolate(frame, [B.AFTER_FP, B.AFTER_FP + 20], [1, 0.35], {
           extrapolateRight: "clamp",
         })
       : 1;
 
   // 헤드라인
   const headlineIn = spring({
-    frame: Math.max(0, frame - HEADLINE),
+    frame: Math.max(0, frame - B.HEADLINE),
     fps,
     config: SPRING.smooth,
   });
 
   return (
-    <SceneLayout pageTitle="첫마디만 바꿨을 뿐" dense>
+    <SceneLayout pageTitle="같은 상황, 다른 한마디" dense>
       <div
         style={{
           display: "flex",
@@ -184,13 +176,13 @@ export const Scene10_Dialogue: React.FC = () => {
             text={"보장 분석\n해드리려고요"}
             emoji="😐"
             isFP
-            delay={BEFORE_FP}
+            delay={B.BEFORE_FP}
           />
           <Bubble
             text="경계합니다"
             emoji="🛡️"
             isFP={false}
-            delay={BEFORE_CUST}
+            delay={B.BEFORE_CUSTOMER}
           />
         </div>
 
@@ -256,13 +248,13 @@ export const Scene10_Dialogue: React.FC = () => {
             text={"임신해도 돈 받고\n안 해도 돈 받는 거\n아세요?"}
             emoji="💡"
             isFP
-            delay={AFTER_FP}
+            delay={B.AFTER_FP}
           />
           <Bubble
             text="그게 뭐예요?"
             emoji="🤔"
             isFP={false}
-            delay={AFTER_CUST}
+            delay={B.AFTER_CUSTOMER}
           />
         </div>
       </div>
@@ -294,7 +286,7 @@ export const Scene10_Dialogue: React.FC = () => {
         size={400}
         x="70%"
         y="50%"
-        delay={AFTER_FP}
+        delay={B.AFTER_FP}
       />
     </SceneLayout>
   );

@@ -8,37 +8,39 @@ import {
 import { SPRING, FONT_FAMILY, PALETTES } from "../constants";
 import { GlowOrb } from "../components";
 import { SceneLayout } from "./SceneLayout";
+import { BEATS_HOOK_RESULT } from "./hooking-why-beats";
 
 const palette = PALETTES.orange;
+const B = BEATS_HOOK_RESULT;
 
 /**
- * 장면 3: [키워드 강조] — "궁금하죠?"
- * 이모지 + 핵심 키워드 크게 + 보조 텍스트
+ * 장면 2: [키워드 강조] — "궁금하죠?"
+ * 오디오: "지금 무슨 소리인가 싶으시죠?" → "그게 바로 후킹의 결과입니다"
  */
 export const SampleScene3: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
   const emojiIn = spring({
-    frame: Math.max(0, frame - 5),
+    frame: Math.max(0, frame - B.EMOJI_IN),
     fps,
     config: SPRING.bouncy,
   });
 
   const keywordIn = spring({
-    frame: Math.max(0, frame - 15),
+    frame: Math.max(0, frame - B.KEYWORD_IN),
     fps,
     config: SPRING.smooth,
   });
 
   const subIn = spring({
-    frame: Math.max(0, frame - 30),
+    frame: Math.max(0, frame - B.SUB_IN),
     fps,
     config: SPRING.smooth,
   });
 
   return (
-    <SceneLayout pageTitle="궁금하죠?">
+    <SceneLayout pageTitle="방금 그 느낌">
       <div
         style={{
           display: "flex",

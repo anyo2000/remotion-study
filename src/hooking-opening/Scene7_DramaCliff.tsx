@@ -8,13 +8,14 @@ import {
 import { SPRING, FONT_FAMILY, PALETTES } from "../constants";
 import { GlowOrb } from "../components";
 import { SceneLayout } from "./SceneLayout";
+import { BEATS_DRAMA } from "./hooking-why-beats";
 
 const palette = PALETTES.orange;
+const B = BEATS_DRAMA;
 
 /**
- * 장면 7: 드라마 끊기면 (T(36.7)~T(42.5), 5.8초 = 174fr)
- * 텍스트 없음 — 📺→노이즈→🧑+❓→▶️
- * 4단계 시각 이야기
+ * 장면 7: 드라마 끊기면
+ * 오디오: "드라마 애매한 데서 끊기면" → "다음 편 보게 되는 거랑 똑같아요"
  */
 
 type Phase = {
@@ -23,10 +24,10 @@ type Phase = {
 };
 
 const PHASES: Phase[] = [
-  { emoji: "📺", delay: 5 },
-  { emoji: "📡", delay: 40 },   // 노이즈 — 끊긴 신호
-  { emoji: "🤔", delay: 75 },   // 궁금한 사람
-  { emoji: "▶️", delay: 115 },  // 다시 보기
+  { emoji: "📺", delay: B.PHASE_TV },
+  { emoji: "📡", delay: B.PHASE_CUT },
+  { emoji: "🤔", delay: B.PHASE_THINK },
+  { emoji: "▶️", delay: B.PHASE_PLAY },
 ];
 
 export const Scene7_DramaCliff: React.FC = () => {

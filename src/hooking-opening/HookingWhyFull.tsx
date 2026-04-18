@@ -17,32 +17,31 @@ import { SampleScene11 } from "./SampleScene11";
  * 후킹 왜 후킹인가 — 전체 빌드 (가로 1920×1080, 30fps)
  *
  * 오디오: public/audio/link-edu-hooking-why.wav (~104초)
- * 타이틀 2초(60fr) 후 오디오 시작
+ * 타이틀 2초 → 오프닝 2초(무음) → 오디오 시작
  *
- * T(sec) = Math.round(sec × 30) + 60
+ * T(sec) = Math.round(sec × 30) + AUDIO_START
  */
 
-const TITLE_DUR = 60; // 타이틀 카드 2초 후 오디오 시작
-const T = (sec: number) => Math.round(sec * 30) + TITLE_DUR;
+import { TITLE_DUR, AUDIO_START, T } from "./hooking-why-beats";
 const SCENE_TAIL = 75; // 마지막 장면 여유
 
 // ── 장면별 시작 프레임 (2차 타임스탬프 기준) ──────────
 const SCENES = [
-  { start: 0, name: "titlecard" },           // 0
-  { start: T(0.0), name: "반전-오프닝질문" },   // 1: 60  — "의사가 귓구멍을..."
-  { start: T(4.5), name: "후킹의결과" },        // 2: 195 — "지금 무슨소리인가..."
-  { start: T(11.9), name: "지하철" },          // 3: 417 — "서울 지하철에서..."
-  { start: T(19.4), name: "아저씨질문" },       // 4: 642 — "근데 한 아저씨가..."
-  { start: T(27.0), name: "다들쳐다봄" },       // 5: 870 — "아무도 대답은..."
-  { start: T(32.1), name: "왜-답답함" },        // 6: 1023 — "왜 쳐다봤을까요..."
-  { start: T(41.9), name: "드라마비유" },        // 7: 1317 — "드라마 애매한..."
-  { start: T(46.1), name: "홈쇼핑비교" },       // 8: 1443 — "홈쇼핑도..."
-  { start: T(66.9), name: "3초" },             // 9: 2067 — "우리가 하는 상담도..."
-  { start: T(75.5), name: "대화비교" },         // 10: 2325 — "똑같은 FP..."
-  { start: T(94.9), name: "클로징" },           // 11: 2907 — "그러니까 우리..."
+  { start: 0, name: "titlecard" },           // 0: 0~120 (4초)
+  { start: TITLE_DUR, name: "반전-오프닝질문" }, // 1: 120 — 오디오와 동시
+  { start: T(4.4), name: "후킹의결과" },        // 2: 252
+  { start: T(10.8), name: "지하철" },          // 3: 444
+  { start: T(18.8), name: "아저씨질문" },       // 4: 684
+  { start: T(26.3), name: "다들쳐다봄" },       // 5: 909
+  { start: T(31.2), name: "왜-답답함" },        // 6: 1056
+  { start: T(40.7), name: "드라마비유" },        // 7: 1341
+  { start: T(45.2), name: "홈쇼핑비교" },       // 8: 1476
+  { start: T(65.3), name: "3초" },             // 9: 2079
+  { start: T(73.5), name: "대화비교" },         // 10: 2325
+  { start: T(93.5), name: "클로징" },           // 11: 2925
 ] as const;
 
-const TOTAL = T(104) + SCENE_TAIL; // 3255
+const TOTAL = T(103) + SCENE_TAIL; // ~3285
 
 /** 장면 duration 계산: 다음 장면 시작까지 */
 const dur = (i: number) => {
@@ -104,8 +103,8 @@ export const HookingWhyFull: React.FC = () => {
         <SampleScene11 />
       </Sequence>
 
-      {/* ── 오디오: 타이틀 카드 이후 시작 ── */}
-      <Sequence from={TITLE_DUR}>
+      {/* ── 오디오: 타이틀+오프닝 이후 시작 ── */}
+      <Sequence from={AUDIO_START}>
         <Audio src={staticFile("audio/link-edu-hooking-why.wav")} />
       </Sequence>
     </AbsoluteFill>

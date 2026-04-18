@@ -9,44 +9,53 @@ import {
 import { SPRING, FONT_FAMILY, PALETTES } from "../constants";
 import { GlowOrb } from "../components";
 import { SceneLayout } from "./SceneLayout";
+import { BEATS_COMPARISON } from "./hooking-why-beats";
 
 const palette = PALETTES.orange;
+const B = BEATS_COMPARISON;
 
 /**
- * 장면 5: [비교] — 드라마/홈쇼핑 스플릿스크린
- * 카드 크기 줄이고 여유 확보
+ * 장면 8: [비교] — 홈쇼핑 스플릿스크린
+ * 오디오: "홈쇼핑도 마찬가지예요" → BEFORE/AFTER 순차 공개
  */
 export const SampleScene5: React.FC = () => {
   const frame = useCurrentFrame();
-  const { fps, durationInFrames } = useVideoConfig();
-
-  const splitStart = 8;
-  const leftContentStart = 18;
-  const rightContentStart = 45;
-  const highlightStart = Math.floor(durationInFrames * 0.6);
+  const { fps } = useVideoConfig();
 
   const splitProgress = spring({
-    frame: Math.max(0, frame - splitStart),
+    frame: Math.max(0, frame - B.CARDS_IN),
     fps,
     config: SPRING.heavy,
   });
 
   const leftIn = spring({
-    frame: Math.max(0, frame - leftContentStart),
+    frame: Math.max(0, frame - B.BEFORE_TEXT),
+    fps,
+    config: SPRING.smooth,
+  });
+
+  const leftResultIn = spring({
+    frame: Math.max(0, frame - B.BEFORE_RESULT),
     fps,
     config: SPRING.smooth,
   });
 
   const rightIn = spring({
-    frame: Math.max(0, frame - rightContentStart),
+    frame: Math.max(0, frame - B.AFTER_TEXT),
     fps,
     config: SPRING.smooth,
   });
 
-  const isHighlighted = frame >= highlightStart;
+  const rightResultIn = spring({
+    frame: Math.max(0, frame - B.AFTER_RESULT),
+    fps,
+    config: SPRING.smooth,
+  });
+
+  const isHighlighted = frame >= B.HIGHLIGHT;
   const highlightProgress = isHighlighted
     ? spring({
-        frame: Math.max(0, frame - highlightStart),
+        frame: Math.max(0, frame - B.HIGHLIGHT),
         fps,
         config: SPRING.smooth,
       })
@@ -104,7 +113,7 @@ export const SampleScene5: React.FC = () => {
               fontSize: 52,
               fontWeight: 600,
               color: "#E05A5A",
-              opacity: leftIn,
+              opacity: leftResultIn,
             }}
           >
             👋 채널 돌림
@@ -139,7 +148,7 @@ export const SampleScene5: React.FC = () => {
               size={350}
               x="50%"
               y="50%"
-              delay={highlightStart}
+              delay={B.HIGHLIGHT}
             />
           )}
           <div style={{ fontSize: 90, lineHeight: 1, opacity: rightIn }}>❓</div>
@@ -162,7 +171,7 @@ export const SampleScene5: React.FC = () => {
               fontSize: 52,
               fontWeight: 600,
               color: "#4ECDC4",
-              opacity: rightIn,
+              opacity: rightResultIn,
             }}
           >
             ✋ 손이 멈춤

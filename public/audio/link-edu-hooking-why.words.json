@@ -1,0 +1,1479 @@
+[
+  {
+    "start": 0.0,
+    "end": 2.18,
+    "text": "의사가 귓구멍을 파라고 할까요?",
+    "words": [
+      {
+        "word": "의사가",
+        "start": 0.0,
+        "end": 0.72,
+        "probability": 0.594
+      },
+      {
+        "word": "귓구멍을",
+        "start": 0.72,
+        "end": 1.46,
+        "probability": 0.988
+      },
+      {
+        "word": "파라고",
+        "start": 1.46,
+        "end": 1.78,
+        "probability": 0.99
+      },
+      {
+        "word": "할까요?",
+        "start": 1.78,
+        "end": 2.18,
+        "probability": 0.993
+      }
+    ]
+  },
+  {
+    "start": 2.32,
+    "end": 3.56,
+    "text": "파지 말라고 할까요?",
+    "words": [
+      {
+        "word": "파지",
+        "start": 2.32,
+        "end": 2.6,
+        "probability": 0.751
+      },
+      {
+        "word": "말라고",
+        "start": 2.6,
+        "end": 2.94,
+        "probability": 0.969
+      },
+      {
+        "word": "할까요?",
+        "start": 2.94,
+        "end": 3.56,
+        "probability": 0.996
+      }
+    ]
+  },
+  {
+    "start": 4.38,
+    "end": 6.1,
+    "text": "지금 무슨 소린가 싶으시죠?",
+    "words": [
+      {
+        "word": "지금",
+        "start": 4.38,
+        "end": 4.52,
+        "probability": 0.918
+      },
+      {
+        "word": "무슨",
+        "start": 4.52,
+        "end": 4.88,
+        "probability": 0.995
+      },
+      {
+        "word": "소린가",
+        "start": 4.88,
+        "end": 5.28,
+        "probability": 0.878
+      },
+      {
+        "word": "싶으시죠?",
+        "start": 5.28,
+        "end": 6.1,
+        "probability": 0.984
+      }
+    ]
+  },
+  {
+    "start": 6.6,
+    "end": 8.12,
+    "text": "여러분이 방금 느낀 그 기분",
+    "words": [
+      {
+        "word": "여러분이",
+        "start": 6.6,
+        "end": 6.94,
+        "probability": 0.935
+      },
+      {
+        "word": "방금",
+        "start": 6.94,
+        "end": 7.16,
+        "probability": 0.998
+      },
+      {
+        "word": "느낀",
+        "start": 7.16,
+        "end": 7.58,
+        "probability": 0.974
+      },
+      {
+        "word": "그",
+        "start": 7.58,
+        "end": 7.82,
+        "probability": 0.995
+      },
+      {
+        "word": "기분",
+        "start": 7.82,
+        "end": 8.12,
+        "probability": 0.998
+      }
+    ]
+  },
+  {
+    "start": 8.12,
+    "end": 10.82,
+    "text": "그게 바로 후킹의 결과입니다",
+    "words": [
+      {
+        "word": "그게",
+        "start": 8.12,
+        "end": 8.64,
+        "probability": 0.512
+      },
+      {
+        "word": "바로",
+        "start": 8.64,
+        "end": 8.96,
+        "probability": 0.998
+      },
+      {
+        "word": "후킹의",
+        "start": 8.96,
+        "end": 9.56,
+        "probability": 0.95
+      },
+      {
+        "word": "결과입니다",
+        "start": 9.56,
+        "end": 10.82,
+        "probability": 0.979
+      }
+    ]
+  },
+  {
+    "start": 10.82,
+    "end": 13.06,
+    "text": "서울 지하철에서 겪은 일이에요",
+    "words": [
+      {
+        "word": "서울",
+        "start": 10.82,
+        "end": 11.26,
+        "probability": 0.747
+      },
+      {
+        "word": "지하철에서",
+        "start": 11.26,
+        "end": 11.84,
+        "probability": 0.993
+      },
+      {
+        "word": "겪은",
+        "start": 11.84,
+        "end": 12.16,
+        "probability": 0.998
+      },
+      {
+        "word": "일이에요",
+        "start": 12.16,
+        "end": 13.06,
+        "probability": 0.989
+      }
+    ]
+  },
+  {
+    "start": 13.06,
+    "end": 15.56,
+    "text": "요즘 지하철에서 뭐 파는 사람 나오면",
+    "words": [
+      {
+        "word": "요즘",
+        "start": 13.06,
+        "end": 13.5,
+        "probability": 0.979
+      },
+      {
+        "word": "지하철에서",
+        "start": 13.5,
+        "end": 14.2,
+        "probability": 0.995
+      },
+      {
+        "word": "뭐",
+        "start": 14.2,
+        "end": 14.4,
+        "probability": 0.324
+      },
+      {
+        "word": "파는",
+        "start": 14.4,
+        "end": 14.66,
+        "probability": 0.989
+      },
+      {
+        "word": "사람",
+        "start": 14.66,
+        "end": 14.92,
+        "probability": 0.99
+      },
+      {
+        "word": "나오면",
+        "start": 14.92,
+        "end": 15.56,
+        "probability": 0.997
+      }
+    ]
+  },
+  {
+    "start": 15.56,
+    "end": 16.54,
+    "text": "아무도 안 봐요",
+    "words": [
+      {
+        "word": "아무도",
+        "start": 15.56,
+        "end": 15.9,
+        "probability": 0.985
+      },
+      {
+        "word": "안",
+        "start": 15.9,
+        "end": 16.12,
+        "probability": 0.952
+      },
+      {
+        "word": "봐요",
+        "start": 16.12,
+        "end": 16.54,
+        "probability": 0.994
+      }
+    ]
+  },
+  {
+    "start": 16.54,
+    "end": 18.44,
+    "text": "다 휴대폰만 보죠?",
+    "words": [
+      {
+        "word": "다",
+        "start": 16.54,
+        "end": 17.06,
+        "probability": 0.98
+      },
+      {
+        "word": "휴대폰만",
+        "start": 17.06,
+        "end": 17.62,
+        "probability": 0.975
+      },
+      {
+        "word": "보죠?",
+        "start": 17.62,
+        "end": 18.44,
+        "probability": 0.997
+      }
+    ]
+  },
+  {
+    "start": 18.84,
+    "end": 20.92,
+    "text": "근데 한 아저씨가 이렇게 말한 거예요",
+    "words": [
+      {
+        "word": "근데",
+        "start": 18.84,
+        "end": 18.98,
+        "probability": 0.958
+      },
+      {
+        "word": "한",
+        "start": 18.98,
+        "end": 19.2,
+        "probability": 0.988
+      },
+      {
+        "word": "아저씨가",
+        "start": 19.2,
+        "end": 19.7,
+        "probability": 0.994
+      },
+      {
+        "word": "이렇게",
+        "start": 19.7,
+        "end": 19.96,
+        "probability": 0.998
+      },
+      {
+        "word": "말한",
+        "start": 19.96,
+        "end": 20.28,
+        "probability": 0.972
+      },
+      {
+        "word": "거예요",
+        "start": 20.28,
+        "end": 20.92,
+        "probability": 0.828
+      }
+    ]
+  },
+  {
+    "start": 20.92,
+    "end": 22.34,
+    "text": "자 여러분",
+    "words": [
+      {
+        "word": "자",
+        "start": 20.92,
+        "end": 21.6,
+        "probability": 0.648
+      },
+      {
+        "word": "여러분",
+        "start": 21.6,
+        "end": 22.34,
+        "probability": 0.466
+      }
+    ]
+  },
+  {
+    "start": 22.34,
+    "end": 24.42,
+    "text": "의사가 귓구멍을 파라고 해요?",
+    "words": [
+      {
+        "word": "의사가",
+        "start": 22.34,
+        "end": 23.14,
+        "probability": 0.706
+      },
+      {
+        "word": "귓구멍을",
+        "start": 23.14,
+        "end": 23.92,
+        "probability": 0.999
+      },
+      {
+        "word": "파라고",
+        "start": 23.92,
+        "end": 24.24,
+        "probability": 0.994
+      },
+      {
+        "word": "해요?",
+        "start": 24.24,
+        "end": 24.42,
+        "probability": 0.942
+      }
+    ]
+  },
+  {
+    "start": 24.56,
+    "end": 25.52,
+    "text": "파지 말라고 해요?",
+    "words": [
+      {
+        "word": "파지",
+        "start": 24.56,
+        "end": 24.84,
+        "probability": 0.987
+      },
+      {
+        "word": "말라고",
+        "start": 24.84,
+        "end": 25.22,
+        "probability": 0.988
+      },
+      {
+        "word": "해요?",
+        "start": 25.22,
+        "end": 25.52,
+        "probability": 0.978
+      }
+    ]
+  },
+  {
+    "start": 26.26,
+    "end": 27.88,
+    "text": "아무도 대답은 안 했어요",
+    "words": [
+      {
+        "word": "아무도",
+        "start": 26.26,
+        "end": 26.54,
+        "probability": 0.992
+      },
+      {
+        "word": "대답은",
+        "start": 26.54,
+        "end": 26.96,
+        "probability": 0.995
+      },
+      {
+        "word": "안",
+        "start": 26.96,
+        "end": 27.12,
+        "probability": 0.997
+      },
+      {
+        "word": "했어요",
+        "start": 27.12,
+        "end": 27.88,
+        "probability": 0.88
+      }
+    ]
+  },
+  {
+    "start": 27.88,
+    "end": 31.2,
+    "text": "근데 다들 그 아저씨를 쳐다보게 되었어요",
+    "words": [
+      {
+        "word": "근데",
+        "start": 27.88,
+        "end": 28.32,
+        "probability": 0.813
+      },
+      {
+        "word": "다들",
+        "start": 28.32,
+        "end": 29.1,
+        "probability": 0.871
+      },
+      {
+        "word": "그",
+        "start": 29.1,
+        "end": 29.34,
+        "probability": 0.995
+      },
+      {
+        "word": "아저씨를",
+        "start": 29.34,
+        "end": 29.78,
+        "probability": 0.973
+      },
+      {
+        "word": "쳐다보게",
+        "start": 29.78,
+        "end": 30.26,
+        "probability": 0.98
+      },
+      {
+        "word": "되었어요",
+        "start": 30.26,
+        "end": 31.2,
+        "probability": 0.981
+      }
+    ]
+  },
+  {
+    "start": 31.2,
+    "end": 32.68,
+    "text": "왜 쳐다봤을까요?",
+    "words": [
+      {
+        "word": "왜",
+        "start": 31.2,
+        "end": 31.54,
+        "probability": 0.811
+      },
+      {
+        "word": "쳐다봤을까요?",
+        "start": 31.54,
+        "end": 32.68,
+        "probability": 0.974
+      }
+    ]
+  },
+  {
+    "start": 33.22,
+    "end": 35.76,
+    "text": "아저씨가 바로 답을 알려주지 않는 거예요",
+    "words": [
+      {
+        "word": "아저씨가",
+        "start": 33.22,
+        "end": 33.72,
+        "probability": 0.991
+      },
+      {
+        "word": "바로",
+        "start": 33.72,
+        "end": 33.86,
+        "probability": 1.0
+      },
+      {
+        "word": "답을",
+        "start": 33.86,
+        "end": 34.2,
+        "probability": 0.998
+      },
+      {
+        "word": "알려주지",
+        "start": 34.2,
+        "end": 34.68,
+        "probability": 0.981
+      },
+      {
+        "word": "않는",
+        "start": 34.68,
+        "end": 34.9,
+        "probability": 0.995
+      },
+      {
+        "word": "거예요",
+        "start": 34.9,
+        "end": 35.76,
+        "probability": 0.746
+      }
+    ]
+  },
+  {
+    "start": 35.76,
+    "end": 38.82,
+    "text": "사람은 질문을 해놓고 답을 알려주지 않으면",
+    "words": [
+      {
+        "word": "사람은",
+        "start": 35.76,
+        "end": 36.6,
+        "probability": 0.983
+      },
+      {
+        "word": "질문을",
+        "start": 36.6,
+        "end": 37.12,
+        "probability": 0.997
+      },
+      {
+        "word": "해놓고",
+        "start": 37.12,
+        "end": 37.48,
+        "probability": 0.883
+      },
+      {
+        "word": "답을",
+        "start": 37.48,
+        "end": 37.88,
+        "probability": 0.997
+      },
+      {
+        "word": "알려주지",
+        "start": 37.88,
+        "end": 38.32,
+        "probability": 0.988
+      },
+      {
+        "word": "않으면",
+        "start": 38.32,
+        "end": 38.82,
+        "probability": 0.997
+      }
+    ]
+  },
+  {
+    "start": 38.82,
+    "end": 40.72,
+    "text": "뭔가 답답함을 느끼거든요",
+    "words": [
+      {
+        "word": "뭔가",
+        "start": 38.82,
+        "end": 39.26,
+        "probability": 0.981
+      },
+      {
+        "word": "답답함을",
+        "start": 39.26,
+        "end": 39.94,
+        "probability": 0.998
+      },
+      {
+        "word": "느끼거든요",
+        "start": 39.94,
+        "end": 40.72,
+        "probability": 0.995
+      }
+    ]
+  },
+  {
+    "start": 40.72,
+    "end": 42.64,
+    "text": "드라마 애매한 데서 끊기면",
+    "words": [
+      {
+        "word": "드라마",
+        "start": 40.72,
+        "end": 41.5,
+        "probability": 0.991
+      },
+      {
+        "word": "애매한",
+        "start": 41.5,
+        "end": 41.88,
+        "probability": 0.808
+      },
+      {
+        "word": "데서",
+        "start": 41.88,
+        "end": 42.1,
+        "probability": 0.936
+      },
+      {
+        "word": "끊기면",
+        "start": 42.1,
+        "end": 42.64,
+        "probability": 0.997
+      }
+    ]
+  },
+  {
+    "start": 42.64,
+    "end": 45.16,
+    "text": "다음 편 보게 되는 거랑 똑같아요",
+    "words": [
+      {
+        "word": "다음",
+        "start": 42.64,
+        "end": 42.96,
+        "probability": 0.986
+      },
+      {
+        "word": "편",
+        "start": 42.96,
+        "end": 43.06,
+        "probability": 0.589
+      },
+      {
+        "word": "보게",
+        "start": 43.06,
+        "end": 43.36,
+        "probability": 0.972
+      },
+      {
+        "word": "되는",
+        "start": 43.36,
+        "end": 43.56,
+        "probability": 0.969
+      },
+      {
+        "word": "거랑",
+        "start": 43.56,
+        "end": 43.86,
+        "probability": 0.948
+      },
+      {
+        "word": "똑같아요",
+        "start": 43.86,
+        "end": 45.16,
+        "probability": 0.997
+      }
+    ]
+  },
+  {
+    "start": 45.16,
+    "end": 47.32,
+    "text": "홈쇼핑도 마찬가지예요",
+    "words": [
+      {
+        "word": "홈쇼핑도",
+        "start": 45.16,
+        "end": 46.08,
+        "probability": 0.888
+      },
+      {
+        "word": "마찬가지예요",
+        "start": 46.08,
+        "end": 47.32,
+        "probability": 0.908
+      }
+    ]
+  },
+  {
+    "start": 47.32,
+    "end": 49.76,
+    "text": "오늘 이런 여행 상품을 소개하겠습니다",
+    "words": [
+      {
+        "word": "오늘",
+        "start": 47.32,
+        "end": 47.78,
+        "probability": 0.406
+      },
+      {
+        "word": "이런",
+        "start": 47.78,
+        "end": 48.12,
+        "probability": 0.989
+      },
+      {
+        "word": "여행",
+        "start": 48.12,
+        "end": 48.44,
+        "probability": 0.999
+      },
+      {
+        "word": "상품을",
+        "start": 48.44,
+        "end": 48.88,
+        "probability": 0.926
+      },
+      {
+        "word": "소개하겠습니다",
+        "start": 48.88,
+        "end": 49.76,
+        "probability": 0.986
+      }
+    ]
+  },
+  {
+    "start": 49.76,
+    "end": 51.9,
+    "text": "사람들은 별로 관심 없어요",
+    "words": [
+      {
+        "word": "사람들은",
+        "start": 49.76,
+        "end": 50.66,
+        "probability": 0.923
+      },
+      {
+        "word": "별로",
+        "start": 50.66,
+        "end": 50.9,
+        "probability": 0.999
+      },
+      {
+        "word": "관심",
+        "start": 50.9,
+        "end": 51.24,
+        "probability": 0.999
+      },
+      {
+        "word": "없어요",
+        "start": 51.24,
+        "end": 51.9,
+        "probability": 0.907
+      }
+    ]
+  },
+  {
+    "start": 51.9,
+    "end": 53.78,
+    "text": "채널 바로 돌리죠",
+    "words": [
+      {
+        "word": "채널",
+        "start": 51.9,
+        "end": 52.42,
+        "probability": 0.945
+      },
+      {
+        "word": "바로",
+        "start": 52.42,
+        "end": 52.66,
+        "probability": 0.995
+      },
+      {
+        "word": "돌리죠",
+        "start": 52.66,
+        "end": 53.78,
+        "probability": 0.994
+      }
+    ]
+  },
+  {
+    "start": 53.78,
+    "end": 55.74,
+    "text": "참기름은 바로 짠 게 맛있을까요?",
+    "words": [
+      {
+        "word": "참기름은",
+        "start": 53.78,
+        "end": 54.5,
+        "probability": 0.979
+      },
+      {
+        "word": "바로",
+        "start": 54.5,
+        "end": 54.72,
+        "probability": 0.992
+      },
+      {
+        "word": "짠",
+        "start": 54.72,
+        "end": 54.9,
+        "probability": 0.958
+      },
+      {
+        "word": "게",
+        "start": 54.9,
+        "end": 55.04,
+        "probability": 0.548
+      },
+      {
+        "word": "맛있을까요?",
+        "start": 55.04,
+        "end": 55.74,
+        "probability": 0.995
+      }
+    ]
+  },
+  {
+    "start": 55.82,
+    "end": 57.14,
+    "text": "숙성된 게 맛있을까요?",
+    "words": [
+      {
+        "word": "숙성된",
+        "start": 55.82,
+        "end": 56.24,
+        "probability": 0.981
+      },
+      {
+        "word": "게",
+        "start": 56.24,
+        "end": 56.4,
+        "probability": 0.958
+      },
+      {
+        "word": "맛있을까요?",
+        "start": 56.4,
+        "end": 57.14,
+        "probability": 0.996
+      }
+    ]
+  },
+  {
+    "start": 57.14,
+    "end": 59.12,
+    "text": "이런 질문이 나오면",
+    "words": [
+      {
+        "word": "이런",
+        "start": 57.14,
+        "end": 57.84,
+        "probability": 0.279
+      },
+      {
+        "word": "질문이",
+        "start": 57.84,
+        "end": 58.36,
+        "probability": 0.937
+      },
+      {
+        "word": "나오면",
+        "start": 58.36,
+        "end": 59.12,
+        "probability": 0.995
+      }
+    ]
+  },
+  {
+    "start": 59.12,
+    "end": 60.46,
+    "text": "채널 못 돌려요",
+    "words": [
+      {
+        "word": "채널",
+        "start": 59.12,
+        "end": 59.52,
+        "probability": 0.827
+      },
+      {
+        "word": "못",
+        "start": 59.52,
+        "end": 59.78,
+        "probability": 0.877
+      },
+      {
+        "word": "돌려요",
+        "start": 59.78,
+        "end": 60.46,
+        "probability": 0.934
+      }
+    ]
+  },
+  {
+    "start": 60.46,
+    "end": 61.66,
+    "text": "궁금하거든요",
+    "words": [
+      {
+        "word": "궁금하거든요",
+        "start": 60.46,
+        "end": 61.66,
+        "probability": 0.842
+      }
+    ]
+  },
+  {
+    "start": 61.66,
+    "end": 65.26,
+    "text": "그래서 홈쇼핑은 전부 질문으로 시작해요",
+    "words": [
+      {
+        "word": "그래서",
+        "start": 61.66,
+        "end": 62.38,
+        "probability": 0.931
+      },
+      {
+        "word": "홈쇼핑은",
+        "start": 62.38,
+        "end": 63.18,
+        "probability": 0.968
+      },
+      {
+        "word": "전부",
+        "start": 63.18,
+        "end": 63.56,
+        "probability": 0.997
+      },
+      {
+        "word": "질문으로",
+        "start": 63.56,
+        "end": 64.08,
+        "probability": 0.978
+      },
+      {
+        "word": "시작해요",
+        "start": 64.08,
+        "end": 65.26,
+        "probability": 0.991
+      }
+    ]
+  },
+  {
+    "start": 65.26,
+    "end": 67.48,
+    "text": "우리가 하는 상담도 똑같아요",
+    "words": [
+      {
+        "word": "우리가",
+        "start": 65.26,
+        "end": 65.7,
+        "probability": 0.905
+      },
+      {
+        "word": "하는",
+        "start": 65.7,
+        "end": 65.96,
+        "probability": 0.993
+      },
+      {
+        "word": "상담도",
+        "start": 65.96,
+        "end": 66.38,
+        "probability": 0.987
+      },
+      {
+        "word": "똑같아요",
+        "start": 66.38,
+        "end": 67.48,
+        "probability": 0.99
+      }
+    ]
+  },
+  {
+    "start": 67.48,
+    "end": 70.6,
+    "text": "고객이 들을지 말지 결정하는 시간 3초",
+    "words": [
+      {
+        "word": "고객이",
+        "start": 67.48,
+        "end": 68.02,
+        "probability": 0.976
+      },
+      {
+        "word": "들을지",
+        "start": 68.02,
+        "end": 68.32,
+        "probability": 0.991
+      },
+      {
+        "word": "말지",
+        "start": 68.32,
+        "end": 68.62,
+        "probability": 0.978
+      },
+      {
+        "word": "결정하는",
+        "start": 68.62,
+        "end": 69.16,
+        "probability": 0.989
+      },
+      {
+        "word": "시간",
+        "start": 69.16,
+        "end": 69.6,
+        "probability": 0.987
+      },
+      {
+        "word": "3초",
+        "start": 69.6,
+        "end": 70.6,
+        "probability": 0.927
+      }
+    ]
+  },
+  {
+    "start": 70.6,
+    "end": 73.5,
+    "text": "그 3초에 뭘 던지느냐가 전부예요",
+    "words": [
+      {
+        "word": "그",
+        "start": 70.6,
+        "end": 70.88,
+        "probability": 0.892
+      },
+      {
+        "word": "3초에",
+        "start": 70.88,
+        "end": 71.38,
+        "probability": 0.988
+      },
+      {
+        "word": "뭘",
+        "start": 71.38,
+        "end": 71.52,
+        "probability": 0.997
+      },
+      {
+        "word": "던지느냐가",
+        "start": 71.52,
+        "end": 72.26,
+        "probability": 0.991
+      },
+      {
+        "word": "전부예요",
+        "start": 72.26,
+        "end": 73.5,
+        "probability": 0.828
+      }
+    ]
+  },
+  {
+    "start": 73.5,
+    "end": 74.62,
+    "text": "똑같은 FP",
+    "words": [
+      {
+        "word": "똑같은",
+        "start": 73.5,
+        "end": 74.1,
+        "probability": 0.893
+      },
+      {
+        "word": "FP",
+        "start": 74.1,
+        "end": 74.62,
+        "probability": 0.837
+      }
+    ]
+  },
+  {
+    "start": 74.62,
+    "end": 76.2,
+    "text": "똑같은 고객",
+    "words": [
+      {
+        "word": "똑같은",
+        "start": 74.62,
+        "end": 75.28,
+        "probability": 0.65
+      },
+      {
+        "word": "고객",
+        "start": 75.28,
+        "end": 76.2,
+        "probability": 0.995
+      }
+    ]
+  },
+  {
+    "start": 76.2,
+    "end": 77.98,
+    "text": "한화 손해보암 누구누부입니다",
+    "words": [
+      {
+        "word": "한화",
+        "start": 76.2,
+        "end": 76.56,
+        "probability": 0.815
+      },
+      {
+        "word": "손해보암",
+        "start": 76.56,
+        "end": 77.08,
+        "probability": 0.795
+      },
+      {
+        "word": "누구누부입니다",
+        "start": 77.08,
+        "end": 77.98,
+        "probability": 0.855
+      }
+    ]
+  },
+  {
+    "start": 77.98,
+    "end": 79.62,
+    "text": "보장 분석 해드리려고요",
+    "words": [
+      {
+        "word": "보장",
+        "start": 77.98,
+        "end": 78.46,
+        "probability": 0.945
+      },
+      {
+        "word": "분석",
+        "start": 78.46,
+        "end": 78.72,
+        "probability": 0.777
+      },
+      {
+        "word": "해드리려고요",
+        "start": 78.72,
+        "end": 79.62,
+        "probability": 0.751
+      }
+    ]
+  },
+  {
+    "start": 79.62,
+    "end": 82.52,
+    "text": "이렇게 얘기하면 고객은 경계합니다",
+    "words": [
+      {
+        "word": "이렇게",
+        "start": 79.62,
+        "end": 80.16,
+        "probability": 0.982
+      },
+      {
+        "word": "얘기하면",
+        "start": 80.16,
+        "end": 80.98,
+        "probability": 0.973
+      },
+      {
+        "word": "고객은",
+        "start": 80.98,
+        "end": 81.6,
+        "probability": 0.995
+      },
+      {
+        "word": "경계합니다",
+        "start": 81.6,
+        "end": 82.52,
+        "probability": 0.973
+      }
+    ]
+  },
+  {
+    "start": 82.52,
+    "end": 85.06,
+    "text": "고객님 임신에도 돈 받고",
+    "words": [
+      {
+        "word": "고객님",
+        "start": 82.52,
+        "end": 83.82,
+        "probability": 0.88
+      },
+      {
+        "word": "임신에도",
+        "start": 83.82,
+        "end": 84.46,
+        "probability": 0.819
+      },
+      {
+        "word": "돈",
+        "start": 84.46,
+        "end": 84.7,
+        "probability": 0.975
+      },
+      {
+        "word": "받고",
+        "start": 84.7,
+        "end": 85.06,
+        "probability": 0.989
+      }
+    ]
+  },
+  {
+    "start": 85.06,
+    "end": 86.52,
+    "text": "안 해도 돈 받는 거 아세요?",
+    "words": [
+      {
+        "word": "안",
+        "start": 85.06,
+        "end": 85.32,
+        "probability": 0.912
+      },
+      {
+        "word": "해도",
+        "start": 85.32,
+        "end": 85.44,
+        "probability": 0.862
+      },
+      {
+        "word": "돈",
+        "start": 85.44,
+        "end": 85.66,
+        "probability": 0.979
+      },
+      {
+        "word": "받는",
+        "start": 85.66,
+        "end": 85.94,
+        "probability": 0.995
+      },
+      {
+        "word": "거",
+        "start": 85.94,
+        "end": 86.08,
+        "probability": 0.806
+      },
+      {
+        "word": "아세요?",
+        "start": 86.08,
+        "end": 86.52,
+        "probability": 0.997
+      }
+    ]
+  },
+  {
+    "start": 86.52,
+    "end": 88.08,
+    "text": "이런 질문을 하면",
+    "words": [
+      {
+        "word": "이런",
+        "start": 86.52,
+        "end": 86.96,
+        "probability": 0.918
+      },
+      {
+        "word": "질문을",
+        "start": 86.96,
+        "end": 87.48,
+        "probability": 0.993
+      },
+      {
+        "word": "하면",
+        "start": 87.48,
+        "end": 88.08,
+        "probability": 0.991
+      }
+    ]
+  },
+  {
+    "start": 88.08,
+    "end": 91.14,
+    "text": "고객이 그게 뭐예요? 하고 반문합니다",
+    "words": [
+      {
+        "word": "고객이",
+        "start": 88.08,
+        "end": 88.9,
+        "probability": 0.847
+      },
+      {
+        "word": "그게",
+        "start": 88.9,
+        "end": 89.18,
+        "probability": 0.472
+      },
+      {
+        "word": "뭐예요?",
+        "start": 89.18,
+        "end": 89.72,
+        "probability": 0.829
+      },
+      {
+        "word": "하고",
+        "start": 89.88,
+        "end": 90.04,
+        "probability": 0.848
+      },
+      {
+        "word": "반문합니다",
+        "start": 90.04,
+        "end": 91.14,
+        "probability": 0.981
+      }
+    ]
+  },
+  {
+    "start": 91.14,
+    "end": 93.5,
+    "text": "첫마디 하나 바꿨을 뿐이에요",
+    "words": [
+      {
+        "word": "첫마디",
+        "start": 91.14,
+        "end": 91.82,
+        "probability": 0.614
+      },
+      {
+        "word": "하나",
+        "start": 91.82,
+        "end": 92.0,
+        "probability": 0.983
+      },
+      {
+        "word": "바꿨을",
+        "start": 92.0,
+        "end": 92.52,
+        "probability": 0.994
+      },
+      {
+        "word": "뿐이에요",
+        "start": 92.52,
+        "end": 93.5,
+        "probability": 0.988
+      }
+    ]
+  },
+  {
+    "start": 93.5,
+    "end": 95.78,
+    "text": "그러니까 우리 FP님들은",
+    "words": [
+      {
+        "word": "그러니까",
+        "start": 93.5,
+        "end": 94.38,
+        "probability": 0.927
+      },
+      {
+        "word": "우리",
+        "start": 94.38,
+        "end": 94.96,
+        "probability": 0.912
+      },
+      {
+        "word": "FP님들은",
+        "start": 94.96,
+        "end": 95.78,
+        "probability": 0.852
+      }
+    ]
+  },
+  {
+    "start": 95.78,
+    "end": 97.94,
+    "text": "고객님들께 답을 주지 마세요",
+    "words": [
+      {
+        "word": "고객님들께",
+        "start": 95.78,
+        "end": 96.66,
+        "probability": 0.989
+      },
+      {
+        "word": "답을",
+        "start": 96.66,
+        "end": 97.02,
+        "probability": 0.998
+      },
+      {
+        "word": "주지",
+        "start": 97.02,
+        "end": 97.28,
+        "probability": 0.984
+      },
+      {
+        "word": "마세요",
+        "start": 97.28,
+        "end": 97.94,
+        "probability": 0.993
+      }
+    ]
+  },
+  {
+    "start": 97.94,
+    "end": 99.68,
+    "text": "질문을 던지세요",
+    "words": [
+      {
+        "word": "질문을",
+        "start": 97.94,
+        "end": 98.64,
+        "probability": 0.964
+      },
+      {
+        "word": "던지세요",
+        "start": 98.64,
+        "end": 99.68,
+        "probability": 0.998
+      }
+    ]
+  },
+  {
+    "start": 99.68,
+    "end": 101.84,
+    "text": "다음 시간엔 이런 후킹 화법들을",
+    "words": [
+      {
+        "word": "다음",
+        "start": 99.68,
+        "end": 100.14,
+        "probability": 0.979
+      },
+      {
+        "word": "시간엔",
+        "start": 100.14,
+        "end": 100.64,
+        "probability": 0.934
+      },
+      {
+        "word": "이런",
+        "start": 100.64,
+        "end": 100.9,
+        "probability": 0.993
+      },
+      {
+        "word": "후킹",
+        "start": 100.9,
+        "end": 101.28,
+        "probability": 0.912
+      },
+      {
+        "word": "화법들을",
+        "start": 101.28,
+        "end": 101.84,
+        "probability": 0.739
+      }
+    ]
+  },
+  {
+    "start": 101.84,
+    "end": 103.0,
+    "text": "자세히 알아보겠습니다",
+    "words": [
+      {
+        "word": "자세히",
+        "start": 101.84,
+        "end": 102.36,
+        "probability": 0.998
+      },
+      {
+        "word": "알아보겠습니다",
+        "start": 102.36,
+        "end": 103.0,
+        "probability": 0.935
+      }
+    ]
+  }
+]

@@ -8,31 +8,39 @@ import {
 import { SPRING, FONT_FAMILY, PALETTES } from "../constants";
 import { GlowOrb } from "../components";
 import { SceneLayout } from "./SceneLayout";
+import { BEATS_TIMER } from "./hooking-why-beats";
 
 const palette = PALETTES.orange;
+const B = BEATS_TIMER;
 
 /**
  * 장면 9: [숫자 임팩트] — 3초 타이머
- * 큰 숫자 카운트다운 + 원형 링 + 보조 텍스트
+ * 오디오: "고객이 들을지 말지 결정하는 시간 3초"
  */
 export const SampleScene9: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
 
   const ringIn = spring({
-    frame: Math.max(0, frame - 5),
+    frame: Math.max(0, frame - B.RING_IN),
     fps,
     config: SPRING.heavy,
   });
 
   const numberIn = spring({
-    frame: Math.max(0, frame - 10),
+    frame: Math.max(0, frame - B.NUMBER_IN),
     fps,
     config: SPRING.bouncy,
   });
 
   const labelIn = spring({
-    frame: Math.max(0, frame - 25),
+    frame: Math.max(0, frame - B.LABEL_IN),
+    fps,
+    config: SPRING.smooth,
+  });
+
+  const subIn = spring({
+    frame: Math.max(0, frame - B.SUB_IN),
     fps,
     config: SPRING.smooth,
   });
@@ -49,7 +57,7 @@ export const SampleScene9: React.FC = () => {
   const dashLen = circumference * (1 - countdownProgress) * ringIn;
 
   return (
-    <SceneLayout pageTitle="고객의 판단 시간">
+    <SceneLayout pageTitle="상담 첫 3초">
       <div
         style={{
           width: "100%",
@@ -143,6 +151,7 @@ export const SampleScene9: React.FC = () => {
               fontWeight: 600,
               color: palette.sub,
               lineHeight: 1.5,
+              opacity: subIn,
             }}
           >
             듣거나{"\n"}돌아서거나
