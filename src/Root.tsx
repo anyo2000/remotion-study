@@ -15,6 +15,7 @@ import { VisualCatalogV4, VISUAL_CATALOG_V4_FRAMES } from "./visual-catalog-v4/V
 import { VisualCatalogV5, VISUAL_CATALOG_V5_FRAMES } from "./visual-catalog-v5/VisualCatalogV5";
 import { HookingOpeningSample } from "./hooking-opening/HookingOpeningSample";
 import { HookingWhyFull, HOOKING_WHY_FULL_FRAMES } from "./hooking-opening/HookingWhyFull";
+import { Ep01Sample, EP01_SAMPLE_FRAMES } from "./link-edu-series/ep01-world-changed/Ep01Sample";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -167,6 +168,14 @@ export const RemotionRoot: React.FC = () => {
           id="HookingOpening-Sample"
           component={HookingOpeningSample}
           durationInFrames={750}
+          fps={30}
+          width={1920}
+          height={1080}
+        />
+        <Composition
+          id="EP01-WorldChanged-Sample"
+          component={Ep01Sample}
+          durationInFrames={EP01_SAMPLE_FRAMES}
           fps={30}
           width={1920}
           height={1080}

@@ -6,6 +6,7 @@
 - [prompt-quality-standards.md](prompt-quality-standards.md) — 장면 스펙 구체성 기준 (B타입 대화형 / A타입 상세형)
 
 ## 비주얼 스타일
+- [visual-layout-guide.md](visual-layout-guide.md) — **핵심** 장면 유형별 비주얼 레이아웃 가이드. 텍스트:비주얼 비중, 컨테이너 규칙, 아이콘 배치. 모든 에피소드 공통 적용 (2026-04-22)
 - [style-clean/](style-clean/) — 정돈 톤 비주얼 레퍼런스 (마케팅 트루먼쇼 참고)
 - [motion-techniques-lines-shapes.md](motion-techniques-lines-shapes.md) — 선/도형 모션 테크닉
 

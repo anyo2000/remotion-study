@@ -108,6 +108,19 @@ export const PALETTES = {
     glow: "rgba(255, 107, 53, 0.06)",
     glowPosition: "50% 40%",
   },
+  /** 딥네이비+앰버 — EP01 세상이 바뀌었다 */
+  ep01: {
+    bg: "#1B2138",
+    card: "#252D4A",
+    cardBorder: "rgba(232, 168, 56, 0.12)",
+    text: "#F0EDE8",
+    sub: "#8B92A8",
+    accent: "#E8A838",
+    accentLight: "#F0C060",
+    accentDark: "#C88A20",
+    glow: "rgba(232, 168, 56, 0.04)",
+    glowPosition: "50% 45%",
+  },
   /** 라이트 블루 — LINK 교육 시리즈 */
   linkEdu: {
     bg: "#F5F7FA",
