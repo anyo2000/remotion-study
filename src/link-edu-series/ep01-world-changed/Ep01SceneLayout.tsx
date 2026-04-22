@@ -15,6 +15,8 @@ type Props = {
   pageTitle?: string;
   hideHeader?: boolean;
   dense?: boolean;
+  /** 좌우 여백 최소화 — 화면 전체 활용 */
+  wide?: boolean;
   children: React.ReactNode;
 };
 
@@ -30,15 +32,18 @@ export const LAYOUT = {
   contentBottom: 1030,
   contentMaxBottom: 1050,
   outerPad: 80,
-  contentPad: 120,
+  contentPad: 100,
+  contentPadWide: 100,
 } as const;
 
 export const Ep01SceneLayout: React.FC<Props> = ({
   pageTitle,
   hideHeader = false,
   dense = false,
+  wide = false,
   children,
 }) => {
+  const pad = wide ? LAYOUT.contentPadWide : LAYOUT.contentPad;
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -202,8 +207,8 @@ export const Ep01SceneLayout: React.FC<Props> = ({
           bottom: hideHeader
             ? 0
             : 1080 - (dense ? LAYOUT.contentMaxBottom : LAYOUT.contentBottom),
-          left: hideHeader ? 0 : LAYOUT.contentPad,
-          right: hideHeader ? 0 : LAYOUT.contentPad,
+          left: hideHeader ? 0 : pad,
+          right: hideHeader ? 0 : pad,
           display: hideHeader ? undefined : "flex",
           flexDirection: hideHeader ? undefined : "column",
           justifyContent: hideHeader ? undefined : "center",

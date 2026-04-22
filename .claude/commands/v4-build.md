@@ -60,8 +60,8 @@ export const BEATS_씬이름 = {
 - **폰트 최소 52px** — 예외 없음
 - **중앙축 정렬** 철저
 - **팔레트 외 색상 사용 금지**
-- 장면 간 갭: 21프레임 (0.7초)
-- 전환: TransitionSeries fade
+- **장면 간 갭(GAP) 없음** — 음성 자체의 호흡 쉼이 자연 간격. 인위적 GAP 금지
+- **씬 시작 = 음성 타임스탬프 절대값** — `T(초)` 함수 사용. duration 합산 금지
 - 마지막 장면 +75프레임 여유 (음성 잘림 방지)
 - Safe Zone: 세로(상150/하170/좌우60), 가로(상하80/좌우100)
 - 배경: radial-gradient 깊이감
@@ -83,9 +83,11 @@ src/{에피소드}/
 BEATS 파일이 single source — 컴포넌트는 자동 반영.
 
 ## 사전 참조 (반드시 로드)
+- `references/visual-layout-guide.md` — 비주얼 경험 노트
 - remotion-best-practices 스킬
 - component-registry 스킬
 - CLAUDE.md의 "BEATS 시스템" / "pageTitle 규칙" / "타이틀카드" 섹션
+- V3에서 승인된 비주얼 방향표 (대화 이력에서 확인)
 
 ## 출력 포맷
 
@@ -100,5 +102,8 @@ BEATS 파일이 single source — 컴포넌트는 자동 반영.
 
 [4/6 빌드완료] → 다음: 검수
 ```
+
+## 다음 단계
+빌드 완료되면 `/v5-qa` 스킬을 호출한다.
 
 ---✅ v4-build 스킬 실행

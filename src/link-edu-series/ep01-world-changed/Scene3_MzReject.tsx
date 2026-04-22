@@ -14,203 +14,199 @@ const palette = PALETTES.ep01;
 const B = BEATS_MZ_REJECT;
 
 /**
- * 씬 3: MZ 고객 거부 [대화 UI]
+ * 씬 3: MZ 고객 거부 — 당혹 → 깨달음
  *
- * "선물 들고 가보세요" → "안 받을게요. 부담스러워서요."
- * → "목적 있는 선물을 싫어하거든요"
+ * 🎁 이모지가 크게 날아오는데 🙅 이모지가 튕겨냄.
+ * "목적 있는 선물 = 거부" 인사이트. "보험 선물은 더 싫다" accent 키워드.
  */
-
-type BubbleProps = {
-  text: string;
-  emoji: string;
-  isFP: boolean;
-  delay: number;
-};
-
-const Bubble: React.FC<BubbleProps> = ({ text, emoji, isFP, delay }) => {
+export const Scene3_MzReject: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const prog = spring({
-    frame: Math.max(0, frame - delay),
+  // 🎁 등장 — 크게 날아옴
+  const giftIn = spring({
+    frame: Math.max(0, frame - B.GIFT_EMOJI),
     fps,
     config: SPRING.smooth,
   });
 
-  const slideX = interpolate(prog, [0, 1], [isFP ? 40 : -40, 0]);
+  // 🙅 거부 — 튕겨냄
+  const rejectIn = spring({
+    frame: Math.max(0, frame - B.REJECT),
+    fps,
+    config: SPRING.bouncy,
+  });
 
-  const bgColor = isFP
-    ? "rgba(232, 168, 56, 0.10)"
-    : palette.card;
-  const borderColor = isFP
-    ? "rgba(232, 168, 56, 0.25)"
-    : palette.cardBorder;
-  const textColor = isFP ? palette.accent : palette.text;
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: isFP ? "row-reverse" : "row",
-        alignItems: "flex-end",
-        gap: 16,
-        width: "100%",
-        opacity: prog,
-        transform: `translateX(${slideX}px)`,
-      }}
-    >
-      {/* 화자 아이콘 */}
-      <div
-        style={{
-          width: 80,
-          height: 80,
-          borderRadius: "50%",
-          backgroundColor: isFP
-            ? "rgba(232, 168, 56, 0.15)"
-            : "rgba(139, 146, 168, 0.12)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexShrink: 0,
-        }}
-      >
-        <span style={{ fontSize: 52 }}>{isFP ? "🧑‍💼" : "👤"}</span>
-      </div>
-
-      {/* 말풍선 */}
-      <div
-        style={{
-          flex: 1,
-          maxWidth: 620,
-          padding: "28px 36px",
-          borderRadius: 28,
-          borderTopLeftRadius: isFP ? 28 : 8,
-          borderTopRightRadius: isFP ? 8 : 28,
-          backgroundColor: bgColor,
-          border: `2px solid ${borderColor}`,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <span style={{ fontSize: 56, flexShrink: 0 }}>{emoji}</span>
-          <span
-            style={{
-              fontFamily: FONT_FAMILY,
-              fontSize: 60,
-              fontWeight: 700,
-              color: textColor,
-              lineHeight: 1.4,
-              whiteSpace: "pre-line",
-            }}
-          >
-            {text}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export const Scene3_MzReject: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps, durationInFrames } = useVideoConfig();
-
-  // 해설 텍스트 등장
-  const insightProg = spring({
-    frame: Math.max(0, frame - B.INSIGHT_TEXT),
+  // "부담스러워서요"
+  const burdenIn = spring({
+    frame: Math.max(0, frame - B.BURDEN),
     fps,
     config: SPRING.smooth,
   });
 
-  // 핵심 강조 텍스트
-  const accentProg = spring({
-    frame: Math.max(0, frame - B.ACCENT_TEXT),
+  // 인사이트
+  const insightIn = spring({
+    frame: Math.max(0, frame - B.INSIGHT),
     fps,
     config: SPRING.smooth,
   });
 
-  // 대화 버블 dim (해설 등장 후)
-  const bubbleDim =
-    frame >= B.INSIGHT_TEXT
-      ? interpolate(frame, [B.INSIGHT_TEXT, B.INSIGHT_TEXT + 20], [1, 0.4], {
+  // 핵심 강조
+  const accentIn = spring({
+    frame: Math.max(0, frame - B.ACCENT),
+    fps,
+    config: SPRING.bouncy,
+  });
+
+  // 🎁 이 🙅에 의해 밀려나는 효과
+  const giftPushed = frame >= B.REJECT
+    ? interpolate(frame, [B.REJECT, B.REJECT + 15], [0, -80], {
+        extrapolateRight: "clamp",
+      })
+    : 0;
+
+  const giftDim = frame >= B.REJECT
+    ? interpolate(frame, [B.REJECT, B.REJECT + 15], [1, 0.3], {
+        extrapolateRight: "clamp",
+      })
+    : 1;
+
+  // 인사이트 등장 시 이모지 dim
+  const emojiDim = frame >= B.INSIGHT
+    ? interpolate(frame, [B.INSIGHT, B.INSIGHT + 15], [1, 0.25], {
+        extrapolateRight: "clamp",
+      })
+    : 1;
+
+  // glow flash
+  const glowFlash =
+    frame >= B.ACCENT && frame < B.ACCENT + 20
+      ? interpolate(frame, [B.ACCENT, B.ACCENT + 20], [0.15, 0], {
           extrapolateRight: "clamp",
         })
-      : 1;
+      : 0;
 
   return (
     <Ep01SceneLayout pageTitle="MZ 고객의 반응">
+      {/* 이모지 충돌 영역 */}
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
-          gap: 28,
-          width: "100%",
-          opacity: bubbleDim,
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 40,
+          opacity: emojiDim,
         }}
       >
-        <Bubble
-          text={"선물 들고\n가보세요"}
-          emoji="🎁"
-          isFP
-          delay={B.FP_BUBBLE}
-        />
-        <Bubble
-          text={"안 받을게요.\n부담스러워서요."}
-          emoji="🙅"
-          isFP={false}
-          delay={B.CUSTOMER_REJECT}
-        />
+        {/* 🎁 선물 */}
+        <div
+          style={{
+            fontSize: 120,
+            lineHeight: 1,
+            opacity: giftIn * giftDim,
+            transform: `translateX(${interpolate(giftIn, [0, 1], [100, 0]) + giftPushed}px) scale(${interpolate(giftIn, [0, 1], [0.3, 1])})`,
+          }}
+        >
+          🎁
+        </div>
+
+        {/* 🙅 거부 */}
+        <div
+          style={{
+            fontSize: 140,
+            lineHeight: 1,
+            opacity: rejectIn,
+            transform: `scale(${interpolate(rejectIn, [0, 1], [0.4, 1])})`,
+          }}
+        >
+          🙅
+        </div>
       </div>
 
-      {/* 해설 — 처음부터 렌더, opacity로 등장 */}
+      {/* "부담스러워서요" */}
       <div
         style={{
-          marginTop: 48,
+          marginTop: 24,
+          opacity: burdenIn * emojiDim,
+          transform: `translateY(${interpolate(burdenIn, [0, 1], [12, 0])}px)`,
           textAlign: "center",
-          opacity: insightProg,
-          transform: `translateY(${interpolate(insightProg, [0, 1], [12, 0])}px)`,
         }}
       >
         <span
           style={{
             fontFamily: FONT_FAMILY,
-            fontSize: 60,
+            fontSize: 56,
             fontWeight: 600,
             color: palette.sub,
-            lineHeight: 1.5,
           }}
         >
-          목적 있는 선물을 싫어하거든요
+          부담스러워서요
         </span>
       </div>
 
-      {/* 핵심 강조 */}
+      {/* 인사이트 카드 */}
       <div
         style={{
-          marginTop: 20,
+          marginTop: 40,
+          opacity: insightIn,
+          transform: `translateY(${interpolate(insightIn, [0, 1], [16, 0])}px)`,
           textAlign: "center",
-          opacity: accentProg,
-          transform: `scale(${interpolate(accentProg, [0, 1], [0.95, 1])})`,
+        }}
+      >
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 20,
+            padding: "28px 48px",
+            borderRadius: 24,
+            backgroundColor: "rgba(255, 255, 255, 0.06)",
+            border: "1.5px solid rgba(255, 255, 255, 0.12)",
+          }}
+        >
+          <span style={{ fontSize: 52, flexShrink: 0 }}>💡</span>
+          <span
+            style={{
+              fontFamily: FONT_FAMILY,
+              fontSize: 56,
+              fontWeight: 700,
+              color: palette.sub,
+            }}
+          >
+            목적 있는 선물 = 거부
+          </span>
+        </div>
+      </div>
+
+      {/* 핵심 키워드 */}
+      <div
+        style={{
+          marginTop: 24,
+          opacity: accentIn,
+          transform: `scale(${interpolate(accentIn, [0, 1], [0.9, 1])})`,
+          textAlign: "center",
         }}
       >
         <span
           style={{
             fontFamily: FONT_FAMILY,
-            fontSize: 72,
+            fontSize: 68,
             fontWeight: 900,
             color: palette.accent,
+            textShadow: `0 0 40px rgba(232, 168, 56, ${glowFlash})`,
           }}
         >
-          보험 얘기하려고 주는 건 더 싫은 거예요
+          보험 선물은 더 싫다
         </span>
       </div>
 
       <GlowOrb
         color={palette.accent}
-        opacity={0.05}
-        size={500}
+        opacity={0.04}
+        size={400}
         x="50%"
-        y="55%"
-        delay={B.ACCENT_TEXT}
+        y="45%"
+        delay={B.INSIGHT}
       />
     </Ep01SceneLayout>
   );

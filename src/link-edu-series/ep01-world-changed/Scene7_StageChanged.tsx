@@ -7,7 +7,6 @@ import {
   interpolate,
 } from "remotion";
 import { SPRING, FONT_FAMILY, PALETTES } from "../../constants";
-import { GlowOrb } from "../../components";
 import { Ep01SceneLayout } from "./Ep01SceneLayout";
 import { BEATS_STAGE_CHANGED } from "./ep01-beats";
 
@@ -15,30 +14,31 @@ const palette = PALETTES.ep01;
 const B = BEATS_STAGE_CHANGED;
 
 /**
- * 씬 7: 무대가 바뀌었다 [반전]
+ * 씬 7: 반전 — 무대가 바뀌었다
  *
- * "실력 문제일까요?" → "아니에요" → "무대가 통째로 바뀐 거예요"
- * 반전 태그: 헤드라인 생략, 감정 전환점에서 키워드 등장
+ * hideHeader. 텍스트 크기 변화 자체가 비주얼.
+ * "실력 문제일까요?" → "아니에요." → "진짜 여러분 잘못 아니에요"
+ * → "무대가 통째로 바뀐 거예요" (shake + glow flash)
+ * → "더 억울하실 거예요" sub
  */
 export const Scene7_StageChanged: React.FC = () => {
   const frame = useCurrentFrame();
-  const { fps, durationInFrames } = useVideoConfig();
+  const { fps } = useVideoConfig();
 
-  // ── 스프링 ──
   const questionIn = spring({
-    frame: Math.max(0, frame - B.QUESTION_IN),
+    frame: Math.max(0, frame - B.QUESTION),
     fps,
     config: SPRING.smooth,
   });
 
   const denyIn = spring({
-    frame: Math.max(0, frame - B.DENY_IN),
+    frame: Math.max(0, frame - B.DENY),
     fps,
     config: SPRING.bouncy,
   });
 
   const empathyIn = spring({
-    frame: Math.max(0, frame - B.EMPATHY_IN),
+    frame: Math.max(0, frame - B.EMPATHY),
     fps,
     config: SPRING.smooth,
   });
@@ -56,29 +56,38 @@ export const Scene7_StageChanged: React.FC = () => {
   });
 
   const subIn = spring({
-    frame: Math.max(0, frame - B.SUB_IN),
+    frame: Math.max(0, frame - B.SUB),
     fps,
     config: SPRING.smooth,
   });
 
   // 키워드 등장 시 이전 요소 dim
-  const preDim =
-    frame >= B.KEYWORD_START
-      ? interpolate(
-          frame,
-          [B.KEYWORD_START, B.KEYWORD_START + 20],
-          [1, 0.25],
-          { extrapolateRight: "clamp" }
-        )
-      : 1;
+  const preDim = frame >= B.KEYWORD_START
+    ? interpolate(frame, [B.KEYWORD_START, B.KEYWORD_START + 15], [1, 0.2], {
+        extrapolateRight: "clamp",
+      })
+    : 1;
 
-  // 스크린 셰이크 (키워드 임팩트)
+  // 스크린 셰이크 (키워드 임팩트 0.5초)
   const shakeAmount =
     frame >= B.KEYWORD_FULL && frame < B.KEYWORD_FULL + 15
-      ? 6 *
-        Math.sin((frame - B.KEYWORD_FULL) * 5) *
-        Math.exp(-(frame - B.KEYWORD_FULL) * 0.35)
+      ? 8 *
+        Math.sin((frame - B.KEYWORD_FULL) * 6) *
+        Math.exp(-(frame - B.KEYWORD_FULL) * 0.3)
       : 0;
+
+  // glow flash (순간 반짝 후 소멸)
+  const glowFlash =
+    frame >= B.KEYWORD_FULL && frame < B.KEYWORD_FULL + 15
+      ? interpolate(
+          frame,
+          [B.KEYWORD_FULL, B.KEYWORD_FULL + 5, B.KEYWORD_FULL + 15],
+          [0, 0.4, 0],
+          { extrapolateRight: "clamp" }
+        )
+      : 0;
+
+  const coolGray = "rgba(240, 237, 232, 0.7)";
 
   return (
     <Ep01SceneLayout hideHeader>
@@ -87,7 +96,7 @@ export const Scene7_StageChanged: React.FC = () => {
           transform: `translateX(${shakeAmount}px)`,
           justifyContent: "center",
           alignItems: "center",
-          padding: "0 120px",
+          padding: "0 140px",
         }}
       >
         <div
@@ -95,36 +104,36 @@ export const Scene7_StageChanged: React.FC = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 24,
+            gap: 20,
           }}
         >
-          {/* 질문 — "실력 문제일까요?" */}
+          {/* "실력 문제일까요?" */}
           <div
             style={{
               opacity: questionIn * preDim,
-              transform: `translateY(${interpolate(questionIn, [0, 1], [15, 0])}px)`,
+              transform: `translateY(${interpolate(questionIn, [0, 1], [20, 0])}px)`,
               textAlign: "center",
             }}
           >
             <span
               style={{
                 fontFamily: FONT_FAMILY,
-                fontSize: 72,
-                fontWeight: 700,
-                color: palette.sub,
-                lineHeight: 1.4,
+                fontSize: 64,
+                fontWeight: 600,
+                color: coolGray,
               }}
             >
               실력 문제일까요?
             </span>
           </div>
 
-          {/* 부정 — "아니에요" */}
+          {/* "아니에요." */}
           <div
             style={{
               opacity: denyIn * preDim,
-              transform: `scale(${interpolate(denyIn, [0, 1], [0.8, 1])})`,
+              transform: `scale(${interpolate(denyIn, [0, 1], [0.75, 1])})`,
               textAlign: "center",
+              marginTop: 8,
             }}
           >
             <span
@@ -139,42 +148,43 @@ export const Scene7_StageChanged: React.FC = () => {
             </span>
           </div>
 
-          {/* 공감 — "진짜 여러분 잘못 아니에요" */}
+          {/* "진짜 여러분 잘못 아니에요" */}
           <div
             style={{
               opacity: empathyIn * preDim,
-              transform: `translateY(${interpolate(empathyIn, [0, 1], [10, 0])}px)`,
+              transform: `translateY(${interpolate(empathyIn, [0, 1], [12, 0])}px)`,
               textAlign: "center",
             }}
           >
             <span
               style={{
                 fontFamily: FONT_FAMILY,
-                fontSize: 64,
+                fontSize: 60,
                 fontWeight: 600,
-                color: palette.sub,
+                color: coolGray,
               }}
             >
               진짜 여러분 잘못 아니에요
             </span>
           </div>
 
-          {/* ── 핵심 키워드 ── "무대가 통째로 바뀐 거예요" */}
+          {/* "무대가 통째로 바뀐 거예요" */}
           <div
             style={{
-              marginTop: 32,
+              marginTop: 40,
               opacity: keywordIn,
-              transform: `scale(${interpolate(keywordFull, [0, 1], [0.85, 1])})`,
+              transform: `scale(${interpolate(keywordFull, [0, 1], [0.8, 1])})`,
               textAlign: "center",
             }}
           >
             <span
               style={{
                 fontFamily: FONT_FAMILY,
-                fontSize: 110,
+                fontSize: 116,
                 fontWeight: 900,
                 color: palette.accent,
-                textShadow: `0 0 60px rgba(232, 168, 56, ${0.3 * keywordFull})`,
+                textShadow: `0 0 80px rgba(232, 168, 56, ${glowFlash})`,
+                lineHeight: 1.3,
               }}
             >
               무대가 통째로
@@ -183,22 +193,23 @@ export const Scene7_StageChanged: React.FC = () => {
             <span
               style={{
                 fontFamily: FONT_FAMILY,
-                fontSize: 110,
+                fontSize: 116,
                 fontWeight: 900,
                 color: palette.accent,
-                textShadow: `0 0 60px rgba(232, 168, 56, ${0.3 * keywordFull})`,
+                textShadow: `0 0 80px rgba(232, 168, 56, ${glowFlash})`,
+                lineHeight: 1.3,
               }}
             >
               바뀐 거예요
             </span>
           </div>
 
-          {/* 보조 — "예전 방식일수록 더 억울하실 거예요" */}
+          {/* "더 억울하실 거예요" */}
           <div
             style={{
-              marginTop: 16,
+              marginTop: 20,
               opacity: subIn,
-              transform: `translateY(${interpolate(subIn, [0, 1], [10, 0])}px)`,
+              transform: `translateY(${interpolate(subIn, [0, 1], [12, 0])}px)`,
               textAlign: "center",
             }}
           >
@@ -207,24 +218,14 @@ export const Scene7_StageChanged: React.FC = () => {
                 fontFamily: FONT_FAMILY,
                 fontSize: 56,
                 fontWeight: 600,
-                color: palette.sub,
-                lineHeight: 1.5,
+                color: coolGray,
               }}
             >
-              예전 방식일수록 더 억울하실 거예요
+              더 억울하실 거예요
             </span>
           </div>
         </div>
       </AbsoluteFill>
-
-      <GlowOrb
-        color={palette.accent}
-        opacity={0.06}
-        size={700}
-        x="50%"
-        y="45%"
-        delay={B.KEYWORD_START}
-      />
     </Ep01SceneLayout>
   );
 };

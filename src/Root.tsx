@@ -16,6 +16,7 @@ import { VisualCatalogV5, VISUAL_CATALOG_V5_FRAMES } from "./visual-catalog-v5/V
 import { HookingOpeningSample } from "./hooking-opening/HookingOpeningSample";
 import { HookingWhyFull, HOOKING_WHY_FULL_FRAMES } from "./hooking-opening/HookingWhyFull";
 import { Ep01Sample, EP01_SAMPLE_FRAMES } from "./link-edu-series/ep01-world-changed/Ep01Sample";
+import { Ep01Full, EP01_FULL_FRAMES } from "./link-edu-series/ep01-world-changed/Ep01Full";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -24,9 +25,17 @@ export const RemotionRoot: React.FC = () => {
       <Folder name="Done">
         <Folder name="LINK">
           <Composition
-            id="LINK-L-WhyHooking"
+            id="LINK-L-1-WhyHooking"
             component={HookingWhyFull}
             durationInFrames={HOOKING_WHY_FULL_FRAMES}
+            fps={30}
+            width={1920}
+            height={1080}
+          />
+          <Composition
+            id="LINK-OT-1-WorldChanged"
+            component={Ep01Full}
+            durationInFrames={EP01_FULL_FRAMES}
             fps={30}
             width={1920}
             height={1080}
