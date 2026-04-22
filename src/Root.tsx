@@ -17,6 +17,7 @@ import { HookingOpeningSample } from "./hooking-opening/HookingOpeningSample";
 import { HookingWhyFull, HOOKING_WHY_FULL_FRAMES } from "./hooking-opening/HookingWhyFull";
 import { Ep01Sample, EP01_SAMPLE_FRAMES } from "./link-edu-series/ep01-world-changed/Ep01Sample";
 import { Ep01Full, EP01_FULL_FRAMES } from "./link-edu-series/ep01-world-changed/Ep01Full";
+import { Ep02Full, EP02_FULL_FRAMES } from "./link-edu-series/ep02-familiar/Ep02Full";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -36,6 +37,14 @@ export const RemotionRoot: React.FC = () => {
             id="LINK-OT-1-WorldChanged"
             component={Ep01Full}
             durationInFrames={EP01_FULL_FRAMES}
+            fps={30}
+            width={1920}
+            height={1080}
+          />
+          <Composition
+            id="LINK-OT-2-Familiar"
+            component={Ep02Full}
+            durationInFrames={EP02_FULL_FRAMES}
             fps={30}
             width={1920}
             height={1080}
