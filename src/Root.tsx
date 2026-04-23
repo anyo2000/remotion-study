@@ -18,6 +18,7 @@ import { HookingWhyFull, HOOKING_WHY_FULL_FRAMES } from "./hooking-opening/Hooki
 import { Ep01Sample, EP01_SAMPLE_FRAMES } from "./link-edu-series/ep01-world-changed/Ep01Sample";
 import { Ep01Full, EP01_FULL_FRAMES } from "./link-edu-series/ep01-world-changed/Ep01Full";
 import { Ep02Full, EP02_FULL_FRAMES } from "./link-edu-series/ep02-familiar/Ep02Full";
+import { LinkTeaser4Wide, LINK_TEASER4_WIDE_FRAMES } from "./LinkTeaser4Wide";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -93,6 +94,14 @@ export const RemotionRoot: React.FC = () => {
           fps={30}
           width={1080}
           height={1920}
+        />
+        <Composition
+          id="LinkTeaser4Wide"
+          component={LinkTeaser4Wide}
+          durationInFrames={LINK_TEASER4_WIDE_FRAMES}
+          fps={30}
+          width={1920}
+          height={1080}
         />
         <Composition
           id="LinkCounsel"
