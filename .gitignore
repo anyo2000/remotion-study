@@ -7,6 +7,9 @@ dist
 frames/
 out/
 
+# 대용량 오디오/영상은 Git 제외
+public/audio/*.wav
+
 # 영상 파일은 Google Drive에 보관
 public/output/*.mp4
 archive/**/*.mp4
