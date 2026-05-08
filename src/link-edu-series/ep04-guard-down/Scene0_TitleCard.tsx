@@ -6,12 +6,10 @@ import { GradientBackground, ParticleField, GlowOrb } from "../../components";
 const palette = PALETTES.ep01;
 
 /**
- * EP02 타이틀 카드 (0~120fr, 4초)
- *
+ * EP04 타이틀 카드 (0~120fr, 4초)
  * 애니메이션 없이 완성 상태로 즉시 표시
  */
 export const Scene0_TitleCard: React.FC = () => {
-
   return (
     <AbsoluteFill>
       <GradientBackground
@@ -22,10 +20,10 @@ export const Scene0_TitleCard: React.FC = () => {
       <ParticleField
         count={18}
         color={palette.accent}
-        maxOpacity={0.10}
+        maxOpacity={0.1}
         speed={0.25}
         sizeRange={[2, 4]}
-        seed="ep02-title"
+        seed="ep04-title"
       />
       <GlowOrb
         color={palette.accent}
@@ -33,7 +31,7 @@ export const Scene0_TitleCard: React.FC = () => {
         size={800}
         x="50%"
         y="45%"
-        delay={5}
+        delay={0}
       />
 
       <AbsoluteFill
@@ -47,7 +45,6 @@ export const Scene0_TitleCard: React.FC = () => {
             gap: 24,
           }}
         >
-          {/* LINK Consulting */}
           <div
             style={{
               fontFamily: FONT_FAMILY,
@@ -59,7 +56,6 @@ export const Scene0_TitleCard: React.FC = () => {
             LINK Consulting
           </div>
 
-          {/* 구분선 */}
           <div
             style={{
               width: 200,
@@ -69,7 +65,6 @@ export const Scene0_TitleCard: React.FC = () => {
             }}
           />
 
-          {/* OT 개론 뱃지 */}
           <div
             style={{
               display: "flex",
@@ -89,7 +84,7 @@ export const Scene0_TitleCard: React.FC = () => {
                 color: palette.accent,
               }}
             >
-              OT
+              L
             </span>
             <span
               style={{
@@ -99,11 +94,10 @@ export const Scene0_TitleCard: React.FC = () => {
                 color: palette.sub,
               }}
             >
-              개론
+              연결
             </span>
           </div>
 
-          {/* 에피소드 제목 */}
           <div
             style={{
               fontFamily: FONT_FAMILY,
@@ -113,7 +107,7 @@ export const Scene0_TitleCard: React.FC = () => {
               marginTop: 16,
             }}
           >
-            친숙보다 중요한 것
+            단어 하나가 만든 벽
           </div>
         </div>
       </AbsoluteFill>

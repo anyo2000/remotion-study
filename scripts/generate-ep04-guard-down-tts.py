@@ -1,12 +1,48 @@
-# EP04. 단어 하나가 만든 벽
+"""
+EP04 단어 하나가 만든 벽 — Gemini TTS 음성 생성
 
-> 에피소드 유형: 화법 실전 (경계심 풀기 — 보장분석 대신 이렇게, 단어 바꾸기)
-> 슬라이드 참조: 10~14
-> 예상 길이: ~3분 30초
+사용법:
+  source .venv/bin/activate
+  python scripts/generate-ep04-guard-down-tts.py
+"""
 
----
+import os
+import sys
+import wave
+from pathlib import Path
 
-여기 10년차 김영숙 FP님이 있습니다. 어제 이관받은 고객한테 전화를 걸었어요. 늘 하던 대로요.
+from google import genai
+from google.genai import types
+
+# --- API 키 로드 ---
+env_path = Path(__file__).parent.parent / ".env"
+API_KEY = os.environ.get("GEMINI_API_KEY")
+if not API_KEY and env_path.exists():
+    for line in env_path.read_text().splitlines():
+        if line.startswith("GEMINI_API_KEY="):
+            API_KEY = line.split("=", 1)[1].strip().strip('"').strip("'")
+            break
+
+if not API_KEY:
+    print("GEMINI_API_KEY 없음")
+    sys.exit(1)
+
+MODEL = "gemini-2.5-pro-preview-tts"
+OUT_DIR = Path(__file__).parent.parent / "public" / "audio"
+OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+# --- 스타일 프롬프트 ---
+STYLE_PROMPT = """따뜻하고 공감적인 동료 나레이터. 보험 FP 교육 영상.
+같은 업계 선배가 편하게 얘기하는 느낌으로.
+핵심 문장에서 살짝 멈추고 강조. 감정 전환점에서 톤 변화.
+고객 대사를 인용할 때는 살짝 톤을 바꿔서 구분.
+"단어가 오염되어 버린 거예요" 부분은 확신 있게.
+"김영숙 FP가 오늘 새로운 마음으로 다시 전화를 걸었어요" 부분은 힘차고 밝게.
+"어, 뭐가 바뀌었는데요?" 부분은 밝고 희망적으로.
+문단 사이에 충분히 쉬어주세요."""
+
+# --- 전체 대본 ---
+FULL_SCRIPT = """여기 10년차 김영숙 FP님이 있습니다. 어제 이관받은 고객한테 전화를 걸었어요. 늘 하던 대로요.
 
 "고객님, 안녕하세요. 이번에 담당자로 배정된 김영숙이라고 합니다. 다름이 아니라 한번 찾아뵙고 보장 분석 좀 해드리려고 연락드렸어요. 이번 주 중에 시간 괜찮으실 때로 한번..."
 
@@ -36,4 +72,59 @@ FP 여러분, 우리도 모르게 입에 붙어 있는 단어들이 있어요. 3
 
 오늘 통화 한 건이라도 좋아요. 본인이 평소 어떤 첫마디로 고객한테 다가가는지, 한번 녹음해서 들어보시거나 옆 동료한테 그대로 들려줘 보세요. 거기에 고객이 부담스러워할 단어가 몇 개나 들어 있는지 본인이 들어보면 깜짝 놀라실 거예요. 그 단어 한두 개만 빼도, 통화 첫 1분의 공기가 완전히 달라집니다.
 
-다음 편에서는 그럼 그 빈자리에 뭘 채울 건지, 진짜 후킹 화법으로 들어가볼게요.
+다음 편에서는 그럼 그 빈자리에 뭘 채울 건지, 진짜 후킹 화법으로 들어가볼게요."""
+
+
+def save_wav(pcm_data, filepath, sample_rate=24000):
+    with wave.open(str(filepath), "wb") as wf:
+        wf.setnchannels(1)
+        wf.setsampwidth(2)
+        wf.setframerate(sample_rate)
+        wf.writeframes(pcm_data)
+
+
+def main():
+    client = genai.Client(api_key=API_KEY)
+    full_content = f"{STYLE_PROMPT}\n\n---\n\n{FULL_SCRIPT}"
+
+    print("EP04 단어 하나가 만든 벽 TTS 생성 (음성: Leda)")
+
+    response = client.models.generate_content(
+        model=MODEL,
+        contents=full_content,
+        config=types.GenerateContentConfig(
+            response_modalities=["AUDIO"],
+            speech_config=types.SpeechConfig(
+                voice_config=types.VoiceConfig(
+                    prebuilt_voice_config=types.PrebuiltVoiceConfig(
+                        voice_name="Leda"
+                    )
+                )
+            ),
+        ),
+    )
+
+    audio_part = response.candidates[0].content.parts[0]
+    pcm_data = audio_part.inline_data.data
+    mime = audio_part.inline_data.mime_type
+
+    # sample rate 파싱
+    sample_rate = 24000
+    if "rate=" in mime:
+        try:
+            sample_rate = int(mime.split("rate=")[1].split(";")[0])
+        except (ValueError, IndexError):
+            pass
+
+    total_dur = len(pcm_data) / (sample_rate * 2)
+    print(f"  전체 길이: {total_dur:.1f}초 ({len(pcm_data)/1024:.0f}KB)")
+
+    out_path = OUT_DIR / "link-edu-ep04-guard-down.wav"
+    save_wav(pcm_data, out_path, sample_rate)
+    print(f"  저장: {out_path}")
+
+    print(f"\n완료!")
+
+
+if __name__ == "__main__":
+    main()

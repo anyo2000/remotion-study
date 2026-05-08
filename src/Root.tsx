@@ -18,6 +18,8 @@ import { HookingWhyFull, HOOKING_WHY_FULL_FRAMES } from "./hooking-opening/Hooki
 import { Ep01Sample, EP01_SAMPLE_FRAMES } from "./link-edu-series/ep01-world-changed/Ep01Sample";
 import { Ep01Full, EP01_FULL_FRAMES } from "./link-edu-series/ep01-world-changed/Ep01Full";
 import { Ep02Full, EP02_FULL_FRAMES } from "./link-edu-series/ep02-familiar/Ep02Full";
+import { Ep04Full, EP04_FULL_FRAMES } from "./link-edu-series/ep04-guard-down/Ep04Full";
+import { Ep05Full, EP05_FULL_FRAMES } from "./link-edu-series/ep05-hooking-pregnancy/Ep05Full";
 import { LinkTeaser4Wide, LINK_TEASER4_WIDE_FRAMES } from "./LinkTeaser4Wide";
 
 export const RemotionRoot: React.FC = () => {
@@ -46,6 +48,22 @@ export const RemotionRoot: React.FC = () => {
             id="LINK-OT-2-Familiar"
             component={Ep02Full}
             durationInFrames={EP02_FULL_FRAMES}
+            fps={30}
+            width={1920}
+            height={1080}
+          />
+          <Composition
+            id="LINK-L-2-GuardDown"
+            component={Ep04Full}
+            durationInFrames={EP04_FULL_FRAMES}
+            fps={30}
+            width={1920}
+            height={1080}
+          />
+          <Composition
+            id="LINK-L-3-HookingPregnancy"
+            component={Ep05Full}
+            durationInFrames={EP05_FULL_FRAMES}
             fps={30}
             width={1920}
             height={1080}
