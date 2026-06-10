@@ -75,6 +75,8 @@ v1에서 확정된 **비주얼 방향**(주력 카탈로그 조합)을 따르되
 - spec-writing 스킬
 - `references/gemini-voice-catalog.md`
 - v1 컨셉 확정 결과 (비주얼 방향, 팔레트, 톤)
+- **시리즈물이면** 해당 시리즈 폴더의 `제작가이드.md` (대본 문체 8원칙 — EP01 실패 교훈)
+- `~/Desktop/workspace/mybrain/knowledge/base/화법자산.md` — 현장 검증 화법 라이브러리 (후킹·화법 EP의 소재. 3태그(단위·용도·유효기간) 확인 — 교육용 소진 자산은 표면 재사용 금지)
 
 ## 출력 포맷
 
