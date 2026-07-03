@@ -33,6 +33,7 @@ cp out/{CompositionID}.mp4 ~/Library/CloudStorage/GoogleDrive-anyo2000@gmail.com
    - 대본, 음성, BGM 복사
 2. 중간 파일 삭제 (사용자 승인 후):
    - `out/still-*.png` (검수용 스틸)
+   - `out/preview-*.mp4` (V5 저해상도 프리뷰)
    - 임시 프리뷰 렌더
 3. .gitignore가 archive/와 output mp4를 이미 제외함
 

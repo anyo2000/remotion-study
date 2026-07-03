@@ -13,6 +13,13 @@ description: "V4 빌드 — 승인된 스타일로 전체 장면 제작"
 
 ## 할 일
 
+### 4-0. spec.md 로드 ⭐ (이거 없으면 빌드 시작 금지)
+`src/{에피소드}/spec.md` — V3에서 승인·저장된 비주얼 방향표를 읽는다.
+
+- **파일이 없으면 v4를 시작하지 않는다** → v3로 돌아가 spec.md 저장부터
+- 대화 이력이 아니라 **spec.md가 승인 내용의 single source** — 이력과 파일이 다르면 파일 우선
+- 화면에 넣을 텍스트는 spec.md의 "화면 텍스트" 필드 문구 그대로 — 임의 요약/변형 금지
+
 ### 4-1. BEATS 데이터 생성 ⭐ (빌드 전 필수)
 V2에서 생성한 word-level 타임스탬프(`{에피소드}.words.json`)를 로드하여 BEATS 파일 생성.
 
@@ -59,6 +66,7 @@ export const BEATS_씬이름 = {
 - `node scripts/check-fontsize.js` — 52px 미만 0건 확인
 - `npx tsc --noEmit` — 타입 에러 없음 확인
 - BEATS 하드코딩 없음 확인 (`frame - ` 패턴 grep)
+- `node scripts/check-rhythm.js src/{에피소드}/` — 비주얼 리듬 위반 확인 (5초 내 첫 변화 / 10초 정적 금지 / 마지막 요소 2초 유지). 위반 시 beats 배치 조정 후 재검사
 
 ## 코딩 규칙 (CLAUDE.md 글로벌)
 - **폰트 최소 52px** — 예외 없음
@@ -76,6 +84,7 @@ export const BEATS_씬이름 = {
 ## 파일 구조 (신규 에피소드)
 ```
 src/{에피소드}/
+├── spec.md                   ← V3에서 저장됨 (승인 내용 single source — 읽기 전용)
 ├── {에피소드}-beats.ts       ← Step 1에서 생성 (타이밍 single source)
 ├── {에피소드}Full.tsx        ← Step 3에서 생성
 ├── Scene0_TitleCard.tsx
@@ -93,7 +102,8 @@ BEATS 파일이 single source — 컴포넌트는 자동 반영.
 - remotion-best-practices 스킬
 - component-registry 스킬
 - CLAUDE.md의 "BEATS 시스템" / "pageTitle 규칙" / "타이틀카드" 섹션
-- V3에서 승인된 비주얼 방향표 (대화 이력에서 확인)
+- `src/{에피소드}/spec.md` — V3 승인 방향표 (4-0에서 이미 로드. 대화 이력 아님)
+- `references/visual-catalog-index.md` — spec.md의 카탈로그 ID 구현 시 참조
 
 ## 출력 포맷
 

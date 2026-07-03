@@ -28,12 +28,23 @@ description: "V5 검수 — 자동검사 + Gemini 교차검수 + Claude 판정"
    - beats.ts import 없이 직접 숫자로 딜레이 쓴 곳 → 즉시 수정
 5. **pageTitle 스포일러 검사** ⭐: 각 씬의 pageTitle이 본문 텍스트와 중복되는지 확인
    - 중복 발견 시 → 맥락 라벨로 교체
+6. **비주얼 리듬 검사** ⭐: `node scripts/check-rhythm.js src/{에피소드}/` 실행
+   - 5초 내 첫 변화 / 10초 정적 금지 / 마지막 요소 2초 유지를 beats.ts 기반으로 검사
+   - 위반 건은 해당 씬 코드를 확인 후 판정: 비트에 안 잡히는 **지속 애니메이션**(타이핑, 펄스, 회전 등)이 그 구간을 채우고 있으면 무시 가능, 아니면 beats.ts 수정
+7. **spec.md 대조**: 화면 텍스트가 `src/{에피소드}/spec.md`의 "화면 텍스트" 필드와 일치하는지 확인 — 임의 변형 발견 시 spec 문구로 원복
 
-### 5-2. 스틸 캡처
+### 5-2. 스틸 캡처 + 저해상도 프리뷰
 - 각 장면의 애니메이션 완료 시점에서 스틸 캡처:
   ```
   npx remotion still src/index.ts {CompositionName} out/still-{N}.png --frame={frame}
   ```
+- **저해상도 프리뷰 렌더** (리듬·모션·싱크는 스틸로 못 봄 — 풀렌더 전에 움직임 확인용):
+  ```
+  npx remotion render src/index.ts {CompositionName} out/preview-{CompositionName}.mp4 \
+    --scale=0.25 --jpeg-quality=40 --concurrency=4
+  ```
+  - 사용자에게 경로 제시: 최종 렌더 전에 페이싱/싱크를 눈으로 확인할 수 있는 마지막 관문
+  - 프리뷰 파일은 v6 정리 단계에서 삭제 대상
 
 ### 5-3. Gemini 교차 검수 (핵심)
 - 스틸 이미지를 Gemini 3.0 Pro에 전달:
@@ -88,8 +99,11 @@ Gemini 검수 결과의 각 issue에 대해:
 - 팔레트 검사: {pass / N건 수정}
 - BEATS 하드코딩: {pass / N건 수정}
 - pageTitle 스포일러: {pass / N건 수정}
+- 비주얼 리듬: {pass / N건 수정 / N건 무시(지속 애니메이션)}
+- spec.md 화면 텍스트 대조: {pass / N건 원복}
 - 오디오 싱크: {pass / N건 beats.ts 수정}
 - 스틸 확인: {N}장면
+- 프리뷰: {out/preview-*.mp4 경로}
 
 Gemini 교차 검수:
 - {category}: {description} → {수용|부분수용|무시} {이유/수정내용}
