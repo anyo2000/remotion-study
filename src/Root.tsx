@@ -21,6 +21,12 @@ import { Ep02Full, EP02_FULL_FRAMES } from "./link-edu-series/ep02-familiar/Ep02
 import { Ep04Full, EP04_FULL_FRAMES } from "./link-edu-series/ep04-guard-down/Ep04Full";
 import { Ep05Full, EP05_FULL_FRAMES } from "./link-edu-series/ep05-hooking-pregnancy/Ep05Full";
 import { LinkTeaser4Wide, LINK_TEASER4_WIDE_FRAMES } from "./LinkTeaser4Wide";
+import { ToneSamples, TONE_SAMPLES_FRAMES } from "./wine-talk/ToneSamples";
+import {
+  StructureSamples,
+  STRUCTURE_SAMPLES_FRAMES,
+} from "./wine-talk/StructureSamples";
+import { WineTalkFull, WINE_TALK_FRAMES } from "./wine-talk/WineTalkFull";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -69,6 +75,14 @@ export const RemotionRoot: React.FC = () => {
             height={1080}
           />
         </Folder>
+        <Composition
+          id="WineTalk-Teaser"
+          component={WineTalkFull}
+          durationInFrames={WINE_TALK_FRAMES}
+          fps={30}
+          width={1080}
+          height={1920}
+        />
         <Composition
           id="AprilGift"
           component={AprilGift}
@@ -177,6 +191,22 @@ export const RemotionRoot: React.FC = () => {
 
       {/* ── 실험/폐기 ── */}
       <Folder name="Lab">
+        <Composition
+          id="WineTalk-StructureSamples"
+          component={StructureSamples}
+          durationInFrames={STRUCTURE_SAMPLES_FRAMES}
+          fps={30}
+          width={1080}
+          height={1920}
+        />
+        <Composition
+          id="WineTalk-ToneSamples"
+          component={ToneSamples}
+          durationInFrames={TONE_SAMPLES_FRAMES}
+          fps={30}
+          width={1080}
+          height={1920}
+        />
         <Composition
           id="LinkEdu-Test"
           component={() => <EpisodePlayer data={templateTest} />}

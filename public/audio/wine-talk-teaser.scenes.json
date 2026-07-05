@@ -1,0 +1,58 @@
+[
+  {
+    "name": "CARD00_title",
+    "start": 0.0,
+    "startFrame": 0,
+    "anchorWord": "짜잔",
+    "anchorStart": 0.0
+  },
+  {
+    "name": "CARD01_intro",
+    "start": 4.28,
+    "startFrame": 128,
+    "anchorWord": "와인",
+    "anchorStart": 4.679999828338623
+  },
+  {
+    "name": "CARD02_champagne",
+    "start": 14.88,
+    "startFrame": 446,
+    "anchorWord": "1번",
+    "anchorStart": 15.239999771118164
+  },
+  {
+    "name": "CARD03_sauvignon",
+    "start": 27.7,
+    "startFrame": 831,
+    "anchorWord": "2번",
+    "anchorStart": 28.100000381469727
+  },
+  {
+    "name": "CARD04_oregon",
+    "start": 34.92,
+    "startFrame": 1048,
+    "anchorWord": "3번",
+    "anchorStart": 35.31999969482422
+  },
+  {
+    "name": "CARD05_sicilia",
+    "start": 43.43,
+    "startFrame": 1303,
+    "anchorWord": "4번",
+    "anchorStart": 43.70000076293945
+  },
+  {
+    "name": "CARD06_hostpick",
+    "start": 51.63,
+    "startFrame": 1549,
+    "anchorWord": "5번",
+    "anchorStart": 52.099998474121094
+  },
+  {
+    "name": "CARD07_closing",
+    "start": 62.93,
+    "startFrame": 1888,
+    "anchorWord": "다섯",
+    "anchorStart": 63.459999084472656
+  }
+]

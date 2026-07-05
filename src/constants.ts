@@ -121,6 +121,19 @@ export const PALETTES = {
     glow: "rgba(232, 168, 56, 0.04)",
     glowPosition: "50% 45%",
   },
+  /** 웜베이지+버건디 — YRC Wine Talk 티저 (토크쇼 예고편 톤) */
+  wineTalk: {
+    bg: "#F0E4D2",
+    card: "#FFFDF8",
+    cardBorder: "rgba(58, 44, 34, 0.15)",
+    text: "#3A2C22",
+    sub: "rgba(58, 44, 34, 0.65)",
+    accent: "#7A2434",
+    accentLight: "#9A3448",
+    accentDark: "#5A1A26",
+    glow: "rgba(122, 36, 52, 0.06)",
+    glowPosition: "50% 40%",
+  },
   /** 라이트 블루 — LINK 교육 시리즈 */
   linkEdu: {
     bg: "#F5F7FA",
