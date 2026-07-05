@@ -1,5 +1,11 @@
 import React from "react";
-import { AbsoluteFill, Audio, Sequence, staticFile } from "remotion";
+import {
+  AbsoluteFill,
+  Audio,
+  Sequence,
+  staticFile,
+  interpolate,
+} from "remotion";
 import {
   T,
   TITLE_END,
@@ -52,6 +58,20 @@ export const WineTalkFull: React.FC = () => {
         <Scene7_Closing />
       </Sequence>
 
+      {/* BGM — 처음부터 깔고, 내레이션 뒤로 볼륨 낮게(15%), 끝 1.5초 페이드아웃 */}
+      <Audio
+        src={staticFile("audio/bgm-wine-talk.mp3")}
+        volume={(f) =>
+          interpolate(
+            f,
+            [0, 20, TOTAL_FRAMES - 45, TOTAL_FRAMES],
+            [0, 0.15, 0.15, 0],
+            { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+          )
+        }
+      />
+
+      {/* 내레이션 */}
       <Sequence from={AUDIO_START}>
         <Audio src={staticFile("audio/wine-talk-teaser.wav")} />
       </Sequence>
