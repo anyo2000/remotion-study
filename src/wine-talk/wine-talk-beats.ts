@@ -9,8 +9,8 @@
 export const FPS = 30;
 export const AUDIO_START = 15; // 0.5초 리드인 (타이틀 먼저, "짜잔!" 시작)
 export const AUDIO_FRAMES = 2303; // 76.76초 (끝 3초 여유 포함)
-export const SCENE_TAIL = 0; // 오디오에 이미 끝 3초 여유 있음
-export const TOTAL_FRAMES = AUDIO_START + AUDIO_FRAMES + SCENE_TAIL; // 2318
+export const SCENE_TAIL = 300; // 엔딩 10초 — 클로징 정지화면 유지 + BGM 여운
+export const TOTAL_FRAMES = AUDIO_START + AUDIO_FRAMES + SCENE_TAIL; // 2618
 
 /** 음성 절대초 → 컴포지션 프레임 */
 export const T = (sec: number) => Math.round(sec * FPS) + AUDIO_START;
