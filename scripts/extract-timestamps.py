@@ -16,14 +16,16 @@ from pathlib import Path
 
 from openai import OpenAI
 
-# --- API 키 로드 ---
-env_path = Path(__file__).parent.parent / ".env"
+# --- API 키 로드 (레포 .env 우선, 공용 ~/.claude/.env 폴백) ---
 API_KEY = os.environ.get("OPENAI_API_KEY")
-if not API_KEY and env_path.exists():
-    for line in env_path.read_text().splitlines():
-        if line.startswith("OPENAI_API_KEY="):
-            API_KEY = line.split("=", 1)[1].strip().strip('"').strip("'")
-            break
+for env_path in [Path(__file__).parent.parent / ".env", Path.home() / ".claude" / ".env"]:
+    if API_KEY:
+        break
+    if env_path.exists():
+        for line in env_path.read_text().splitlines():
+            if line.startswith("OPENAI_API_KEY="):
+                API_KEY = line.split("=", 1)[1].strip().strip('"').strip("'")
+                break
 
 if not API_KEY:
     print("OPENAI_API_KEY 없음")

@@ -1,7 +1,12 @@
 import "dotenv/config";
+import dotenv from "dotenv";
 import OpenAI from "openai";
 import fs from "fs";
 import path from "path";
+import { homedir } from "os";
+
+// 공용 키 폴백 (레포 .env가 우선 — 이미 로드된 값은 덮어쓰지 않음)
+dotenv.config({ path: path.join(homedir(), ".claude", ".env") });
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
